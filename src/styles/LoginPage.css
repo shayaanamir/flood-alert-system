@@ -1,0 +1,131 @@
+body,
+p {
+  padding: 0;
+  margin: 0;
+}
+
+body {
+  overflow-x: hidden;
+}
+
+.default {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}
+
+.container {
+  min-height: 100vh;
+  width: 100vw;
+  background-color: 9CA3AF;
+  justify-content: flex-start;
+}
+
+.header {
+  height: 100px;
+  width: 100%;
+  background-color: aquamarine;
+}
+
+.login-body {
+  min-height: calc(100vh - 100px);
+  width: 100%;
+  padding: 20px 0px;
+}
+
+.login-div {
+  height: fit-content;
+  width: 600px;
+  background-color: white;
+  justify-content: flex-start;
+  gap: 30px;
+  padding: 0px 0px 25px 0px;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.15);
+}
+
+.top-section {
+  height: 150px;
+  width: 100%;
+  background-color: rgb(52, 89, 255);
+  border-top-left-radius: 10px;
+  border-top-right-radius: 10px;
+}
+
+.login-container-header {
+  height: fit-content;
+  width: 100%;
+  gap: 15px;
+  padding: 15px 0px;
+}
+
+.login-container-header h1 {
+  margin: 0;
+  padding: 0;
+  font-size: 2.3rem;
+}
+
+.login-container-header p {
+  margin: 0;
+  padding: 0;
+  font-size: 1rem;
+  color: #4b5563;
+}
+
+.login-block {
+  height: 95px;
+  width: 90%;
+}
+
+.login-block-title {
+  height: 40%;
+  width: 100%;
+  align-items: flex-start;
+}
+
+.login-block-input-div {
+  height: 60%;
+  width: 100%;
+  background-color: rgb(233, 233, 233);
+  border: 1px solid #aeaeae;
+  outline: none;
+  border-radius: 10px;
+}
+
+.login-block-input {
+  height: 100%;
+  width: 100%;
+  background-color: transparent;
+  padding: 0px;
+  border: none;
+  outline: none;
+  padding-left: 20px;
+  font-size: 1rem;
+  font-family: "Nunito", sans-serif;
+}
+
+.login-button-div {
+  height: 60px;
+  width: 90%;
+}
+
+.login-button {
+  height: 100%;
+  width: 100%;
+  background-color: #0066ff;
+  border: 1px solid white;
+  border-radius: 10px;
+  font-family: "Nunito", sans-serif;
+  font-size: 1.2rem;
+  color: white;
+  font-weight: 500;
+}
+
+.login-footer {
+  height: fit-content;
+  width: 100%;
+  padding: 10px;
+  gap: 10px;
+}
