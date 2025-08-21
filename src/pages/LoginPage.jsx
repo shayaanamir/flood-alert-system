@@ -1,5 +1,6 @@
 import "../styles/LoginPage.css";
 import InputBlock from "../components/InputBlock";
+import { Link } from "react-router-dom";
 
 const LoginPage = () => {
   return (
@@ -24,7 +25,9 @@ const LoginPage = () => {
               placeholder="Enter password"
             />
             <div className="default login-button-div">
-              <button className="default login-button">Login</button>
+              <Link className="default login-button" to="/">
+                Login
+              </Link>
             </div>
             <div className="default login-footer">
               <p>Don't have an account? Sign Up</p>
