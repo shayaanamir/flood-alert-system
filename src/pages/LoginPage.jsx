@@ -78,6 +78,7 @@ const LoginPage = () => {
       <div className="default login-container">
         <form className="default login-div" onSubmit={handleSubmit}>
           <svg
+            className="login-svg"
             width="56x"
             height="56px"
             viewBox="0 0 20 25"
