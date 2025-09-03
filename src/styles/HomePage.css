@@ -7,13 +7,16 @@
 }
 
 body {
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Helvetica Neue', Arial, sans-serif;
+  font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", "Roboto",
+    "Helvetica Neue", Arial, sans-serif;
 }
 
 .homepage {
   background-color: #f8fafc;
   min-height: 100vh;
   color: #1e293b;
+  display: flex;
+  flex-direction: column;
 }
 
 .container {
@@ -157,7 +160,6 @@ body {
 
 /* Right Column - Alert Signup */
 .right-column {
-  position: sticky;
   top: 24px;
   height: fit-content;
 }
@@ -166,7 +168,8 @@ body {
   background: white;
   padding: 40px;
   border-radius: 20px;
-  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1),
+    0 2px 4px -1px rgba(0, 0, 0, 0.06);
   border: 1px solid #f1f5f9;
 }
 
@@ -311,7 +314,7 @@ body {
     grid-template-columns: 1fr;
     gap: 40px;
   }
-  
+
   .right-column {
     position: static;
   }

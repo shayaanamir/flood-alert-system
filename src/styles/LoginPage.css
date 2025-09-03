@@ -122,6 +122,13 @@ body {
   color: white;
   font-weight: 500;
   text-decoration: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.login-button:hover {
+  background: linear-gradient(135deg, #0052cc, #3385ff);
+  transform: scale(1.01);
 }
 
 .login-footer {
