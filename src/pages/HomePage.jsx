@@ -17,10 +17,14 @@ const HomePage = () => {
   };
 
   return (
+    <>
     <div className="homepage">
+      
       <div className="container">
+
+
         {/* Header Section */}
-        <header className="header">
+        <header className="homePage-header">
           <h1>Stay Safe from Floods with Real-Time Alerts</h1>
           <p className="subtitle">
             FloodAlert uses real-time weather data to predict flood risks and sends SMS alerts to keep you
@@ -154,6 +158,8 @@ const HomePage = () => {
         </section>
       </div>
     </div>
+  </>
+
   );
 };
 
