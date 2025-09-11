@@ -21,11 +21,6 @@ const LoginPage = () => {
 
   function toggleStatus() {
     setIsLogin(!isLogin);
-    // setError("");
-    // setEmail("");
-    // setPassword("");
-    // setConfirmPass("");
-    // setSubmitted(false);
   }
 
   useEffect(() => {
@@ -60,12 +55,9 @@ const LoginPage = () => {
         setError("Passwords do not match.");
         return;
       }
-      // alert("✅ Account created successfully! (frontend only)");
       navigate("/");
     } else {
-      // login flow
       if (email === demoUser.email && password === demoUser.password) {
-        // alert("✅ Logged in successfully!");
         navigate("/");
       } else {
         setError("Invalid email or password.");
