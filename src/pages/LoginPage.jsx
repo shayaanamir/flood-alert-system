@@ -69,22 +69,12 @@ const LoginPage = () => {
     <>
       <div className="default login-container">
         <form className="default login-div" onSubmit={handleSubmit}>
-          <svg
-            className="login-svg"
-            width="56x"
+          <img
+            src="/icon.svg"
             height="56px"
-            viewBox="0 0 20 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 23.6667C12.166 23.6667 14.2432 22.8063 15.7747 21.2747C17.3063 19.7432 18.1667 17.6659 18.1667 15.5C18.1667 13.1667 17 10.95 14.6667 9.08333C12.3334 7.21667 10.5834 4.41667 10 1.5C9.41671 4.41667 7.66671 7.21667 5.33337 9.08333C3.00004 10.95 1.83337 13.1667 1.83337 15.5C1.83337 17.6659 2.69379 19.7432 4.22534 21.2747C5.75688 22.8063 7.83411 23.6667 10 23.6667Z"
-              stroke="#2563EB"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+            width="56px"
+            className="login-svg"
+          />
           <div className="default login-container-header">
             <h1>{!isLogin ? "Welcome Back!" : "Create an Account"}</h1>
             <p>
