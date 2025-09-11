@@ -55,10 +55,10 @@ const LoginPage = () => {
         setError("Passwords do not match.");
         return;
       }
-      navigate("/");
+      navigate("/home");
     } else {
       if (email === demoUser.email && password === demoUser.password) {
-        navigate("/");
+        navigate("/home");
       } else {
         setError("Invalid email or password.");
       }
