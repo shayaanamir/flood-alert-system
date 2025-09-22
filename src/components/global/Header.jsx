@@ -1,43 +1,66 @@
 import "../../styles/components/global/header.css";
 
-const Header = () => {
+const Header = (props) => {
   return (
-    <header className="header">
+    <header className={props.loggedOut ? "header" : "header header-landing"}>
       <div className="header-container">
         <div className="logo">
-          <svg
-            width="20"
-            height="25"
-            viewBox="0 0 20 25"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M10 23.6667C12.166 23.6667 14.2432 22.8063 15.7747 21.2747C17.3063 19.7432 18.1667 17.6659 18.1667 15.5C18.1667 13.1667 17 10.95 14.6667 9.08333C12.3334 7.21667 10.5834 4.41667 10 1.5C9.41671 4.41667 7.66671 7.21667 5.33337 9.08333C3.00004 10.95 1.83337 13.1667 1.83337 15.5C1.83337 17.6659 2.69379 19.7432 4.22534 21.2747C5.75688 22.8063 7.83411 23.6667 10 23.6667Z"
-              stroke="#2563EB"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
+          <img src="/icon.svg" height="45px" width="35px" className="logo" />
           <h4>FloodAlert</h4>
         </div>
 
-        <nav className="navigation">
-          <a href="#" className="nav-link">
-            Home
-          </a>
-          <a href="#" className="nav-link">
-            About
-          </a>
-          <a href="#" className="nav-link">
-            Contact
-          </a>
-          <a href="#" className="nav-link">
-            Sign In
-          </a>
-          <button className="sign-up-btn">Sign Up</button>
-        </nav>
+        {props.loggedOut ? (
+          <nav className="navigation">
+            <a href="#" className="nav-link">
+              Home
+            </a>
+            <a href="#" className="nav-link">
+              About
+            </a>
+            <a href="#" className="nav-link">
+              Contact
+            </a>
+            <a href="#" className="nav-link">
+              Sign In
+            </a>
+            <button className="sign-up-btn">Sign Up</button>
+          </nav>
+        ) : (
+          <nav className="navigation navigation-landing">
+            <a href="#" className="nav-link nav-link-landing">
+              Home
+            </a>
+            <a href="#" className="nav-link nav-link-landing">
+              View Risk
+            </a>
+            <a href="#" className="nav-link nav-link-landing">
+              Report Damage
+            </a>
+            <a href="#" className="nav-link nav-link-landing">
+              Find Shelter
+            </a>
+            <a href="#" className="nav-link nav-link-landing">
+              Help
+            </a>
+            <a href="#" className="nav-link nav-link-landing">
+              About
+            </a>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="50px"
+              height="40px"
+              fill="white"
+              class="bi bi-person-circle"
+              viewBox="0 0 16 16"
+            >
+              <path d="M11 6a3 3 0 1 1-6 0 3 3 0 0 1 6 0" />
+              <path
+                fill-rule="evenodd"
+                d="M0 8a8 8 0 1 1 16 0A8 8 0 0 1 0 8m8-7a7 7 0 0 0-5.468 11.37C3.242 11.226 4.805 10 8 10s4.757 1.225 5.468 2.37A7 7 0 0 0 8 1"
+              />
+            </svg>
+          </nav>
+        )}
       </div>
     </header>
   );
