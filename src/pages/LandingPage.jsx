@@ -35,7 +35,7 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      <Header />
+      <Header loggedOut={true}/>
       
       {/* Hero Section */}
       <section className="hero">
