@@ -3,9 +3,11 @@ import "../styles/LandingPage.css";
 import Header from '../components/global/Header';
 import Footer from '../components/global/Footer';
 import FeatureCard from '../components/FeatureCard';
+import { useNavigate } from 'react-router-dom';
 
 const LandingPage = () => {
 
+    const navigate = useNavigate();
     const features = [
         {
         icon: <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#2563EB"><path d="M480-100q-133 0-226.5-92T160-416q0-63 24.5-120.5T254-638l226-222 226 222q45 44 69.5 101.5T800-416q0 132-93.5 224T480-100Z"/></svg>,
@@ -45,8 +47,8 @@ const LandingPage = () => {
             Real-time flood risk alerts and resources to keep you and your community protected
           </p>
           <div className="hero-buttons">
-            <button className="btn btn-primary" >Sign Up for Alerts</button>
-            <button className="btn btn-secondary" >Login</button>
+            <button className="btn btn-primary" onClick={() => navigate("/login")}>Sign Up for Alerts</button>
+            <button className="btn btn-secondary" onClick={() => navigate("/login")} >Login</button>
           </div>
         </div>
       </section>
@@ -77,7 +79,7 @@ const LandingPage = () => {
           <p className="cta-subtitle">
             Join thousands of users who rely on FloodAlert for critical flood warnings and resources.
           </p>
-          <button className="btn btn-primary btn-large">Get Started Now</button>
+          <button className="btn btn-primary btn-large" onClick={() => navigate("/login")}>Get Started Now</button>
         </div>
       </section>
 
