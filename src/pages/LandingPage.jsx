@@ -1,5 +1,6 @@
 import React from 'react';
 import "../styles/LandingPage.css";
+
 import Header from '../components/global/Header';
 import Footer from '../components/global/Footer';
 import FeatureCard from '../components/FeatureCard';
