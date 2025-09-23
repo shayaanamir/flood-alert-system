@@ -8,7 +8,7 @@ const Footer = () => {
       <div className="footer-container">
         <div className="footer-section">
           <div className="footer-brand">
-            <span className="footer-logo">🔺</span>
+            <span className="footer-logo"><img src='icon.svg'></img></span>
             <span className="footer-brand-text">FloodAlert</span>
           </div>
           <p className="footer-description">
@@ -38,20 +38,15 @@ const Footer = () => {
         <div className="footer-section">
           <h4>Emergency</h4>
           <ul className="footer-links">
-            <li><a href="#">911 Emergency</a></li>
-            <li><a href="#">American Red Cross</a></li>
+            <li><a href="#">Contact Emergency</a></li>
             <li><a href="#">Hotlines</a></li>
           </ul>
         </div>
       </div>
       
       <div className="footer-bottom">
-        <p>&copy; 2024 FloodAlert. All rights reserved.</p>
-        <div className="social-icons">
-          <span>📧</span>
-          <span>🐦</span>
-          <span>📘</span>
-        </div>
+        <p>&copy; 2025 FloodAlert. All rights reserved.</p>
+        
       </div>
     </footer>
   );

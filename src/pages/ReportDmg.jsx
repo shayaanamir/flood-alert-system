@@ -2,8 +2,6 @@ import { useState } from "react";
 import "../styles/ReportDmg.css";
 import Header from '../components/global/Header';
 import Footer from '../components/global/Footer';
-import FeatureCard from '../components/FeatureCard';
-import { useNavigate } from 'react-router-dom';
 
 export default function ReportDmg() {
   const [formData, setFormData] = useState({
