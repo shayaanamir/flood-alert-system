@@ -20,7 +20,7 @@ const HomePage = () => {
   return (
     <>
       <div className="homepage">
-        <Header loggedOut={true} />
+        <Header loggedOut={false} />
         <div className="container">
           {/* Header Section */}
           <header className="homePage-header">

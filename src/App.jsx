@@ -3,14 +3,18 @@ import "./App.css";
 import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import AdminDashboard from "./pages/AdminDashboard";
+import LandingPage from "./pages/LandingPage";
+import ReportDmg from "./pages/ReportDmg";
 
 function App() {
   return (
     <Router>
       <Routes>
-        <Route path="/" element={<LoginPage />} />
+        <Route path="/" element={<LandingPage />} />
+        <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/admindashboard" element={<AdminDashboard />} />
+        <Route path="/report-dmg" element={<ReportDmg />} />
       </Routes>
     </Router>
   );
