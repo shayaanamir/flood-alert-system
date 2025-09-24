@@ -1,0 +1,238 @@
+.rainfall-forecast-card {
+  background: white;
+  border-radius: 12px;
+  padding: 24px;
+  margin-bottom: 20px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+}
+
+.forecast-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 24px;
+}
+
+.forecast-icon {
+  width: 48px;
+  height: 48px;
+  background-color: #E3F2FD;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.rain-icon {
+  font-size: 24px;
+}
+
+.forecast-title {
+  font-size: 20px;
+  font-weight: 600;
+  color: #2C3E50;
+  margin: 0;
+}
+
+.forecast-timeline {
+  display: flex;
+  justify-content: space-between;
+  align-items: end;
+  margin-bottom: 24px;
+  height: 200px;
+  padding: 0 8px;
+  gap: 4px;
+}
+
+.forecast-item {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex: 1;
+  max-width: 80px;
+  min-width: 60px;
+}
+
+.time-slot {
+  order: 3;
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 12px;
+}
+
+.clock-icon {
+  font-size: 14px;
+  opacity: 0.7;
+}
+
+.time-text {
+  font-size: 13px;
+  color: #666;
+  font-weight: 500;
+}
+
+.rainfall-display {
+  order: 1;
+  height: 40px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
+  margin-bottom: 8px;
+}
+
+.rainfall-amount {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px 6px;
+  border-radius: 12px;
+  font-size: 12px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.amount-text {
+  color: #2C3E50;
+}
+
+.bar-container {
+  order: 2;
+  width: 80px;
+  height: 150px;
+  background-color: #F5F5F5;
+  border-radius: 20px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 2px;
+}
+
+.intensity-bar {
+  width: 80px;
+  border-radius: 18px;
+  min-height: 8px;
+  transition: height 0.3s ease;
+}
+
+/* Specific heights for each bar to match the design */
+.forecast-item:nth-child(1) .intensity-bar {
+  height: 44px;
+}
+
+.forecast-item:nth-child(2) .intensity-bar {
+  height: 52px; 
+}
+
+.forecast-item:nth-child(3) .intensity-bar {
+  height: 70px; 
+}
+
+.forecast-item:nth-child(4) .intensity-bar {
+  height: 110px; 
+}
+
+.forecast-item:nth-child(5) .intensity-bar {
+  height: 80px; 
+}
+
+.forecast-item:nth-child(6) .intensity-bar {
+  height: 64px; 
+}
+
+.forecast-item:nth-child(7) .intensity-bar {
+  height: 38px;
+}
+
+.forecast-item:nth-child(8) .intensity-bar {
+  height: 28px;
+}
+
+.light {
+  background-color: #4A90E2 !important;
+}
+
+.moderate {
+  background-color: #F5A623 !important;
+}
+
+.heavy {
+  background-color: #E74C3C !important;
+}
+
+.forecast-legend {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  padding-top: 20px;
+  border-top: 1px solid #E8E8E8;
+}
+
+.legend-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.legend-color {
+  width: 16px;
+  height: 16px;
+  border-radius: 2px;
+}
+
+.light-rain {
+  background-color: #4A90E2;
+}
+
+.moderate-rain {
+  background-color: #F5A623;
+}
+
+.heavy-rain {
+  background-color: #E74C3C;
+}
+
+.legend-text {
+  font-size: 12px;
+  color: #666;
+  font-weight: 500;
+}
+
+@media (max-width: 480px) {
+  .forecast-timeline {
+    gap: 2px;
+    padding: 0 4px;
+  }
+  
+  .forecast-item {
+    max-width: 60px;
+    min-width: 45px;
+  }
+  
+  .bar-container {
+    width: 32px;
+    height: 70px;
+  }
+  
+  .intensity-bar {
+    width: 28px;
+  }
+  
+  .time-text {
+    font-size: 11px;
+  }
+  
+  .clock-icon {
+    font-size: 12px;
+  }
+  
+  .rainfall-amount {
+    font-size: 10px;
+  }
+  
+  .forecast-legend {
+    flex-direction: column;
+    gap: 8px;
+  }
+}

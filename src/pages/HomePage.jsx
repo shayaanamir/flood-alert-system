@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import "../styles/HomePage.css";
 import { Link } from "react-router-dom";
 import Header from "./../components/global/Header";
+import Footer from "../components/global/Footer";
 
 const HomePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -235,6 +236,7 @@ const HomePage = () => {
           </section>
         </div>
       </div>
+      <Footer />
     </>
   );
 };

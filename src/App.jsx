@@ -6,6 +6,8 @@ import AdminDashboard from "./pages/AdminDashboard";
 import LandingPage from "./pages/LandingPage";
 import ReportDmg from "./pages/ReportDmg";
 import ReportsManagement from "./pages/ReportsManagement";
+import ViewRisk from "./pages/ViewRisk";
+import Shelters from "./pages/Shelters";
 
 function App() {
   return (
@@ -17,6 +19,8 @@ function App() {
         <Route path="/admin-dashboard" element={<AdminDashboard />} />
         <Route path="/report-dmg" element={<ReportDmg />} />
         <Route path="/reports-management" element={<ReportsManagement />} />
+        <Route path="/shelters" element={<Shelters />} />
+        <Route path="/view-risk" element={<ViewRisk />} />
       </Routes>
     </Router>
   );

@@ -48,8 +48,8 @@ const LandingPage = () => {
             Real-time flood risk alerts and resources to keep you and your community protected
           </p>
           <div className="hero-buttons">
-            <button className="btn btn-primary" onClick={() => navigate("/login")}>Sign Up for Alerts</button>
-            <button className="btn btn-secondary" onClick={() => navigate("/login")} >Login</button>
+            <button className="btn btn-primary" onClick={() => navigate("/login", {state: {isSignUpPage: true}})}>Sign Up for Alerts</button>
+            <button className="btn btn-secondary" onClick={() => navigate("/login", {state: {isSignUpPage: false}})} >Login</button>
           </div>
         </div>
       </section>
