@@ -39,7 +39,7 @@ const Header = (props) => {
             <a href="#" className="nav-link nav-link-landing" onClick={() => {navigate("/report-dmg")}}>
               Report Damage
             </a>
-            <a href="#" className="nav-link nav-link-landing">
+            <a href="#" className="nav-link nav-link-landing" onClick={() => {navigate("/shelters")}}>
               Find Shelter
             </a>
             <a href="#" className="nav-link nav-link-landing">
