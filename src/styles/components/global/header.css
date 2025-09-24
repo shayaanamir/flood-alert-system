@@ -92,14 +92,12 @@
 }
 
 .nav-link-landing {
-  color: white;
   font-weight: 600;
   transition: all 0.3s ease;
 }
 
 .nav-link:hover {
   background-color: #128ef42f;
-  color: #f7f7f7;
 }
 
 .nav-link-landing:hover {
