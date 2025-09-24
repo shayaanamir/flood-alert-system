@@ -102,9 +102,6 @@ export default function ReportsManagement() {
                 <AddressTableRow />
                 <AddressTableRow />
                 <AddressTableRow />
-                <AddressTableRow />
-                <AddressTableRow />
-                <AddressTableRow />
               </div>
             </div>
           </div>

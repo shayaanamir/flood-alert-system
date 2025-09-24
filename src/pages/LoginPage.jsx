@@ -3,6 +3,7 @@ import InputBlock from "../components/InputBlock";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+
 const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
@@ -22,7 +23,12 @@ const LoginPage = () => {
 
   const demoUser = {
     email: "test@example.com",
-    password: "Password123!",
+    password: "user123",
+  };
+
+  const demoAdmin = {
+    email: "admin@example.com",
+    password: "admin123",
   };
 
   function toggleStatus() {
@@ -63,8 +69,11 @@ const LoginPage = () => {
       }
       navigate("/home");
     } else {
+      // login flow
       if (email === demoUser.email && password === demoUser.password) {
         navigate("/home");
+      } else if (email === demoAdmin.email && password === demoAdmin.password) {
+        navigate("/admin-dashboard");
       } else {
         setError("Invalid email or password.");
       }
@@ -82,9 +91,9 @@ const LoginPage = () => {
             className="login-svg"
           />
           <div className="default login-container-header">
-            <h1>{isSignUp ? "Create an Account" :  "Welcome Back!"}</h1>
+            <h1>{isSignUp ? "Create an Account" : "Welcome Back!"}</h1>
             <p>
-              {isSignUp ? "Sign up ":  "Sign in "}to access your flood alerts
+              {isSignUp ? "Sign up " : "Sign in "}to access your flood alerts
               and dashboard
             </p>
           </div>
@@ -126,10 +135,10 @@ const LoginPage = () => {
 
           <div className="default login-footer">
             <p className="default">
-              {isSignUp ? "Already have an account?" :  "Don't have an account?"}
+              {isSignUp ? "Already have an account?" : "Don't have an account?"}
               &nbsp;
               <div onClick={toggleStatus} className="status-button">
-                {isSignUp ? "Sign Up" : "Log in"}
+                {isSignUp ? "Log in" : "Sign Up"}
               </div>
             </p>
           </div>

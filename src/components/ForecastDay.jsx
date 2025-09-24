@@ -11,7 +11,7 @@ export default function ForecastDay(props) {
         </div>
         <div className="dashboard-default dashboard-forecast-extras">
           <span style={{ fontWeight: "500", fontSize: "1.1rem" }}>45mm</span>
-          <span style={{ fontWeight: "300" }}>24oC</span>
+          <span style={{ fontWeight: "300" }}>24°C</span>
         </div>
       </div>
     </>

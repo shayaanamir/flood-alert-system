@@ -3,6 +3,7 @@ import "../styles/HomePage.css";
 import { Link } from "react-router-dom";
 import Header from "./../components/global/Header";
 import Footer from "../components/global/Footer";
+import FeatureCard from "../components/FeatureCard";
 
 const HomePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
@@ -18,11 +19,82 @@ const HomePage = () => {
     console.log("Checking current risk...");
   };
 
+  const features = [
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#2563EB"
+        >
+          <path d="M480-100q-133 0-226.5-92T160-416q0-63 24.5-120.5T254-638l226-222 226 222q45 44 69.5 101.5T800-416q0 132-93.5 224T480-100Z" />
+        </svg>
+      ),
+      title: "Real-time Risk Assessment",
+      description:
+        "Advanced algorithms analyze weather data to predict flooding in your area",
+      className: "risk-assessment",
+    },
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#2563EB"
+        >
+          <path d="M480-360q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-40-160h80v-240h-80v240ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
+        </svg>
+      ),
+      title: "SMS Alerts",
+      description:
+        "Receive timely flood notifications when flood risk increases in your community",
+      className: "sms-alerts",
+    },
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#2563EB"
+        >
+          <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+        </svg>
+      ),
+      title: "Shelter Locations",
+      description:
+        "Find nearby emergency shelters and safe locations during flood events",
+      className: "shelter-locations",
+    },
+    {
+      icon: (
+        <svg
+          xmlns="http://www.w3.org/2000/svg"
+          height="24px"
+          viewBox="0 -960 960 960"
+          width="24px"
+          fill="#2563EB"
+        >
+          <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm200-190q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-200v-560 560Z" />
+        </svg>
+      ),
+      title: "Damage Reporting",
+      description:
+        "Help your community by reporting flood damage and impact data",
+      className: "damage-reporting",
+    },
+  ];
+
   return (
     <>
       <div className="homepage">
         <Header loggedOut={false} />
-        <div className="container">
+        <div className="homepage-container">
           {/* Header Section */}
           <header className="homePage-header">
             <h1>Stay Safe from Floods with Real-Time Alerts</h1>
@@ -165,75 +237,17 @@ const HomePage = () => {
           </div>
 
           {/* Bottom Features Section */}
-          <section className="features-section">
-            <div className="feature-card">
-              <div className="feature-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="48px"
-                  viewBox="0 -960 960 960"
-                  width="48px"
-                  fill="#3b82f6"
-                >
-                  <path d="m40-120 440-760 440 760H40Zm138-80h604L480-720 178-200Zm302-40q17 0 28.5-11.5T520-280q0-17-11.5-28.5T480-320q-17 0-28.5 11.5T440-280q0 17 11.5 28.5T480-240Zm-40-120h80v-200h-80v200Zm40-100Z" />
-                </svg>
-              </div>
-              <h3>View Risk</h3>
-              <p>
-                Check real-time flood risk levels based on current weather
-                forecasts for your location.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="48px"
-                  viewBox="0 0 24 24"
-                  width="48px"
-                  fill="#3b82f6"
-                >
-                  <path d="M0 0h24v24H0V0z" fill="none" />
-                  <path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zM7 9c0-2.76 2.24-5 5-5s5 2.24 5 5c0 2.88-2.88 7.19-5 9.88C9.92 16.21 7 11.85 7 9z" />
-                  <circle cx="12" cy="9" r="2.5" />
-                </svg>
-              </div>
-              <h3>Find Shelters</h3>
-              <p>
-                Locate nearby emergency shelters and evacuation routes in case
-                of flooding.
-              </p>
-            </div>
-
-            <div className="feature-card">
-              <div className="feature-icon">
-                <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  enable-background="new 0 0 20 20"
-                  height="48px"
-                  viewBox="0 0 20 20"
-                  width="48px"
-                  fill="#3b82f6"
-                >
-                  <g>
-                    <rect fill="none" height="20" width="20" x="0" />
-                  </g>
-                  <g>
-                    <g>
-                      <path d="M12.67,16.5c-0.96,0-1.13-0.8-2.66-0.8c-1.56,0-1.68,0.8-2.67,0.8c-1,0-1.1-0.8-2.66-0.8c-1.56,0-1.68,0.8-2.67,0.8V18 c1.56,0,1.68-0.8,2.67-0.8c1,0,1.1,0.8,2.66,0.8c1.56,0,1.68-0.8,2.67-0.8c0.96,0,1.13,0.8,2.66,0.8c1.55,0,1.68-0.8,2.66-0.8 c0.96,0,1.13,0.8,2.66,0.8v-1.5c-1,0-1.1-0.8-2.66-0.8C13.77,15.7,13.67,16.5,12.67,16.5z" />
-                      <path d="M17.44,13.39L15.62,6.6l1.28,0.51l0.56-1.39L8.17,2L2,9.87l1.18,0.93l0.85-1.08l0.8,3c-0.06,0-0.1-0.01-0.16-0.01 c-1.56,0-1.68,0.8-2.67,0.8V15c1.56,0,1.68-0.8,2.67-0.8c1,0,1.1,0.8,2.66,0.8c1.56,0,1.68-0.8,2.67-0.8c0.96,0,1.13,0.8,2.66,0.8 c1.55,0,1.68-0.8,2.66-0.8c0.96,0,1.13,0.8,2.66,0.8v-1.5C17.78,13.5,17.6,13.46,17.44,13.39z M6.54,13.28L5.19,8.24l3.47-4.42 l5.22,2.1l1.83,6.82c-1.42-0.14-1.87,0.41-2.41,0.65l-1.24-4.65L8.18,9.76l0.83,3.09c-0.69,0.23-0.96,0.65-1.67,0.65 C7,13.5,6.76,13.4,6.54,13.28z" />
-                    </g>
-                  </g>
-                </svg>
-              </div>
-              <h3>Report Damage</h3>
-              <p>
-                Upload images and information about flood damage to help with
-                assessment and recovery.
-              </p>
-            </div>
-          </section>
+          <div className="features-grid">
+            {features.map((feature, index) => (
+              <FeatureCard
+                key={index}
+                icon={feature.icon}
+                title={feature.title}
+                description={feature.description}
+                className={feature.className}
+              />
+            ))}
+          </div>
         </div>
       </div>
       <Footer />

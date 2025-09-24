@@ -19,7 +19,7 @@ body {
   flex-direction: column;
 }
 
-.container {
+.homepage-container {
   max-width: 1200px;
   margin: 0 auto;
   padding: 48px 24px;
@@ -283,9 +283,8 @@ body {
   border-radius: 16px;
   border: 1px solid #f1f5f9;
   transition: all 0.3s ease;
-  margin: 50px ;
-
-  }
+  margin: 50px;
+}
 
 .feature-card:hover {
   transform: translateY(-4px);

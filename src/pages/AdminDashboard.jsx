@@ -11,6 +11,7 @@ import DamageReport from "../components/DamageReport";
 export default function AdminDashboard(props) {
   return (
     <>
+      <Header isAdmin={true} />
       <div className="dashboard-default dashboard-body">
         <div className="dashboard-default dashboard-header">
           <div className="dashboard-default dashboard-header-title">
