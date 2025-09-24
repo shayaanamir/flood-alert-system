@@ -7,7 +7,7 @@ const Header = (props) => {
   return (
     <header className={props.loggedOut ? "header" : "header header-landing"}>
       <div className="header-container">
-        <div className="logo">
+        <div className={props.loggedOut ? "logo" : "logo logo-landing"}>
           <img src="/icon.svg" height="45px" width="35px" className="logo" />
           <h4>FloodAlert</h4>
         </div>
@@ -30,13 +30,13 @@ const Header = (props) => {
           </nav>
         ) : (
           <nav className="navigation navigation-landing">
-            <a href="#" className="nav-link nav-link-landing">
+            <a href="#" className="nav-link nav-link-landing" onClick={() => {navigate("/home")}}>
               Home
             </a>
-            <a href="#" className="nav-link nav-link-landing">
+            <a href="#" className="nav-link nav-link-landing" onClick={() => {navigate("/view-risk")}}>
               View Risk
             </a>
-            <a href="#" className="nav-link nav-link-landing">
+            <a href="#" className="nav-link nav-link-landing" onClick={() => {navigate("/report-dmg")}}>
               Report Damage
             </a>
             <a href="#" className="nav-link nav-link-landing">

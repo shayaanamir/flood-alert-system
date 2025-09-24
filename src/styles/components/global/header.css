@@ -52,6 +52,14 @@
     Ubuntu, Cantarell, sans-serif;
 }
 
+.logo-landing h4 {
+  color: white;
+}
+
+.logo-landing img{
+  filter:grayscale(1) brightness(5);
+}
+
 .logo svg {
   flex-shrink: 0;
   transition: transform 0.2s ease;
@@ -85,12 +93,13 @@
 
 .nav-link-landing {
   color: white;
-  transition: all 0.6s ease;
+  font-weight: 600;
+  transition: all 0.3s ease;
 }
 
 .nav-link:hover {
   background-color: #128ef42f;
-  color: #2563eb;
+  color: #f7f7f7;
 }
 
 .nav-link-landing:hover {
