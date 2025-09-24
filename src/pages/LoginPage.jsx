@@ -2,15 +2,21 @@ import "../styles/LoginPage.css";
 import InputBlock from "../components/InputBlock";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
-
+import { useNavigate, useLocation } from "react-router-dom";
 const LoginPage = () => {
-  const [isLogin, setIsLogin] = useState(false);
+  const [isSignUp, setIsSignUp] = useState(false);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [confirmPass, setConfirmPass] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+
+  const location = useLocation();
+  useEffect(() => {
+    if (location.state?.isSignUpPage !== undefined) {
+      setIsSignUp(location.state.isSignUpPage);
+    }
+  }, [location.state]);
 
   const navigate = useNavigate();
 
@@ -20,7 +26,7 @@ const LoginPage = () => {
   };
 
   function toggleStatus() {
-    setIsLogin(!isLogin);
+    setIsSignUp(!isSignUp);
   }
 
   useEffect(() => {
@@ -28,7 +34,7 @@ const LoginPage = () => {
     setEmail("");
     setPassword("");
     setConfirmPass("");
-  }, [isLogin]);
+  }, [isSignUp]);
 
   function validateEmail(mail) {
     return /\S+@\S+\.\S+/.test(mail);
@@ -49,7 +55,7 @@ const LoginPage = () => {
       return;
     }
 
-    if (isLogin) {
+    if (isSignUp) {
       // signup flow
       if (password !== confirmPass) {
         setError("Passwords do not match.");
@@ -76,9 +82,9 @@ const LoginPage = () => {
             className="login-svg"
           />
           <div className="default login-container-header">
-            <h1>{!isLogin ? "Welcome Back!" : "Create an Account"}</h1>
+            <h1>{isSignUp ? "Create an Account" :  "Welcome Back!"}</h1>
             <p>
-              {!isLogin ? "Sign in " : "Sign up "}to access your flood alerts
+              {isSignUp ? "Sign up ":  "Sign in "}to access your flood alerts
               and dashboard
             </p>
           </div>
@@ -96,7 +102,7 @@ const LoginPage = () => {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {isLogin && (
+          {isSignUp && (
             <InputBlock
               title="Re-Enter Password"
               type="password"
@@ -112,7 +118,7 @@ const LoginPage = () => {
           </div>
           <div className="default login-button-div">
             <button type="submit" className="default login-button">
-              {!isLogin ? "Login" : "Sign Up"}
+              {isSignUp ? "Sign Up" : "Login"}
             </button>
           </div>
 
@@ -120,10 +126,10 @@ const LoginPage = () => {
 
           <div className="default login-footer">
             <p className="default">
-              {!isLogin ? "Don't have an account?" : "Already have an account?"}
+              {isSignUp ? "Already have an account?" :  "Don't have an account?"}
               &nbsp;
               <div onClick={toggleStatus} className="status-button">
-                {!isLogin ? "Sign Up" : "Log in"}
+                {isSignUp ? "Sign Up" : "Log in"}
               </div>
             </p>
           </div>

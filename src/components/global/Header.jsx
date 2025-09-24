@@ -1,6 +1,9 @@
 import "../../styles/components/global/header.css";
+import { useNavigate } from "react-router-dom";
 
 const Header = (props) => {
+
+  const navigate = useNavigate();
   return (
     <header className={props.loggedOut ? "header" : "header header-landing"}>
       <div className="header-container">
@@ -20,10 +23,10 @@ const Header = (props) => {
             <a href="#" className="nav-link">
               Contact
             </a>
-            <a href="#" className="nav-link">
+            <a href="#" className="nav-link" onClick={() => {navigate("/login", {state : {isSignUpPage: false}})}}>
               Sign In
             </a>
-            <button className="sign-up-btn">Sign Up</button>
+            <button className="sign-up-btn" onClick={() => {navigate("/login", {state : {isSignUpPage: true}})}}>Sign Up</button>
           </nav>
         ) : (
           <nav className="navigation navigation-landing">
