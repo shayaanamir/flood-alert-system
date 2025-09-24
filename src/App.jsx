@@ -4,6 +4,7 @@ import LoginPage from "./pages/LoginPage";
 import HomePage from "./pages/HomePage";
 import LandingPage from "./pages/LandingPage";
 import ReportDmg from "./pages/ReportDmg";
+import Shelters from "./pages/Shelters";
 
 function App() {
   return (
@@ -13,7 +14,8 @@ function App() {
         <Route path="/login" element={<LoginPage />} />
         <Route path="/home" element={<HomePage />} />
         <Route path="/report-dmg" element={<ReportDmg />} />
-      </Routes>
+        <Route path ="shelters" element={<Shelters />} />
+\      </Routes>
     </Router>
   );
 }
