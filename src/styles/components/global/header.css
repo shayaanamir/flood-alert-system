@@ -132,7 +132,10 @@
   transform: translateY(0);
 }
 
-/* Responsive design */
+a {
+  cursor: pointer;
+}
+
 @media (max-width: 768px) {
   .container {
     padding: 0 0.75rem;

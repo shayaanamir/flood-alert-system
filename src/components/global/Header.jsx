@@ -13,17 +13,10 @@ const Header = (props) => {
 
         {props.loggedOut ? (
           <nav className="navigation">
-            <a href="#" className="nav-link">
-              Home
-            </a>
-            <a href="#" className="nav-link">
-              About
-            </a>
-            <a href="#" className="nav-link">
-              Contact
-            </a>
+            <a className="nav-link">Home</a>
+            <a className="nav-link">About</a>
+            <a className="nav-link">Contact</a>
             <a
-              href="#"
               className="nav-link"
               onClick={() => {
                 navigate("/login", { state: { isSignUpPage: false } });
@@ -43,7 +36,6 @@ const Header = (props) => {
         ) : props.isAdmin ? (
           <nav className="navigation navigation-landing">
             <a
-              href="#"
               className="nav-link nav-link-landing"
               onClick={() => {
                 navigate("/admin-dashboard");
@@ -52,7 +44,6 @@ const Header = (props) => {
               Dashboard
             </a>
             <a
-              href="#"
               className="nav-link nav-link-landing"
               onClick={() => {
                 navigate("/reports-management");
@@ -60,9 +51,7 @@ const Header = (props) => {
             >
               Reports
             </a>
-            <a href="#" className="nav-link nav-link-landing">
-              Settings
-            </a>
+            <a className="nav-link nav-link-landing">Settings</a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="50px"
@@ -82,7 +71,6 @@ const Header = (props) => {
         ) : (
           <nav className="navigation navigation-landing">
             <a
-              href="#"
               className="nav-link nav-link-landing"
               onClick={() => {
                 navigate("/home");
@@ -91,7 +79,6 @@ const Header = (props) => {
               Home
             </a>
             <a
-              href="#"
               className="nav-link nav-link-landing"
               onClick={() => {
                 navigate("/view-risk");
@@ -100,7 +87,6 @@ const Header = (props) => {
               View Risk
             </a>
             <a
-              href="#"
               className="nav-link nav-link-landing"
               onClick={() => {
                 navigate("/report-dmg");
@@ -109,7 +95,6 @@ const Header = (props) => {
               Report Damage
             </a>
             <a
-              href="#"
               className="nav-link nav-link-landing"
               onClick={() => {
                 navigate("/shelters");
@@ -117,12 +102,8 @@ const Header = (props) => {
             >
               Find Shelter
             </a>
-            <a href="#" className="nav-link nav-link-landing">
-              Help
-            </a>
-            <a href="#" className="nav-link nav-link-landing">
-              About
-            </a>
+            <a className="nav-link nav-link-landing">Help</a>
+            <a className="nav-link nav-link-landing">About</a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="50px"
