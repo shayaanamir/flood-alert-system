@@ -18,11 +18,9 @@ const ViewRisk = () => {
   };
 
   const handleUseLocation = () => {
-    // In a real app, this would use geolocation API
     setSelectedLocation('Your Current Location');
   };
 
-  // Mock data - in real app this would come from API
   const locationData = {
     location: selectedLocation,
     weather: 'Heavy Rain',
