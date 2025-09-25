@@ -4,19 +4,14 @@ import { Link } from "react-router-dom";
 import Header from "./../components/global/Header";
 import Footer from "../components/global/Footer";
 import FeatureCard from "../components/FeatureCard";
-
+import { useNavigate } from "react-router-dom";
 const HomePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [location, setLocation] = useState("");
+  const navigate = useNavigate();
 
   const handleSubscribe = () => {
-    // Handle subscription logic here
     console.log("Subscribing with:", { phoneNumber, location });
-  };
-
-  const handleCheckRisk = () => {
-    // Handle check current risk logic
-    console.log("Checking current risk...");
   };
 
   const features = [
@@ -167,7 +162,7 @@ const HomePage = () => {
                     Our system monitors rainfall patterns and sends alerts
                     before flooding occurs, giving you precious time to prepare.
                   </p>
-                  <button className="check-risk-btn" onClick={handleCheckRisk}>
+                  <button className="check-risk-btn" onClick={() => {navigate("/view-risk")}}>
                     Check Current Risk
                   </button>
                 </div>
