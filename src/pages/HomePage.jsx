@@ -87,18 +87,48 @@ const HomePage = () => {
 
   return (
     <>
+    
       <div className="homepage">
         <Header loggedOut={false} />
-        <div className="homepage-container">
+        <div className="hero-section">
+          
           {/* Header Section */}
           <header className="homePage-header">
-            <h1>Stay Safe from Floods with Real-Time Alerts</h1>
+            <div className="live-status-badge">
+            <span className="status-dot"></span>
+              Live Monitoring Active
+        </div>
+            <h1>
+                Stay Safe from<br />
+            <span className="gradient-text">Floods & Disasters</span>
+            </h1>
             <p className="subtitle">
-              FloodAlert uses real-time weather data to predict flood risks and
-              sends SMS alerts to keep you and your loved ones safe during
-              emergencies.
+              Real-time weather monitoring and instant SMS alerts to protect you and your loved ones during emergencies
             </p>
+
+            <div className="cta-buttons">
+              <button className="btn-primary">Get Started Free</button>
+              <button className="btn-secondary">Check Current Risk</button>
+            </div>
+
+            <div className="stats-container">
+              <div className="stat-card">
+                <h3>24/7</h3>
+                <p>Active Monitoring</p>
+              </div>
+              <div className="stat-card">
+                <h3>&lt;60s</h3>
+                <p>Alert Response Time</p>
+              </div>
+              <div className="stat-card">
+                <h3>100%</h3>
+                <p>Coverage Area</p>
+              </div>
+            </div>
           </header>
+          </div>
+        <div className="homepage-container">
+          
 
           {/* Main Content Grid */}
           <div className="main-content">
