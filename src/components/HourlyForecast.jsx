@@ -11,20 +11,24 @@ import {
   Calendar,
 } from "lucide-react";
 
-const WeatherIcon = ({ type, size = 40 }) => {
+const WeatherIcon = ({ type, size = 40, color = "white" }) => {
   const iconProps = { size, strokeWidth: 2 };
 
   switch (type) {
     case "rain":
-      return <CloudRain {...iconProps} className="text-blue-600" />;
+      return (
+        <CloudRain {...iconProps} className="text-blue-600" color={color} />
+      );
     case "drizzle":
-      return <CloudDrizzle {...iconProps} className="text-blue-500" />;
+      return (
+        <CloudDrizzle {...iconProps} className="text-blue-500" color={color} />
+      );
     case "cloud":
-      return <Cloud {...iconProps} className="text-gray-500" />;
+      return <Cloud {...iconProps} className="text-gray-500" color={color} />;
     case "sun":
-      return <Sun {...iconProps} className="text-yellow-500" />;
+      return <Sun {...iconProps} className="text-yellow-500" color={color} />;
     default:
-      return <Cloud {...iconProps} className="text-gray-400" />;
+      return <Cloud {...iconProps} className="text-gray-400" color={color} />;
   }
 };
 
@@ -74,7 +78,7 @@ export default function HourlyPopup({ data, onClose }) {
           <div
             style={{
               background: "linear-gradient(to bottom right, #2563eb, #4f46e5)",
-              padding: "24px",
+              padding: "18px",
               position: "relative",
             }}
           >
@@ -84,13 +88,16 @@ export default function HourlyPopup({ data, onClose }) {
                 position: "absolute",
                 top: "16px",
                 right: "16px",
-                padding: "8px",
                 background: "rgba(255, 255, 255, 0.2)",
-                borderRadius: "12px",
+                borderRadius: "10px",
                 border: "none",
                 cursor: "pointer",
                 backdropFilter: "blur(4px)",
                 transition: "background 0.2s",
+                display: "flex",
+                justifyContent: "center",
+                alignContent: "center",
+                padding: "8px",
               }}
               onMouseEnter={(e) =>
                 (e.target.style.background = "rgba(255, 255, 255, 0.3)")
@@ -99,7 +106,16 @@ export default function HourlyPopup({ data, onClose }) {
                 (e.target.style.background = "rgba(255, 255, 255, 0.2)")
               }
             >
-              <X style={{ color: "white" }} size={24} />
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="16"
+                height="16"
+                fill="white"
+                class="bi bi-x-lg"
+                viewBox="0 0 16 16"
+              >
+                <path d="M2.146 2.854a.5.5 0 1 1 .708-.708L8 7.293l5.146-5.147a.5.5 0 0 1 .708.708L8.707 8l5.147 5.146a.5.5 0 0 1-.708.708L8 8.707l-5.146 5.147a.5.5 0 0 1-.708-.708L7.293 8z" />
+              </svg>
             </button>
 
             <div style={{ display: "flex", alignItems: "center", gap: "16px" }}>
@@ -107,11 +123,14 @@ export default function HourlyPopup({ data, onClose }) {
                 style={{
                   background: "rgba(255, 255, 255, 0.2)",
                   backdropFilter: "blur(8px)",
-                  padding: "16px",
+                  padding: "13px",
                   borderRadius: "16px",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignContent: "center",
                 }}
               >
-                <WeatherIcon type={data.icon} size={48} />
+                <WeatherIcon type={data.icon} size={24} />
               </div>
 
               <div style={{ color: "white" }}>
@@ -119,28 +138,25 @@ export default function HourlyPopup({ data, onClose }) {
                   style={{
                     display: "flex",
                     alignItems: "center",
-                    gap: "12px",
-                    marginBottom: "4px",
+                    justifyContent: "center",
+                    marginBottom: "10px",
                   }}
                 >
-                  <h2
-                    style={{ fontSize: "30px", fontWeight: "bold", margin: 0 }}
+                  <p
+                    style={{
+                      color: "#f3f8ffff",
+                      fontSize: "18px",
+                      fontWeight: "500",
+                    }}
                   >
-                    {data.day}
-                  </h2>
-                  <span style={{ color: "#bfdbfe", fontSize: "18px" }}>
-                    {data.date}
-                  </span>
+                    {data.condition}
+                  </p>
+                  &nbsp;
+                  <p style={{ fontSize: "14px", fontWeight: "300", margin: 0 }}>
+                    ({data.day}, {data.date})
+                  </p>
                 </div>
-                <p
-                  style={{
-                    color: "#bfdbfe",
-                    fontSize: "18px",
-                    margin: "0 0 12px 0",
-                  }}
-                >
-                  {data.condition}
-                </p>
+
                 <div
                   style={{ display: "flex", alignItems: "center", gap: "16px" }}
                 >
@@ -148,15 +164,15 @@ export default function HourlyPopup({ data, onClose }) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "8px",
+                      gap: "6px",
                       background: "rgba(255, 255, 255, 0.2)",
                       backdropFilter: "blur(8px)",
-                      padding: "8px 16px",
-                      borderRadius: "12px",
+                      padding: "6px 12px",
+                      borderRadius: "8px",
                     }}
                   >
-                    <Droplets size={20} />
-                    <span style={{ fontWeight: "600", fontSize: "20px" }}>
+                    <Droplets size={16} />
+                    <span style={{ fontWeight: "400", fontSize: "16px" }}>
                       {data.rainfall}mm
                     </span>
                   </div>
@@ -164,14 +180,14 @@ export default function HourlyPopup({ data, onClose }) {
                     style={{
                       display: "flex",
                       alignItems: "center",
-                      gap: "8px",
+                      gap: "6px",
                       background: "rgba(255, 255, 255, 0.2)",
                       backdropFilter: "blur(8px)",
-                      padding: "8px 16px",
-                      borderRadius: "12px",
+                      padding: "6px 12px",
+                      borderRadius: "8px",
                     }}
                   >
-                    <span style={{ fontWeight: "600", fontSize: "20px" }}>
+                    <span style={{ fontWeight: "400", fontSize: "16px" }}>
                       {data.temp}°C
                     </span>
                   </div>
@@ -197,8 +213,8 @@ export default function HourlyPopup({ data, onClose }) {
                 color: "#4b5563",
               }}
             >
-              <Calendar size={20} />
-              <h3 style={{ fontSize: "18px", fontWeight: "600", margin: 0 }}>
+              <Calendar size={18} />
+              <h3 style={{ fontSize: "16px", fontWeight: "600", margin: 0 }}>
                 Hourly Breakdown
               </h3>
             </div>
@@ -213,7 +229,7 @@ export default function HourlyPopup({ data, onClose }) {
                     display: "flex",
                     alignItems: "center",
                     justifyContent: "space-between",
-                    padding: "16px",
+                    padding: "10px 16px",
                     background: "linear-gradient(to right, #f9fafb, #eff6ff)",
                     borderRadius: "16px",
                     border: "1px solid #e5e7eb",
@@ -222,7 +238,7 @@ export default function HourlyPopup({ data, onClose }) {
                   onMouseEnter={(e) => {
                     e.currentTarget.style.borderColor = "#bfdbfe";
                     e.currentTarget.style.boxShadow =
-                      "0 4px 6px -1px rgba(0, 0, 0, 0.1)";
+                      "0 0px 6px -1px rgba(0, 0, 0, 0.1)";
                   }}
                   onMouseLeave={(e) => {
                     e.currentTarget.style.borderColor = "#e5e7eb";
@@ -239,14 +255,13 @@ export default function HourlyPopup({ data, onClose }) {
                   >
                     <div
                       style={{
-                        width: "64px",
-                        fontSize: "16px",
+                        fontSize: "12px",
                         fontWeight: "600",
                         color: "#374151",
                         background: "white",
                         padding: "8px 12px",
                         borderRadius: "12px",
-                        boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                        boxShadow: "0 0px 2px rgba(0, 0, 0, 0.05)",
                       }}
                     >
                       {hour.time}
@@ -254,16 +269,18 @@ export default function HourlyPopup({ data, onClose }) {
                     <div
                       style={{
                         background: "white",
-                        padding: "8px",
-                        borderRadius: "12px",
+                        padding: "5px",
+                        borderRadius: "8px",
                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
+                        display: "flex",
+                        justifyContent: "center",
                       }}
                     >
-                      <WeatherIcon type={hour.icon} size={28} />
+                      <WeatherIcon type={hour.icon} size={25} color={"blue"} />
                     </div>
                     <span
                       style={{
-                        fontSize: "16px",
+                        fontSize: "14px",
                         fontWeight: "500",
                         color: "#374151",
                       }}
@@ -283,17 +300,17 @@ export default function HourlyPopup({ data, onClose }) {
                       style={{
                         display: "flex",
                         alignItems: "center",
-                        gap: "8px",
+                        gap: "3px",
                         background: "#dbeafe",
-                        padding: "8px 16px",
-                        borderRadius: "12px",
+                        padding: "5px 14px",
+                        borderRadius: "10px",
                       }}
                     >
-                      <Droplets size={18} style={{ color: "#2563eb" }} />
+                      <Droplets size={14} style={{ color: "#2563eb" }} />
                       <span
                         style={{
-                          fontSize: "16px",
-                          fontWeight: "bold",
+                          fontSize: "14px",
+                          fontWeight: "400",
                           color: "#1d4ed8",
                           minWidth: "40px",
                           textAlign: "right",
@@ -306,8 +323,8 @@ export default function HourlyPopup({ data, onClose }) {
                     <div
                       style={{
                         background: "white",
-                        padding: "8px 16px",
-                        borderRadius: "12px",
+                        padding: "5px 14px",
+                        borderRadius: "10px",
                         boxShadow: "0 1px 2px rgba(0, 0, 0, 0.05)",
                         minWidth: "60px",
                         textAlign: "center",
@@ -315,8 +332,8 @@ export default function HourlyPopup({ data, onClose }) {
                     >
                       <span
                         style={{
-                          fontSize: "16px",
-                          fontWeight: "bold",
+                          fontSize: "14px",
+                          fontWeight: "400",
                           color: "#1f2937",
                         }}
                       >

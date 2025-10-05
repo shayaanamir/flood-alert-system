@@ -1,0 +1,235 @@
+{
+  "weatherData": [
+    {
+      "day": "Today",
+      "date": "Oct 05",
+      "rainfall": 45,
+      "temp": 24,
+      "condition": "Heavy Rain",
+      "icon": "rain",
+      "hourly": [
+        {
+          "time": "9 AM",
+          "temp": 22,
+          "rainfall": 5,
+          "condition": "Light Rain",
+          "icon": "drizzle"
+        },
+        {
+          "time": "12 PM",
+          "temp": 24,
+          "rainfall": 12,
+          "condition": "Heavy Rain",
+          "icon": "rain"
+        },
+        {
+          "time": "3 PM",
+          "temp": 23,
+          "rainfall": 15,
+          "condition": "Heavy Rain",
+          "icon": "rain"
+        },
+        {
+          "time": "6 PM",
+          "temp": 22,
+          "rainfall": 8,
+          "condition": "Rain",
+          "icon": "drizzle"
+        },
+        {
+          "time": "9 PM",
+          "temp": 21,
+          "rainfall": 5,
+          "condition": "Cloudy",
+          "icon": "cloud"
+        }
+      ]
+    },
+    {
+      "day": "Tomorrow",
+      "date": "Oct 06",
+      "rainfall": 28,
+      "temp": 26,
+      "condition": "Moderate Rain",
+      "icon": "drizzle",
+      "hourly": [
+        {
+          "time": "9 AM",
+          "temp": 23,
+          "rainfall": 3,
+          "condition": "Cloudy",
+          "icon": "cloud"
+        },
+        {
+          "time": "12 PM",
+          "temp": 26,
+          "rainfall": 8,
+          "condition": "Light Rain",
+          "icon": "drizzle"
+        },
+        {
+          "time": "3 PM",
+          "temp": 25,
+          "rainfall": 10,
+          "condition": "Moderate Rain",
+          "icon": "drizzle"
+        },
+        {
+          "time": "6 PM",
+          "temp": 24,
+          "rainfall": 5,
+          "condition": "Light Rain",
+          "icon": "drizzle"
+        },
+        {
+          "time": "9 PM",
+          "temp": 23,
+          "rainfall": 2,
+          "condition": "Cloudy",
+          "icon": "cloud"
+        }
+      ]
+    },
+    {
+      "day": "Monday",
+      "date": "Oct 07",
+      "rainfall": 12,
+      "temp": 28,
+      "condition": "Partly Cloudy",
+      "icon": "cloud",
+      "hourly": [
+        {
+          "time": "9 AM",
+          "temp": 25,
+          "rainfall": 0,
+          "condition": "Sunny",
+          "icon": "sun"
+        },
+        {
+          "time": "12 PM",
+          "temp": 28,
+          "rainfall": 2,
+          "condition": "Partly Cloudy",
+          "icon": "cloud"
+        },
+        {
+          "time": "3 PM",
+          "temp": 27,
+          "rainfall": 5,
+          "condition": "Light Rain",
+          "icon": "drizzle"
+        },
+        {
+          "time": "6 PM",
+          "temp": 26,
+          "rainfall": 3,
+          "condition": "Cloudy",
+          "icon": "cloud"
+        },
+        {
+          "time": "9 PM",
+          "temp": 25,
+          "rainfall": 2,
+          "condition": "Clear",
+          "icon": "sun"
+        }
+      ]
+    }
+  ],
+
+  "shelerData": [
+    {
+      "id": "SH-001",
+      "name": "Central Community Center",
+      "address": "123 Main St, Rivertown",
+      "zone": "Zone A",
+      "status": "Active",
+      "capacity": { "current": 45, "max": 100 },
+      "resources": {
+        "food": { "status": "Adequate", "quantity": 850, "unit": "meals" },
+        "medical": { "status": "Low", "quantity": 12, "unit": "kits" },
+        "water": { "status": "Good", "quantity": 500, "unit": "liters" },
+        "blankets": { "status": "Adequate", "quantity": 75, "unit": "units" }
+      },
+      "contact": {
+        "manager": "Sarah Johnson",
+        "phone": "+1 (555) 123-4567",
+        "email": "sarah.j@shelter.org"
+      },
+      "facilities": [
+        "Restrooms",
+        "Kitchen",
+        "Medical Room",
+        "Sleeping Area",
+        "Common Area"
+      ],
+      "openedDate": "2024-10-01",
+      "lastUpdated": "2024-10-05 14:30",
+      "notes": "Need more medical supplies. HVAC system working properly.",
+      "occupancyTrend": [30, 35, 40, 42, 45],
+      "demographics": { "adults": 28, "children": 12, "seniors": 5 }
+    },
+    {
+      "id": "SH-002",
+      "name": "Eastside Recreation Hall",
+      "address": "456 Oak Ave, Rivertown",
+      "zone": "Zone B",
+      "status": "Active",
+      "capacity": { "current": 78, "max": 120 },
+      "resources": {
+        "food": { "status": "Low", "quantity": 200, "unit": "meals" },
+        "medical": { "status": "Adequate", "quantity": 25, "unit": "kits" },
+        "water": { "status": "Good", "quantity": 800, "unit": "liters" },
+        "blankets": { "status": "Good", "quantity": 100, "unit": "units" }
+      },
+      "contact": {
+        "manager": "Michael Chen",
+        "phone": "+1 (555) 234-5678",
+        "email": "michael.c@shelter.org"
+      },
+      "facilities": [
+        "Restrooms",
+        "Kitchen",
+        "Medical Room",
+        "Sleeping Area",
+        "Showers"
+      ],
+      "openedDate": "2024-10-02",
+      "lastUpdated": "2024-10-05 15:15",
+      "notes": "Food supplies running low. Expecting delivery tomorrow.",
+      "occupancyTrend": [50, 60, 68, 75, 78],
+      "demographics": { "adults": 45, "children": 23, "seniors": 10 }
+    },
+    {
+      "id": "SH-003",
+      "name": "Westbrook High School Gym",
+      "address": "789 Elm St, Rivertown",
+      "zone": "Zone C",
+      "status": "Near Capacity",
+      "capacity": { "current": 92, "max": 100 },
+      "resources": {
+        "food": { "status": "Good", "quantity": 1200, "unit": "meals" },
+        "medical": { "status": "Low", "quantity": 8, "unit": "kits" },
+        "water": { "status": "Adequate", "quantity": 600, "unit": "liters" },
+        "blankets": { "status": "Low", "quantity": 40, "unit": "units" }
+      },
+      "contact": {
+        "manager": "Emily Rodriguez",
+        "phone": "+1 (555) 345-6789",
+        "email": "emily.r@shelter.org"
+      },
+      "facilities": [
+        "Restrooms",
+        "Kitchen",
+        "Medical Room",
+        "Sleeping Area",
+        "Gym Equipment"
+      ],
+      "openedDate": "2024-10-01",
+      "lastUpdated": "2024-10-05 16:00",
+      "notes": "Near capacity. Need blankets and medical supplies urgently.",
+      "occupancyTrend": [60, 70, 80, 88, 92],
+      "demographics": { "adults": 52, "children": 30, "seniors": 10 }
+    }
+  ]
+}

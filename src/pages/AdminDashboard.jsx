@@ -9,6 +9,7 @@ import Shelter from "../components/Shelter";
 import DamageReport from "../components/DamageReport";
 import RainHotspotMap from "../components/RainHotspotMap";
 import HourlyForecast from "../components/HourlyForecast";
+import data from "../data_temp/sampleData.json";
 
 export default function AdminDashboard(props) {
   const [time, setTime] = useState(new Date());
@@ -22,144 +23,6 @@ export default function AdminDashboard(props) {
   }, []);
 
   const [selectedDay, setSelectedDay] = useState(null);
-
-  const weatherData = [
-    {
-      day: "Today",
-      date: "Oct 05",
-      rainfall: 45,
-      temp: 24,
-      condition: "Heavy Rain",
-      icon: "rain",
-      hourly: [
-        {
-          time: "9 AM",
-          temp: 22,
-          rainfall: 5,
-          condition: "Light Rain",
-          icon: "drizzle",
-        },
-        {
-          time: "12 PM",
-          temp: 24,
-          rainfall: 12,
-          condition: "Heavy Rain",
-          icon: "rain",
-        },
-        {
-          time: "3 PM",
-          temp: 23,
-          rainfall: 15,
-          condition: "Heavy Rain",
-          icon: "rain",
-        },
-        {
-          time: "6 PM",
-          temp: 22,
-          rainfall: 8,
-          condition: "Rain",
-          icon: "drizzle",
-        },
-        {
-          time: "9 PM",
-          temp: 21,
-          rainfall: 5,
-          condition: "Cloudy",
-          icon: "cloud",
-        },
-      ],
-    },
-    {
-      day: "Tomorrow",
-      date: "Oct 06",
-      rainfall: 28,
-      temp: 26,
-      condition: "Moderate Rain",
-      icon: "drizzle",
-      hourly: [
-        {
-          time: "9 AM",
-          temp: 23,
-          rainfall: 3,
-          condition: "Cloudy",
-          icon: "cloud",
-        },
-        {
-          time: "12 PM",
-          temp: 26,
-          rainfall: 8,
-          condition: "Light Rain",
-          icon: "drizzle",
-        },
-        {
-          time: "3 PM",
-          temp: 25,
-          rainfall: 10,
-          condition: "Moderate Rain",
-          icon: "drizzle",
-        },
-        {
-          time: "6 PM",
-          temp: 24,
-          rainfall: 5,
-          condition: "Light Rain",
-          icon: "drizzle",
-        },
-        {
-          time: "9 PM",
-          temp: 23,
-          rainfall: 2,
-          condition: "Cloudy",
-          icon: "cloud",
-        },
-      ],
-    },
-    {
-      day: "Monday",
-      date: "Oct 07",
-      rainfall: 12,
-      temp: 28,
-      condition: "Partly Cloudy",
-      icon: "cloud",
-      hourly: [
-        {
-          time: "9 AM",
-          temp: 25,
-          rainfall: 0,
-          condition: "Sunny",
-          icon: "sun",
-        },
-        {
-          time: "12 PM",
-          temp: 28,
-          rainfall: 2,
-          condition: "Partly Cloudy",
-          icon: "cloud",
-        },
-        {
-          time: "3 PM",
-          temp: 27,
-          rainfall: 5,
-          condition: "Light Rain",
-          icon: "drizzle",
-        },
-        {
-          time: "6 PM",
-          temp: 26,
-          rainfall: 3,
-          condition: "Cloudy",
-          icon: "cloud",
-        },
-        {
-          time: "9 PM",
-          temp: 25,
-          rainfall: 2,
-          condition: "Clear",
-          icon: "sun",
-        },
-      ],
-    },
-  ];
 
   return (
     <>
@@ -397,7 +260,7 @@ export default function AdminDashboard(props) {
               Weather Forecast
             </div>
             <div className="dashboard-default dashboard-forecast-body">
-              {weatherData.map((day, index) => (
+              {data.weatherData.map((day, index) => (
                 <ForecastDay
                   key={index}
                   data={day}
