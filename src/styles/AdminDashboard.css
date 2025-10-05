@@ -11,6 +11,7 @@
   justify-content: flex-start;
   gap: 40px;
   padding: 0px 0px 10px 0px;
+  background-color: #f3f4f6;
 }
 
 .dashboard-header {
@@ -52,53 +53,106 @@
 }
 
 .dashboard-quick-actions {
-  height: 100px;
+  height: fit-content;
   width: 90%;
   flex-direction: row;
   gap: 20px;
 }
 
+/* * {
+  outline: 1px solid red;
+} */
+
 .dashboard-quick-action {
-  height: 100px;
+  height: 150px;
   width: 25%;
-  background-color: rgb(255, 255, 255);
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
-  padding: 0px 20px;
-  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.15);
+  padding: 0px 10px;
+  box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.04);
   border-radius: 10px;
+  border: 1px solid #e5e7eb;
+  transition: all 0.3s ease;
+}
+
+.dashboard-quick-action:hover {
+  transform: scale(1.1);
+}
+
+.dashboard-quick-action-high {
+  background-color: #fef2f2;
+}
+
+.dashboard-quick-action-medium {
+  background-color: #fffbeb;
+}
+
+.dashboard-quick-action-low {
+  background-color: #f0fdf4;
 }
 
 .dashboard-quick-action-info {
   height: 100%;
-  width: 70%;
+  width: 80%;
   align-items: flex-start;
   gap: 5px;
+  padding: 0px 10px;
 }
 
 .info-1 {
-  font-size: 0.8rem;
-  color: rgb(100, 100, 100);
+  font-size: 0.9rem;
+  color: rgb(71, 71, 71);
   font-weight: 500;
 }
 
 .info-2 {
   font-size: 1.4rem;
   font-weight: 600;
+}
+
+.high,
+.high svg {
+  color: red;
+}
+
+.medium,
+.medium svg {
   color: rgb(217, 170, 0);
 }
 
+.low,
+.low svg {
+  color: green;
+}
+
 .info-3 {
-  font-size: 0.7rem;
-  color: rgb(100, 100, 100);
+  font-size: 0.8rem;
+  color: rgb(87, 87, 87);
+}
+
+.dashboard-quick-action-icon-div {
+  height: 100%;
+  width: 30%;
+  justify-content: space-between;
+  align-items: flex-end;
+  padding: 10px 0px;
 }
 
 .dashboard-quick-action-icon {
-  height: 60px;
-  width: 60px;
-  background-color: rgba(36, 142, 235, 0.288);
+  height: 40px;
+  width: 40px;
+  background-color: rgb(255, 255, 255);
   border-radius: 50%;
+  border: 1px solid rgb(228, 228, 228);
+}
+
+.dashboard-i-button {
+  padding: 5px;
+  background-color: #ffffff;
+  border-radius: 50%;
+  border: 1px solid rgb(228, 228, 228);
+  cursor: pointer;
 }
 
 .dashboard-map-forecast {
@@ -131,8 +185,9 @@
   flex-direction: row;
   justify-content: flex-start;
   gap: 10px;
-  font-weight: 600;
-  font-size: 1.1rem;
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: black;
 }
 
 .dasboard-map-icons {
@@ -147,14 +202,14 @@
   width: 35px;
   height: 35px;
   border-radius: 7px;
-  background-color: rgb(233, 233, 233);
+  background-color: rgba(233, 233, 233, 0.396);
   cursor: pointer;
+  border: 1px solid rgb(212, 212, 212);
 }
 
 .dashboard-map-body {
   height: 80%;
   width: 100%;
-  background-color: rgb(237, 240, 254);
   border-radius: 10px;
 }
 
@@ -325,4 +380,77 @@
   flex-wrap: wrap;
   gap: 1%;
   justify-content: space-evenly;
+}
+
+.info-icon {
+  margin-left: 8px;
+  font-size: 0.9rem;
+  cursor: pointer;
+  opacity: 0.8;
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.info-icon:hover {
+  opacity: 1;
+  transform: scale(1.1);
+}
+
+/* Popup overlay */
+.popup-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(4px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 2000;
+}
+
+.popup-content {
+  background: white;
+  color: #1e293b;
+  padding: 20px 25px;
+  border-radius: 10px;
+  width: 350px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.25);
+  text-align: center;
+  animation: fadeIn 0.3s ease-in-out;
+}
+
+.popup-content h3 {
+  margin-bottom: 10px;
+  font-size: 1.2rem;
+  color: #0f172a;
+}
+
+.popup-content p {
+  font-size: 0.95rem;
+  color: #475569;
+}
+
+.close-btn {
+  margin-top: 15px;
+  background: #2563eb;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.close-btn:hover {
+  background: #1e40af;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
 }
