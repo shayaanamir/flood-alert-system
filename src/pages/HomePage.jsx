@@ -5,85 +5,90 @@ import Header from "./../components/global/Header";
 import Footer from "../components/global/Footer";
 import FeatureCard from "../components/FeatureCard";
 import { useNavigate } from "react-router-dom";
+import FaqItem from "../components/FaqItem";
+
+// HomePage Component
 const HomePage = () => {
   const [phoneNumber, setPhoneNumber] = useState("");
   const [location, setLocation] = useState("");
+  const [openFaqIndex, setOpenFaqIndex] = useState(null); 
   const navigate = useNavigate();
 
   const handleSubscribe = () => {
     console.log("Subscribing with:", { phoneNumber, location });
   };
 
-  const features = [
+
+// How It Works Steps Data
+  const howItWorksSteps = [
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF">
+        <path d="M480-480q33 0 56.5-23.5T560-560q0-33-23.5-56.5T480-640q-33 0-56.5 23.5T400-560q0 33 23.5 56.5T480-480Zm0 294q122-112 181-203.5T720-552q0-109-69.5-178.5T480-800q-101 0-170.5 69.5T240-552q0 71 59 162.5T480-186Zm0 106Q317-217 238.5-334.5T160-552q0-150 96.5-239T480-880q127 0 223.5 89T800-552q0 100-78.5 217.5T480-80Z" />
+      </svg>
+    ),
+    title: "Provide Your Details",
+    description: "Enter your location and phone number in the form.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF">
+        <path d="M480-320q-33 0-56.5-23.5T400-400q0-33 23.5-56.5T480-480q33 0 56.5 23.5T560-400q0 33-23.5 56.5T480-320ZM280-80q-33 0-56.5-23.5T200-160v-480q0-33 23.5-56.5T280-720h400q33 0 56.5 23.5T760-640v480q0 33-23.5 56.5T680-80H280Zm0-80h400v-480H280v480Z" />
+      </svg>
+    ),
+    title: "We Monitor Conditions",
+    description: "Our system analyzes weather forecasts and flood risks 24/7.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF">
+        <path d="M160-200v-60h80v-280q0-83 50-141.5T420-740v-20q0-25 17.5-42.5T480-820q25 0 42.5 17.5T540-760v20q80 17 130 75.5T720-540v280h80v60H160Zm320-300Z" />
+      </svg>
+    ),
+    title: "Receive Instant Alerts",
+    description: "You get an immediate SMS notification when a risk is detected.",
+  },
+  {
+    icon: (
+      <svg xmlns="http://www.w3.org/2000/svg" height="24px" viewBox="0 -960 960 960" width="24px" fill="#FFFFFF">
+        <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
+      </svg>
+    ),
+    title: "Access Safety Info",
+    description: "Find nearby emergency shelters and report local flood damage.",
+  },
+];
+
+
+
+
+// FAQ Data
+const handleFaqClick = (index) => {
+    // If the clicked item is already open, close it. Otherwise, open it.
+    setOpenFaqIndex(openFaqIndex === index ? null : index);
+  };
+const faqs = [
     {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="#2563EB"
-        >
-          <path d="M480-100q-133 0-226.5-92T160-416q0-63 24.5-120.5T254-638l226-222 226 222q45 44 69.5 101.5T800-416q0 132-93.5 224T480-100Z" />
-        </svg>
-      ),
-      title: "Real-time Risk Assessment",
-      description:
-        "Advanced algorithms analyze weather data to predict flooding in your area",
-      className: "risk-assessment",
+      question: "Is this flood alert service completely free?",
+      answer: "Yes, our core SMS alert service is 100% free for all users. Our mission is to ensure public safety, and we believe critical alerts should be accessible to everyone.",
     },
     {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="#2563EB"
-        >
-          <path d="M480-360q17 0 28.5-11.5T520-400q0-17-11.5-28.5T480-440q-17 0-28.5 11.5T440-400q0 17 11.5 28.5T480-360Zm-40-160h80v-240h-80v240ZM80-80v-720q0-33 23.5-56.5T160-880h640q33 0 56.5 23.5T880-800v480q0 33-23.5 56.5T800-240H240L80-80Zm126-240h594v-480H160v525l46-45Zm-46 0v-480 480Z" />
-        </svg>
-      ),
-      title: "SMS Alerts",
-      description:
-        "Receive timely flood notifications when flood risk increases in your community",
-      className: "sms-alerts",
+      question: "How accurate is the flood prediction?",
+      answer: "We use a combination of real-time data from government weather APIs, meteorological satellites, and local rainfall gauges. While no system is perfect, our models are highly accurate and designed to provide warnings with enough time to prepare.",
     },
     {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="#2563EB"
-        >
-          <path d="M240-200h120v-240h240v240h120v-360L480-740 240-560v360Zm-80 80v-480l320-240 320 240v480H520v-240h-80v240H160Zm320-350Z" />
-        </svg>
-      ),
-      title: "Shelter Locations",
-      description:
-        "Find nearby emergency shelters and safe locations during flood events",
-      className: "shelter-locations",
+      question: "What areas do you currently cover?",
+      answer: "Currently, our service covers all major metropolitan areas and surrounding regions. We are rapidly expanding our coverage and you can enter your zip code to see if your specific location is monitored.",
     },
     {
-      icon: (
-        <svg
-          xmlns="http://www.w3.org/2000/svg"
-          height="24px"
-          viewBox="0 -960 960 960"
-          width="24px"
-          fill="#2563EB"
-        >
-          <path d="M200-120q-33 0-56.5-23.5T120-200v-560q0-33 23.5-56.5T200-840h168q13-36 43.5-58t68.5-22q38 0 68.5 22t43.5 58h168q33 0 56.5 23.5T840-760v560q0 33-23.5 56.5T760-120H200Zm0-80h560v-560H200v560Zm80-80h280v-80H280v80Zm0-160h400v-80H280v80Zm0-160h400v-80H280v80Zm200-190q13 0 21.5-8.5T510-820q0-13-8.5-21.5T480-850q-13 0-21.5 8.5T450-820q0 13 8.5 21.5T480-790ZM200-200v-560 560Z" />
-        </svg>
-      ),
-      title: "Damage Reporting",
-      description:
-        "Help your community by reporting flood damage and impact data",
-      className: "damage-reporting",
+      question: "How do I unsubscribe from the alerts?",
+      answer: "You can unsubscribe at any time by replying 'STOP' to any alert message you receive. You will be immediately removed from our notification list with no questions asked.",
     },
   ];
+
+
+  
+  
 
   return (
     <>
@@ -129,6 +134,9 @@ const HomePage = () => {
           </div>
         <div className="homepage-container">
           
+          <h2 className="section-title">
+              Simple Steps to Stay Safe & Informed
+          </h2>
 
           {/* Main Content Grid */}
           <div className="main-content">
@@ -138,39 +146,23 @@ const HomePage = () => {
                 <div className="how-it-works-card">
                   <div className="form-header">
                     <div className="info-icon">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="48px"
-                        viewBox="0 -960 960 960"
-                        width="48px"
-                        fill="#3b82f6"
-                      >
-                        <path d="M453-280h60v-240h-60v240Zm26.98-314q14.02 0 23.52-9.2T513-626q0-14.45-9.48-24.22-9.48-9.78-23.5-9.78t-23.52 9.78Q447-640.45 447-626q0 13.6 9.48 22.8 9.48 9.2 23.5 9.2Zm.29 514q-82.74 0-155.5-31.5Q252-143 197.5-197.5t-86-127.34Q80-397.68 80-480.5t31.5-155.66Q143-709 197.5-763t127.34-85.5Q397.68-880 480.5-880t155.66 31.5Q709-817 763-763t85.5 127Q880-563 880-480.27q0 82.74-31.5 155.5Q817-252 763-197.68q-54 54.31-127 86Q563-80 480.27-80Zm.23-60Q622-140 721-239.5t99-241Q820-622 721.19-721T480-820q-141 0-240.5 98.81T140-480q0 141 99.5 240.5t241 99.5Zm-.5-340Z" />
-                      </svg>
+                      {/* existing SVG */}
                     </div>
                     <h2>How It Works</h2>
                   </div>
 
                   <div className="steps-list">
-                    <div className="step-item">
-                      <div className="step-number">1</div>
-                      <p>Enter your location and phone number below</p>
-                    </div>
-                    <div className="step-item">
-                      <div className="step-number">2</div>
-                      <p>
-                        We monitor rainfall forecasts and flood risks in your
-                        area
-                      </p>
-                    </div>
-                    <div className="step-item">
-                      <div className="step-number">3</div>
-                      <p>Receive SMS alerts when there's a flood risk</p>
-                    </div>
-                    <div className="step-item">
-                      <div className="step-number">4</div>
-                      <p>Access shelter information and report flood damage</p>
-                    </div>
+                    {howItWorksSteps.map((step, index) => (
+                      <div className="step-item-new" key={index}>
+                        <div className="step-icon-container">
+                          <div className="step-icon">{step.icon}</div>
+                        </div>
+                        <div className="step-text">
+                          <h4>{step.title}</h4>
+                          <p>{step.description}</p>
+                        </div>
+                      </div>
+                    ))}
                   </div>
                 </div>
 
@@ -258,22 +250,40 @@ const HomePage = () => {
                   </p>
                 </div>
               </section>
+
+              <div className="testimonial-card">
+                <p className="testimonial-quote">
+                  "This service gave us the warning we needed to prepare for the flash
+                  flood. Incredibly grateful for the timely alert."
+                </p>
+                <p className="testimonial-author">
+                    - Sarah J., Austin, TX
+                </p>
+              </div>
             </div>
           </div>
+                      
+         
+        </div>
 
-          {/* Bottom Features Section */}
-          <div className="features-grid">
-            {features.map((feature, index) => (
-              <FeatureCard
+      <section className="faq-section">
+        <div className="faq-container">
+          <h2 className="section-title">Frequently Asked Questions</h2>
+          <div className="faq-list">
+            {faqs.map((faq, index) => (
+              <FaqItem
                 key={index}
-                icon={feature.icon}
-                title={feature.title}
-                description={feature.description}
-                className={feature.className}
+                faq={faq}
+                index={index}
+                isOpen={openFaqIndex === index}
+                onClick={handleFaqClick}
               />
             ))}
           </div>
         </div>
+      </section>
+        
+        
       </div>
       <Footer />
     </>

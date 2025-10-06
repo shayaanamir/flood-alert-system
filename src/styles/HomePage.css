@@ -186,8 +186,7 @@ body {
 }
 
 /* Update main content sections to have white background */
-.main-content,
-.features-grid {
+.main-content {
   background: #ffffff;
   border-radius: 24px 24px 0 0;
   padding: 48px 24px;
@@ -250,6 +249,27 @@ body {
   margin-bottom: 80px;
 }
 
+.section-title {
+  text-align: center;
+  font-size: 2.25rem; /* 36px */
+  font-weight: 700;
+  color: #1e293b;
+  margin-bottom: 48px;
+  line-height: 1.2;
+  max-width: 800px;
+  margin-left: auto;
+  margin-right: auto;
+
+}
+
+/* Add a media query for responsiveness */
+@media (max-width: 768px) {
+  .section-title {
+    font-size: 1.75rem; /* 28px */
+    margin-bottom: 32px;
+  }
+}
+
 /* Left Column - How It Works */
 .left-column {
   display: flex;
@@ -286,18 +306,60 @@ body {
   margin-bottom: 24px;
 }
 
-.step-number {
+/* New styles for the redesigned 'How It Works' steps */
+.steps-list {
+  position: relative;
+  padding-left: 20px; /* Add some padding to make space for the line */
+}
+
+.step-item-new {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+  position: relative;
+  padding-bottom: 32px; /* Space between items */
+}
+
+.step-icon-container {
+  position: relative;
+  z-index: 1;
+}
+
+/* The vertical connecting line */
+.step-item-new:not(:last-child)::before {
+  content: "";
+  position: absolute;
+  left: 23px; /* Center the line with the icon */
+  top: 40px; /* Start the line below the icon */
+  height: 100%;
+  width: 2px;
   background-color: #e2e8f0;
-  color: #475569;
-  width: 32px;
-  height: 32px;
+  z-index: 0;
+}
+
+.step-icon {
+  width: 48px;
+  height: 48px;
+  background: #3b82f6; /* Blue background */
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  font-size: 0.875rem;
+  box-shadow: 0 4px 10px rgba(59, 130, 246, 0.3);
+}
+
+.step-text h4 {
+  font-size: 1.1rem;
   font-weight: 600;
-  flex-shrink: 0;
+  color: #1e293b;
+  margin: 0 0 4px 0;
+}
+
+.step-text p {
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.6;
+  margin: 0;
 }
 
 .step-item p {
@@ -464,45 +526,107 @@ body {
   line-height: 1.5;
 }
 
-/* Features Section */
-.features-section {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 32px;
-}
-
-.feature-card {
-  text-align: center;
-  padding: 32px 24px;
-  background: white;
+/* Testimonial Card Styles */
+.testimonial-card {
+  margin-top: 24px;
+  padding: 24px;
+  background-color: #f8fafc; /* A slightly off-white background */
+  border: 1px solid #e2e8f0;
   border-radius: 16px;
-  border: 1px solid #f1f5f9;
-  transition: all 0.3s ease;
-  margin: 50px;
+  position: relative;
 }
 
-.feature-card:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1);
-}
-
-.feature-icon {
-  font-size: 2.5rem;
-  margin-bottom: 20px;
-}
-
-.feature-card h3 {
-  font-size: 1.25rem;
-  font-weight: 700;
-  color: #0f172a;
-  margin-bottom: 12px;
-}
-
-.feature-card p {
+.testimonial-quote {
   font-size: 0.95rem;
-  color: #64748b;
+  color: #475569;
+  line-height: 1.6;
+  margin-bottom: 16px;
+}
+
+.testimonial-author {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: #334155;
+  text-align: right;
+}
+
+/* Optional: Add a decorative quote icon */
+.testimonial-card::before {
+  position: absolute;
+  top: 10px;
+  left: 20px;
+  font-size: 4rem;
+  font-weight: 800;
+  color: #e2e8f0;
+  z-index: 0;
+  line-height: 1;
+}
+
+
+/* FAQ Section */
+.faq-section {
+  background-color: #ffffff;
+  padding: 80px 24px;
+}
+
+.faq-container {
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+.faq-container .section-title {
+  margin-bottom: 48px;
+}
+
+.faq-list {
+  border-top: 1px solid #e2e8f0;
+}
+
+.faq-item {
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.faq-question {
+  width: 100%;
+  background: none;
+  border: none;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 24px 0;
+  cursor: pointer;
+  text-align: left;
+}
+
+.faq-question span {
+  font-size: 1.125rem; /* 18px */
+  font-weight: 600;
+  color: #1e293b;
+}
+
+.faq-icon {
+  font-size: 1.5rem;
+  font-weight: 400;
+  color: #3b82f6;
+}
+
+.faq-answer {
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s ease-out;
+}
+
+.faq-answer.open {
+  max-height: 200px; /* Adjust if your answers are longer */
+  transition: max-height 0.4s ease-in;
+}
+
+.faq-answer p {
+  padding-bottom: 24px;
+  color: #475569;
   line-height: 1.6;
 }
+
 
 /* Responsive Design */
 @media (max-width: 1024px) {
@@ -529,9 +653,8 @@ body {
     font-size: 1rem;
   }
 
-  .features-section {
-    grid-template-columns: 1fr;
-    gap: 24px;
+  .main-content {
+    gap: 40px;
   }
 
   .alert-signup {
@@ -564,7 +687,5 @@ body {
     padding: 20px;
   }
 
-  .feature-card {
-    padding: 24px 16px;
-  }
+
 }
