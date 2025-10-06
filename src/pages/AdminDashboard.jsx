@@ -10,6 +10,10 @@ import DamageReport from "../components/DamageReport";
 import RainHotspotMap from "../components/RainHotspotMap";
 import HourlyForecast from "../components/HourlyForecast";
 import data from "../data_temp/sampleData.json";
+import ShelterDetails from "../components/ShelterDetails";
+import ShelterSupply from "../components/ShelterSupply";
+import DamageDetails from "../components/DamageDetails";
+import DamageRespond from "../components/DamageRespond";
 
 export default function AdminDashboard(props) {
   const [time, setTime] = useState(new Date());
@@ -23,6 +27,30 @@ export default function AdminDashboard(props) {
   }, []);
 
   const [selectedDay, setSelectedDay] = useState(null);
+
+  const [searchShelterQuery, setSearchShelterQuery] = useState("");
+  const [selectedShelter, setSelectedShelter] = useState(null);
+  const [supplyModalShelter, setSupplyModalShelter] = useState(null);
+  const [filterOpen, setFilterOpen] = useState(false);
+
+  const [searchReportsQuery, setSearchReportsQuery] = useState("");
+  const [selectedReport, setSelectedReport] = useState(null);
+  const [respondReport, setRespondReport] = useState(null);
+
+  const filteredShelters = data.sheltersData.filter(
+    (shelter) =>
+      shelter.name.toLowerCase().includes(searchShelterQuery.toLowerCase()) ||
+      shelter.zone.toLowerCase().includes(searchShelterQuery.toLowerCase())
+  );
+
+  const filteredReports = data.reportsData.filter(
+    (report) =>
+      report.title.toLowerCase().includes(searchReportsQuery.toLowerCase()) ||
+      report.location
+        .toLowerCase()
+        .includes(searchReportsQuery.toLowerCase()) ||
+      report.severity.toLowerCase().includes(searchReportsQuery.toLowerCase())
+  );
 
   return (
     <>
@@ -307,16 +335,30 @@ export default function AdminDashboard(props) {
               <span>Resources</span>
               <span>Actions</span>
             </div>
-            <Shelter />
-            <Shelter />
-            <Shelter />
+            {filteredShelters.map((shelter, index) => {
+              const capacityPercentage =
+                (shelter.capacity.current / shelter.capacity.max) * 100;
+              return (
+                <Shelter
+                  id={shelter.id}
+                  name={shelter.name}
+                  address={shelter.address.split(",")[0]}
+                  zone={shelter.zone}
+                  capacity={capacityPercentage}
+                  foodStatus={shelter.resources.food.status}
+                  medicalStatus={shelter.resources.medical.status}
+                  onDetailsClick={() => setSelectedShelter(shelter)}
+                  onSupplyClick={() => setSupplyModalShelter(shelter)}
+                />
+              );
+            })}
           </div>
         </div>
 
         <div className="dashboard-default dashboard-shelters">
           <div className="dashboard-default dashboard-shelters-header">
             <div className="dashboard-default dashboard-shelters-header-title">
-              Shelter Management
+              Reports Management
             </div>
             <div className="dashboard-default dashboard-shelters-header-buttons">
               <input
@@ -344,17 +386,38 @@ export default function AdminDashboard(props) {
             </div>
           </div>
           <div className="dashboard-default dashboard-reports-body">
-            <DamageReport />
-            <DamageReport />
-            <DamageReport />
-            <DamageReport />
-            <DamageReport />
-            <DamageReport />
+            {filteredReports.map((report) => (
+              <DamageReport
+                report={report}
+                onView={() => setSelectedReport(report)}
+                onRespond={() => setRespondReport(report)}
+              />
+            ))}
           </div>
         </div>
         <HourlyForecast
           data={selectedDay}
           onClose={() => setSelectedDay(null)}
+        />
+        <ShelterDetails
+          shelter={selectedShelter}
+          onClose={() => setSelectedShelter(null)}
+        />
+        <ShelterSupply
+          shelter={supplyModalShelter}
+          onClose={() => setSupplyModalShelter(null)}
+        />
+        <DamageRespond
+          report={respondReport}
+          onClose={() => setRespondReport(null)}
+        />
+        <DamageDetails
+          report={selectedReport}
+          onClose={() => setSelectedReport(null)}
+          onRespond={() => {
+            setRespondReport(selectedReport);
+            setSelectedReport(null);
+          }}
         />
       </div>
     </>
