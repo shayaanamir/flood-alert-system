@@ -1,4 +1,4 @@
-import("../styles/ReportsManagement.css");
+// import("../styles/ReportsManagement.css");
 import AddressTableRow from "../components/AddressTableRow";
 import Header from "./../components/global/Header";
 import DamageDetails from "../components/DamageDetails";

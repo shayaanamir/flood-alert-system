@@ -65,7 +65,7 @@
 
 .dashboard-quick-action {
   height: 150px;
-  width: 25%;
+  width: 100%;
   flex-direction: row;
   justify-content: space-between;
   gap: 10px;
@@ -320,7 +320,7 @@
   align-items: flex-end;
   gap: 5px;
 }
-
+/* 
 .dashboard-shelters {
   width: 90%;
   height: fit-content;
@@ -393,7 +393,7 @@
   padding: 0px 20px;
   border-radius: 7px 7px 0px 0px;
   color: #4d4f53;
-}
+} */
 
 .dashboard-reports-body {
   flex-direction: row;
