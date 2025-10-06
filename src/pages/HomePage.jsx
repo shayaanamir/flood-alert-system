@@ -90,7 +90,7 @@ const HomePage = () => {
     
       <div className="homepage">
         <Header loggedOut={false} />
-        <div className="hero-section">
+        <div className="hero-body">
           
           {/* Header Section */}
           <header className="homePage-header">
