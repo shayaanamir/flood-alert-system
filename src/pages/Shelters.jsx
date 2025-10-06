@@ -3,6 +3,7 @@ import "../styles/Shelters.css";
 import Header from "../components/global/Header";
 import Footer from "../components/global/Footer";
 import ShelterCard from "../components/ShelterCard";
+import "../styles/ShelterManagement.css";
 
 export default function Shelters() {
   const [shelters, setShelters] = useState([
