@@ -1,6 +1,11 @@
 import React from "react";
+import { useEffect } from "react";
 
-const DamageReport = () => {
+const DamageReport = (report) => {
+  useEffect(() => {
+    console.log(report);
+  }, []);
+
   return (
     <div
       style={{
@@ -37,7 +42,7 @@ const DamageReport = () => {
             fontWeight: "600",
           }}
         >
-          Critical
+          {report.report.severity}
         </span>
         <span
           style={{
@@ -45,7 +50,7 @@ const DamageReport = () => {
             fontSize: "13px",
           }}
         >
-          20 min ago
+          {report.report.timeAgo}
         </span>
       </div>
 
@@ -59,7 +64,7 @@ const DamageReport = () => {
           lineHeight: "1.3",
         }}
       >
-        Main Street Bridge Collapse
+        {report.report.title}
       </h3>
 
       {/* Description */}
@@ -71,8 +76,7 @@ const DamageReport = () => {
           lineHeight: "1.5",
         }}
       >
-        Bridge structure compromised due to flooding. Road completely
-        inaccessible. Emergency services rerouted.
+        {report.report.description}
       </p>
 
       {/* Location */}
@@ -96,7 +100,7 @@ const DamageReport = () => {
         >
           <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10zm0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6z" />
         </svg>
-        Main St & River Rd
+        {report.report.location}
       </div>
 
       {/* Footer */}
@@ -115,7 +119,7 @@ const DamageReport = () => {
             fontSize: "13px",
           }}
         >
-          J. Thompson
+          {report.report.reportedBy}
         </span>
         <div
           style={{
@@ -137,6 +141,10 @@ const DamageReport = () => {
             }}
             onMouseEnter={(e) => (e.target.style.backgroundColor = "#bfdbfe")}
             onMouseLeave={(e) => (e.target.style.backgroundColor = "#dbeafe")}
+            onClick={(e) => {
+              e.stopPropagation();
+              report.onView();
+            }}
           >
             View
           </button>
@@ -154,6 +162,10 @@ const DamageReport = () => {
             }}
             onMouseEnter={(e) => (e.target.style.backgroundColor = "#bbf7d0")}
             onMouseLeave={(e) => (e.target.style.backgroundColor = "#dcfce7")}
+            onClick={(e) => {
+              e.stopPropagation();
+              report.onRespond();
+            }}
           >
             Respond
           </button>
