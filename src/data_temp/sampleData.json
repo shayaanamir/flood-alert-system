@@ -137,7 +137,7 @@
     }
   ],
 
-  "shelerData": [
+  "sheltersData": [
     {
       "id": "SH-001",
       "name": "Central Community Center",
@@ -230,6 +230,144 @@
       "notes": "Near capacity. Need blankets and medical supplies urgently.",
       "occupancyTrend": [60, 70, 80, 88, 92],
       "demographics": { "adults": 52, "children": 30, "seniors": 10 }
+    }
+  ],
+  "reportsData": [
+    {
+      "id": "RPT-001",
+      "severity": "Critical",
+      "title": "Main Street Bridge Collapse",
+      "description": "Bridge structure compromised due to flooding. Road completely inaccessible. Emergency services rerouted.",
+      "location": "Main St & River Rd",
+      "coordinates": { "lat": 40.7128, "lng": -74.006 },
+      "reportedBy": "J. Thompson",
+      "timeAgo": "20 min ago",
+      "timestamp": "2024-10-05 16:40",
+      "status": "Pending",
+      "images": [
+        "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=800",
+        "https://images.unsplash.com/photo-1611348524140-53c9a25263d6?w=800",
+        "https://images.unsplash.com/photo-1573108037329-37aa135a142e?w=800"
+      ],
+      "contact": {
+        "phone": "+1 (555) 123-4567",
+        "email": "j.thompson@email.com"
+      },
+      "affectedPeople": 150,
+      "estimatedCost": "$250,000",
+      "priority": 1
+    },
+    {
+      "id": "RPT-002",
+      "severity": "High",
+      "title": "Oak Avenue Flooding",
+      "description": "Severe flooding blocking residential area. Multiple homes affected. Water level rising. Immediate assistance required.",
+      "location": "456 Oak Avenue",
+      "coordinates": { "lat": 40.758, "lng": -73.9855 },
+      "reportedBy": "M. Rodriguez",
+      "timeAgo": "45 min ago",
+      "timestamp": "2024-10-05 16:15",
+      "status": "In Progress",
+      "images": [
+        "https://images.unsplash.com/photo-1547683905-f686c993aae5?w=800"
+      ],
+      "contact": {
+        "phone": "+1 (555) 234-5678",
+        "email": "m.rodriguez@email.com"
+      },
+      "affectedPeople": 85,
+      "estimatedCost": "$125,000",
+      "priority": 2
+    },
+    {
+      "id": "RPT-003",
+      "severity": "Medium",
+      "title": "Elm Street Power Outage",
+      "description": "Electrical infrastructure damaged. Power lines down due to flooding. Area evacuated for safety.",
+      "location": "789 Elm Street",
+      "coordinates": { "lat": 40.7489, "lng": -73.968 },
+      "reportedBy": "K. Williams",
+      "timeAgo": "1 hour ago",
+      "timestamp": "2024-10-05 16:00",
+      "status": "Pending",
+      "images": [
+        "https://images.unsplash.com/photo-1611348524140-53c9a25263d6?w=800",
+        "https://images.unsplash.com/photo-1573108037329-37aa135a142e?w=800"
+      ],
+      "contact": {
+        "phone": "+1 (555) 345-6789",
+        "email": "k.williams@email.com"
+      },
+      "affectedPeople": 40,
+      "estimatedCost": "$75,000",
+      "priority": 3
+    },
+    {
+      "id": "RPT-004",
+      "severity": "Low",
+      "title": "Minor Road Blockage on Pine Street",
+      "description": "Small tree fallen across the northbound lane due to high winds. No injuries reported.",
+      "location": "Pine Street, Sector 3",
+      "coordinates": { "lat": 40.735, "lng": -73.995 },
+      "reportedBy": "L. Adams",
+      "timeAgo": "2 hours ago",
+      "timestamp": "2024-10-05 15:00",
+      "status": "Resolved",
+      "images": [
+        "https://images.unsplash.com/photo-1603565816060-7d3a4a2ad63e?w=800"
+      ],
+      "contact": {
+        "phone": "+1 (555) 456-7890",
+        "email": "l.adams@email.com"
+      },
+      "affectedPeople": 0,
+      "estimatedCost": "$2,000",
+      "priority": 5
+    },
+    {
+      "id": "RPT-005",
+      "severity": "High",
+      "title": "Landslide Near Hillcrest Road",
+      "description": "Heavy rainfall triggered a minor landslide blocking the hillside road. Vehicles stranded, cleanup in progress.",
+      "location": "Hillcrest Road, Zone C",
+      "coordinates": { "lat": 40.721, "lng": -74.012 },
+      "reportedBy": "T. Patel",
+      "timeAgo": "30 min ago",
+      "timestamp": "2024-10-05 16:30",
+      "status": "In Progress",
+      "images": [
+        "https://images.unsplash.com/photo-1582719478250-c89cae4dc85b?w=800"
+      ],
+      "contact": {
+        "phone": "+1 (555) 567-8901",
+        "email": "t.patel@email.com"
+      },
+      "affectedPeople": 12,
+      "estimatedCost": "$40,000",
+      "priority": 2
+    },
+    {
+      "id": "RPT-006",
+      "severity": "Critical",
+      "title": "Downtown Evacuation Due to Rising Water",
+      "description": "Rapid water level rise in downtown area. Police assisting in evacuation. Multiple vehicles submerged.",
+      "location": "Downtown Square, Rivertown",
+      "coordinates": { "lat": 40.716, "lng": -74.009 },
+      "reportedBy": "A. Singh",
+      "timeAgo": "10 min ago",
+      "timestamp": "2024-10-05 16:50",
+      "status": "Ongoing",
+      "images": [
+        "https://images.unsplash.com/photo-1501554728187-ce583db33af7?w=800",
+        "https://images.unsplash.com/photo-1529312266910-b1c4b3cb2a09?w=800"
+      ],
+      "contact": {
+        "phone": "+1 (555) 678-9012",
+        "email": "a.singh@email.com"
+      },
+      "affectedPeople": 300,
+      "estimatedCost": "$400,000",
+      "priority": 1
     }
   ]
 }

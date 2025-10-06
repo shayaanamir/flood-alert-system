@@ -1,7 +1,17 @@
 import React from "react";
 
-const Shelter = () => {
+const Shelter = (props) => {
   const capacityPercentage = 45;
+
+  const handleDetailsClick = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    props.onDetailsClick();
+  };
+
+  const handleSupplyClick = (e) => {
+    e.stopPropagation(); // Prevent event bubbling
+    props.onSupplyClick();
+  };
 
   return (
     <div
@@ -37,7 +47,7 @@ const Shelter = () => {
             color: "#1f2937",
           }}
         >
-          Central Community Center
+          {props.name}
         </h3>
         <span
           style={{
@@ -45,7 +55,7 @@ const Shelter = () => {
             fontSize: "13px",
           }}
         >
-          ID: SH-001
+          {props.id}
         </span>
       </div>
 
@@ -63,14 +73,14 @@ const Shelter = () => {
             marginBottom: "4px",
           }}
         >
-          123 Main St, Rivertown
+          {props.address}
         </div>
         <div
           style={{
             color: "#6b7280",
           }}
         >
-          Zone A
+          {props.zone}
         </div>
       </div>
 
@@ -114,7 +124,7 @@ const Shelter = () => {
             fontWeight: "500",
           }}
         >
-          <span style={{ color: "#1f2937" }}>{capacityPercentage}</span>
+          <span style={{ color: "#1f2937" }}>{props.capacity}</span>
           <span style={{ color: "#6b7280", margin: "0 2px" }}>/</span>
           <span style={{ color: "#6b7280" }}>100</span>
         </div>
@@ -129,7 +139,7 @@ const Shelter = () => {
         >
           <div
             style={{
-              width: `${capacityPercentage}%`,
+              width: `${props.capacity}%`,
               height: "100%",
               backgroundColor: "#22c55e",
               borderRadius: "3px",
@@ -152,7 +162,7 @@ const Shelter = () => {
             marginBottom: "4px",
           }}
         >
-          <span style={{ fontWeight: "500" }}>Food:</span> Adequate
+          <span style={{ fontWeight: "500" }}>Food:</span> {props.foodStatus}
         </div>
         <div
           style={{
@@ -160,7 +170,9 @@ const Shelter = () => {
           }}
         >
           <span style={{ fontWeight: "500" }}>Medical:</span>
-          <span style={{ color: "#f59e0b", marginLeft: "4px" }}>Low</span>
+          <span style={{ color: "#f59e0b", marginLeft: "4px" }}>
+            {props.medicalStatus}
+          </span>
         </div>
       </div>
 
@@ -172,6 +184,7 @@ const Shelter = () => {
           alignItems: "center",
           width: "120px",
         }}
+        onClick={handleDetailsClick}
       >
         <a
           href="#"
@@ -192,6 +205,7 @@ const Shelter = () => {
             fontSize: "14px",
             fontWeight: "500",
           }}
+          onClick={handleSupplyClick}
         >
           Supply
         </a>
