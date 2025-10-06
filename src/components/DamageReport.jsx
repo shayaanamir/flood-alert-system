@@ -12,14 +12,13 @@ const DamageReport = (report) => {
         backgroundColor: "#ffffff",
         border: "1px solid #e5e7eb",
         borderRadius: "8px",
-        borderLeft: "4px solid #ef4444",
         padding: "16px 20px",
         fontFamily:
           '-apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif',
         fontSize: "14px",
         lineHeight: "1.4",
         boxShadow: "0 1px 3px rgba(0, 0, 0, 0.1)",
-        width: "32%",
+        width: "100%",
         marginBottom: "1%",
       }}
     >
