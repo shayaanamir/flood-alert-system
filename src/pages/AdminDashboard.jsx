@@ -3,7 +3,6 @@ import "../styles/AdminDashboard.css";
 import { Link } from "react-router-dom";
 import Header from "./../components/global/Header";
 import QuickViews from "../components/QuickViews";
-import Labels from "../components/Labels";
 import ForecastDay from "../components/ForecastDay";
 import Shelter from "../components/Shelter";
 import DamageReport from "../components/DamageReport";
@@ -14,6 +13,19 @@ import ShelterDetails from "../components/ShelterDetails";
 import ShelterSupply from "../components/ShelterSupply";
 import DamageDetails from "../components/DamageDetails";
 import DamageRespond from "../components/DamageRespond";
+import ShelterManagement from "./ShelterManagement";
+import ReportsManagement from "./ReportsManagement";
+import {
+  Cloud,
+  CloudRain,
+  CloudDrizzle,
+  Wind,
+  Droplets,
+  Eye,
+  Gauge,
+  Sun,
+  Moon,
+} from "lucide-react";
 
 export default function AdminDashboard(props) {
   const [time, setTime] = useState(new Date());
@@ -26,31 +38,40 @@ export default function AdminDashboard(props) {
     return () => clearInterval(timer);
   }, []);
 
+  const weatherDetails = [
+    { label: "Feels Like", value: "22°C", icon: Gauge },
+    { label: "Humidity", value: "85%", icon: Droplets },
+    { label: "Wind Speed", value: "12 km/h", icon: Wind },
+    { label: "Visibility", value: "8 km", icon: Eye },
+    { label: "Pressure", value: "1013 hPa", icon: Gauge },
+    { label: "UV Index", value: "3 Moderate", icon: Sun },
+  ];
+
   const [selectedDay, setSelectedDay] = useState(null);
 
-  const [searchShelterQuery, setSearchShelterQuery] = useState("");
-  const [selectedShelter, setSelectedShelter] = useState(null);
-  const [supplyModalShelter, setSupplyModalShelter] = useState(null);
-  const [filterOpen, setFilterOpen] = useState(false);
+  // const [searchShelterQuery, setSearchShelterQuery] = useState("");
+  // const [selectedShelter, setSelectedShelter] = useState(null);
+  // const [supplyModalShelter, setSupplyModalShelter] = useState(null);
+  // const [filterOpen, setFilterOpen] = useState(false);
 
-  const [searchReportsQuery, setSearchReportsQuery] = useState("");
-  const [selectedReport, setSelectedReport] = useState(null);
-  const [respondReport, setRespondReport] = useState(null);
+  // const [searchReportsQuery, setSearchReportsQuery] = useState("");
+  // const [selectedReport, setSelectedReport] = useState(null);
+  // const [respondReport, setRespondReport] = useState(null);
 
-  const filteredShelters = data.sheltersData.filter(
-    (shelter) =>
-      shelter.name.toLowerCase().includes(searchShelterQuery.toLowerCase()) ||
-      shelter.zone.toLowerCase().includes(searchShelterQuery.toLowerCase())
-  );
+  // const filteredShelters = data.sheltersData.filter(
+  //   (shelter) =>
+  //     shelter.name.toLowerCase().includes(searchShelterQuery.toLowerCase()) ||
+  //     shelter.zone.toLowerCase().includes(searchShelterQuery.toLowerCase())
+  // );
 
-  const filteredReports = data.reportsData.filter(
-    (report) =>
-      report.title.toLowerCase().includes(searchReportsQuery.toLowerCase()) ||
-      report.location
-        .toLowerCase()
-        .includes(searchReportsQuery.toLowerCase()) ||
-      report.severity.toLowerCase().includes(searchReportsQuery.toLowerCase())
-  );
+  // const filteredReports = data.reportsData.filter(
+  //   (report) =>
+  //     report.title.toLowerCase().includes(searchReportsQuery.toLowerCase()) ||
+  //     report.location
+  //       .toLowerCase()
+  //       .includes(searchReportsQuery.toLowerCase()) ||
+  //     report.severity.toLowerCase().includes(searchReportsQuery.toLowerCase())
+  // );
 
   return (
     <>
@@ -159,28 +180,10 @@ export default function AdminDashboard(props) {
             }
           />
           <QuickViews
-            info1="Active Flood Alerts"
-            info2="3"
-            info3="2 regions affected"
-            status="Medium"
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="20"
-                height="20"
-                fill="currentColor"
-                class="bi bi-water"
-                viewBox="0 0 16 16"
-              >
-                <path d="M.036 3.314a.5.5 0 0 1 .65-.278l1.757.703a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.757-.703a.5.5 0 1 1 .372.928l-1.758.703a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0L.314 3.964a.5.5 0 0 1-.278-.65m0 3a.5.5 0 0 1 .65-.278l1.757.703a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.757-.703a.5.5 0 1 1 .372.928l-1.758.703a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0L.314 6.964a.5.5 0 0 1-.278-.65m0 3a.5.5 0 0 1 .65-.278l1.757.703a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.757-.703a.5.5 0 1 1 .372.928l-1.758.703a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0L.314 9.964a.5.5 0 0 1-.278-.65m0 3a.5.5 0 0 1 .65-.278l1.757.703a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.014-.406a2.5 2.5 0 0 1 1.857 0l1.015.406a1.5 1.5 0 0 0 1.114 0l1.757-.703a.5.5 0 1 1 .372.928l-1.758.703a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.014-.406a1.5 1.5 0 0 0-1.114 0l-1.015.406a2.5 2.5 0 0 1-1.857 0l-1.757-.703a.5.5 0 0 1-.278-.65" />
-              </svg>
-            }
-          />
-          <QuickViews
             info1="People in Shelters"
             info2="247"
             info3="43% of capacity"
-            status="High"
+            status="Medium"
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -237,39 +240,22 @@ export default function AdminDashboard(props) {
                 <div className="dashboard-default dasboard-map-icon">
                   <svg
                     xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    class="bi bi-stack"
+                    width="14"
+                    height="14"
+                    fill="#2B3035"
+                    class="bi bi-info"
                     viewBox="0 0 16 16"
                   >
-                    <path d="m14.12 10.163 1.715.858c.22.11.22.424 0 .534L8.267 15.34a.6.6 0 0 1-.534 0L.165 11.555a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0l5.317-2.66zM7.733.063a.6.6 0 0 1 .534 0l7.568 3.784a.3.3 0 0 1 0 .535L8.267 8.165a.6.6 0 0 1-.534 0L.165 4.382a.299.299 0 0 1 0-.535z" />
-                    <path d="m14.12 6.576 1.715.858c.22.11.22.424 0 .534l-7.568 3.784a.6.6 0 0 1-.534 0L.165 7.968a.299.299 0 0 1 0-.534l1.716-.858 5.317 2.659c.505.252 1.1.252 1.604 0z" />
+                    <path d="m8.93 6.588-2.29.287-.082.38.45.083c.294.07.352.176.288.469l-.738 3.468c-.194.897.105 1.319.808 1.319.545 0 1.178-.252 1.465-.598l.088-.416c-.2.176-.492.246-.686.246-.275 0-.375-.193-.304-.533zM9 4.5a1 1 0 1 1-2 0 1 1 0 0 1 2 0" />
                   </svg>
                 </div>
-                <div className="dashboard-default dasboard-map-icon">
-                  <svg
-                    xmlns="http://www.w3.org/2000/svg"
-                    width="20"
-                    height="20"
-                    fill="currentColor"
-                    class="bi bi-funnel-fill"
-                    viewBox="0 0 16 16"
-                  >
-                    <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
-                  </svg>
+                <div className="dashboard-default dasboard-map-icon-hidden">
+                  Click on any point on the map to show its weather condition.
                 </div>
               </div>
             </div>
             <div className="dashboard-default dashboard-map-body">
               <RainHotspotMap />
-            </div>
-            <div className="dashboard-default dashboard-map-footer">
-              <Labels level="High Risk" />
-              <Labels level="Medium Risk" />
-              <Labels level="Low Risk" />
-              <Labels level="Shelter" />
-              <Labels level="Damage Report" />
             </div>
           </div>
 
@@ -296,11 +282,31 @@ export default function AdminDashboard(props) {
                 />
               ))}
             </div>
-            <div className="dashboard-default dashboard-forecast-graph"></div>
+            <div className="dashboard-default dashboard-forecast-graph">
+              <div className="dashboard-default weather-details">
+                <h3>Weather Details</h3>
+                <div className="weather-details-grid">
+                  {weatherDetails.map((detail, idx) => {
+                    const Icon = detail.icon;
+                    return (
+                      <div key={idx} className="weather-detail-card">
+                        <div className="weather-detail-icon">
+                          <Icon />
+                        </div>
+                        <div className="weather-detail-info">
+                          <p>{detail.label}</p>
+                          <p>{detail.value}</p>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </div>
+              </div>
+            </div>
           </div>
         </div>
 
-        <div className="dashboard-default dashboard-shelters">
+        {/* <div className="dashboard-default dashboard-shelters">
           <div className="dashboard-default dashboard-shelters-header">
             <div className="dashboard-default dashboard-shelters-header-title">
               Shelter Management
@@ -353,9 +359,9 @@ export default function AdminDashboard(props) {
               );
             })}
           </div>
-        </div>
+        </div> */}
 
-        <div className="dashboard-default dashboard-shelters">
+        {/* <div className="dashboard-default dashboard-shelters">
           <div className="dashboard-default dashboard-shelters-header">
             <div className="dashboard-default dashboard-shelters-header-title">
               Reports Management
@@ -394,20 +400,21 @@ export default function AdminDashboard(props) {
               />
             ))}
           </div>
-        </div>
+        </div> */}
+
         <HourlyForecast
           data={selectedDay}
           onClose={() => setSelectedDay(null)}
         />
-        <ShelterDetails
+        {/* <ShelterDetails
           shelter={selectedShelter}
           onClose={() => setSelectedShelter(null)}
         />
         <ShelterSupply
           shelter={supplyModalShelter}
           onClose={() => setSupplyModalShelter(null)}
-        />
-        <DamageRespond
+        /> */}
+        {/* <DamageRespond
           report={respondReport}
           onClose={() => setRespondReport(null)}
         />
@@ -418,7 +425,7 @@ export default function AdminDashboard(props) {
             setRespondReport(selectedReport);
             setSelectedReport(null);
           }}
-        />
+        /> */}
       </div>
     </>
   );
