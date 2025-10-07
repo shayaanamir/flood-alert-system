@@ -27,6 +27,7 @@ import {
   Sun,
   Moon,
 } from "lucide-react";
+import { ArrowLeftRight } from "lucide-react";
 
 export default function AdminDashboard(props) {
   const [time, setTime] = useState(new Date());
@@ -35,10 +36,29 @@ export default function AdminDashboard(props) {
   const [fetchedDataDaily, setDataDaily] = useState(null);
   const [selectedDay, setSelectedDay] = useState(null);
 
+  const [latitude, setLatitude] = useState("19.0760"); // Default: Mumbai
+  const [longitude, setLongitude] = useState("72.8777");
+
+  const [location, setLocation] = useState("");
+  const [addressResult, setAddressResult] = useState("");
+  const [coordsResult, setCoordsResult] = useState("");
+
+  const [mode, setMode] = useState("toLocation");
+
+  const handleSwap = () => {
+    setMode(mode === "toLocation" ? "toCoords" : "toLocation");
+    setLatitude("19.0760");
+    setLongitude("72.8777");
+    setLocation("");
+    setAddressResult("");
+    setCoordsResult("");
+  };
+
   const handleFetch = async () => {
+    if (!selectedDay) return null;
     try {
       const res = await axios.get(
-        `http://localhost:5000/weather-data/hourly?date=${selectedDay.time}`
+        `http://localhost:5000/weather-data/hourly?lat=${latitude}&lon=${longitude}&date=${selectedDay.time}`
       );
       const hourlyData = res.data.hourly;
 
@@ -60,7 +80,9 @@ export default function AdminDashboard(props) {
 
   const handleFetchDaily = async () => {
     try {
-      const res = await axios.get(`http://localhost:5000/weather-data/daily`);
+      const res = await axios.get(
+        `http://localhost:5000/weather-data/daily?lat=${latitude}&lon=${longitude}`
+      );
       const dailyData = res.data.daily;
 
       const dailyForecast = dailyData.time.map((date, idx) => ({
@@ -79,17 +101,69 @@ export default function AdminDashboard(props) {
     }
   };
 
-  useEffect(() => {
-    if (selectedDay) {
-      handleFetch();
+  // Reverse geocoding: coordinates -> location
+  const handleGetLocation = async () => {
+    if (!latitude || !longitude)
+      return alert("Enter both latitude and longitude!");
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/location-conversion/location-from-coords?lat=${latitude}&lon=${longitude}`
+      );
+      setAddressResult(res.data.address);
+      setLocation(res.data.address);
+      handleFetchDaily();
+    } catch (err) {
+      console.error(err);
+      alert("Error fetching location");
     }
-  }, [selectedDay]);
+  };
+
+  // Forward geocoding: location -> coordinates
+  const handleGetCoordinates = async () => {
+    if (!location) return alert("Enter a location!");
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/location-conversion/coords-from-location?location=${location}`
+      );
+
+      if (res.data.length === 0) {
+        setCoordsResult("No results found");
+        return;
+      }
+
+      const coords = res.data; // Take the first result
+      setCoordsResult(coords); // Update state for UI
+      setLatitude(coords.lat); // Use directly from response
+      setLongitude(coords.lon);
+
+      // Now call fetch daily with correct coordinates
+      handleFetchDaily();
+    } catch (err) {
+      console.error(err);
+      alert("Error fetching coordinates");
+    }
+  };
+
+  // useEffect(() => {
+  //   if (selectedDay) {
+  //     handleFetch();
+  //   }
+  // }, [selectedDay]);
+
+  useEffect(() => {
+    handleFetchDaily();
+  }, []);
+
+  useEffect(() => {
+    handleFetchDaily();
+  }, [latitude, longitude]);
 
   useEffect(() => {
     console.log("Data fetched from api", fetched_data);
     console.log("Daily data fetched from api", fetchedDataDaily);
     console.log("Seelcted Day", selectedDay);
-  }, [fetched_data, fetchedDataDaily, selectedDay]);
+    console.log("Address received: ", addressResult);
+  }, [fetched_data, fetchedDataDaily, selectedDay, addressResult]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -120,7 +194,12 @@ export default function AdminDashboard(props) {
               Emergency Flood Management
             </span>
             <span
-              style={{ fontWeight: "300", fontSize: "0.9rem", color: "white" }}
+              style={{
+                fontWeight: "300",
+                fontSize: "0.9rem",
+                color: "white",
+                textTransform: "capitalize",
+              }}
             >
               Last Updated: {time.toLocaleTimeString()}
               &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
@@ -135,7 +214,7 @@ export default function AdminDashboard(props) {
                 <path d="M12.166 8.94c-.524 1.062-1.234 2.12-1.96 3.07A32 32 0 0 1 8 14.58a32 32 0 0 1-2.206-2.57c-.726-.95-1.436-2.008-1.96-3.07C3.304 7.867 3 6.862 3 6a5 5 0 0 1 10 0c0 .862-.305 1.867-.834 2.94M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10" />
                 <path d="M8 8a2 2 0 1 1 0-4 2 2 0 0 1 0 4m0 1a3 3 0 1 0 0-6 3 3 0 0 0 0 6" />
               </svg>{" "}
-              Mumbai
+              {location ? location : "Mumbai"}
             </span>
           </div>
           <div className="dashboard-default dashboard-header-buttons">
@@ -257,6 +336,67 @@ export default function AdminDashboard(props) {
           />
         </div>
 
+        <div className="card">
+          <div className="input-row">
+            {/* Inputs */}
+            <div className="inputs">
+              {mode === "toLocation" ? (
+                <>
+                  <input
+                    type="text"
+                    placeholder="Latitude"
+                    value={latitude}
+                    onChange={(e) => setLatitude(e.target.value)}
+                    className="input"
+                  />
+                  <input
+                    type="text"
+                    placeholder="Longitude"
+                    value={longitude}
+                    onChange={(e) => setLongitude(e.target.value)}
+                    className="input"
+                  />
+                </>
+              ) : (
+                <input
+                  type="text"
+                  placeholder="Enter Location"
+                  value={location}
+                  onChange={(e) => setLocation(e.target.value)}
+                  className="input full-width"
+                />
+              )}
+            </div>
+
+            {/* Swap Button */}
+            <button className="swap-btn" onClick={handleSwap} title="Swap mode">
+              <ArrowLeftRight />
+            </button>
+
+            {/* Convert Button */}
+            <button
+              className="convert-btn"
+              onClick={
+                mode === "toLocation" ? handleGetLocation : handleGetCoordinates
+              }
+            >
+              Convert
+            </button>
+          </div>
+
+          {/* Result */}
+          {(coordsResult || addressResult) && (
+            <div className="result-box">
+              {coordsResult && (
+                <p>
+                  Coordinates: {coordsResult.lat}, {coordsResult.lon}
+                </p>
+              )}
+              {addressResult && <p>Address: {addressResult}</p>}
+            </div>
+          )}
+        </div>
+
         <div className="dashboard-default dashboard-map-forecast">
           <div className="dashboard-default dashboard-map">
             <div className="dashboard-default dashboard-map-header">
@@ -347,6 +487,53 @@ export default function AdminDashboard(props) {
             </div>
           </div>
         </div>
+        {/* <div className="dashboard-default dashboard-header-buttons">
+          <input
+            type="text"
+            value={latitude}
+            onChange={(e) => setLatitude(e.target.value)}
+            placeholder="Latitude"
+            className="coord-input"
+          />
+          <input
+            type="text"
+            value={longitude}
+            onChange={(e) => setLongitude(e.target.value)}
+            placeholder="Longitude"
+            className="coord-input"
+          />
+          <button
+            className="dashboard-default dashboard-header-button"
+            onClick={
+
+Daily}
+            style={{ backgroundColor: "#22C55E" }}
+          >
+            Enter
+          </button>
+
+          <button
+            className="dashboard-default dashboard-header-button"
+            onClick={handleFetchDaily}
+          >
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="16"
+              height="16"
+              fill="currentColor"
+              class="bi bi-arrow-clockwise"
+              viewBox="0 0 16 16"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 3a5 5 0 1 0 4.546 2.914.5.5 0 0 1 .908-.417A6 6 0 1 1 8 2z"
+              />
+              <path d="M8 4.466V.534a.25.25 0 0 1 .41-.192l2.36 1.966c.12.1.12.284 0 .384L8.41 4.658A.25.25 0 0 1 8 4.466" />
+            </svg>
+            Refresh Data
+          </button>
+        </div> */}
+
         {selectedDay && fetched_data?.length > 0 && (
           <HourlyForecast
             data={fetched_data}
