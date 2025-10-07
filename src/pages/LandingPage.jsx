@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useRef } from "react";
 import "../styles/LandingPage.css";
 
 import Header from "../components/global/Header";
@@ -8,6 +8,40 @@ import { useNavigate } from "react-router-dom";
 
 const LandingPage = () => {
   const navigate = useNavigate();
+  const observerRef = useRef(null);
+
+  useEffect(() => {
+    // Intersection Observer for scroll animations
+    observerRef.current = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('animate-in');
+          }
+        });
+      },
+      {
+        threshold: 0.1,
+        rootMargin: '0px 0px -100px 0px'
+      }
+    );
+
+    // Observe all animatable elements
+    const elements = document.querySelectorAll(
+      '.feature-card, .timeline-step, .stat-card, .resource-card, .section-header, .cta-content'
+    );
+    
+    elements.forEach((el) => {
+      el.classList.add('fade-in-scroll');
+      observerRef.current.observe(el);
+    });
+
+    return () => {
+      if (observerRef.current) {
+        observerRef.current.disconnect();
+      }
+    };
+  }, []);
   
   const features = [
     {
@@ -197,7 +231,9 @@ const LandingPage = () => {
       {/* Features Section */}
       <section className="features">
         <div className="container">
-          <h2 className="section-title">How FloodAlert Protects You</h2>
+          <div className="section-header">
+            <h2 className="section-title">How FloodAlert Protects You</h2>
+          </div>
 
           <div className="features-grid">
             {features.map((feature, index) => (
@@ -289,19 +325,21 @@ const LandingPage = () => {
       {/* CTA Section */}
       <section className="cta">
         <div className="container">
-          <h2 className="cta-title">Ready to stay protected?</h2>
-          <p className="cta-subtitle">
-            Join thousands of users who rely on FloodAlert for critical flood
-            warnings and resources.
-          </p>
-          <button
-            className="btn btn-primary btn-large"
-            onClick={() =>
-              navigate("/login", { state: { isSignUpPage: true } })
-            }
-          >
-            Get Started Now
-          </button>
+          <div className="cta-content">
+            <h2 className="cta-title">Ready to stay protected?</h2>
+            <p className="cta-subtitle">
+              Join thousands of users who rely on FloodAlert for critical flood
+              warnings and resources.
+            </p>
+            <button
+              className="btn btn-primary btn-large"
+              onClick={() =>
+                navigate("/login", { state: { isSignUpPage: true } })
+              }
+            >
+              Get Started Now
+            </button>
+          </div>
         </div>
       </section>
 
