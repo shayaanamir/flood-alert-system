@@ -1,6 +1,6 @@
-import React, { useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import "../styles/LandingPage.css";
-
+import FaqItem from "../components/FaqItem";
 import Header from "../components/global/Header";
 import Footer from "../components/global/Footer";
 import FeatureCard from "../components/FeatureCard";
@@ -9,6 +9,7 @@ import { useNavigate } from "react-router-dom";
 const LandingPage = () => {
   const navigate = useNavigate();
   const observerRef = useRef(null);
+  const [openFaqIndex, setOpenFaqIndex] = useState(null); 
 
   useEffect(() => {
     // Intersection Observer for scroll animations
@@ -195,6 +196,31 @@ const LandingPage = () => {
     }
   ];
 
+  // FAQ Data
+  const handleFaqClick = (index) => {
+      // If the clicked item is already open, close it. Otherwise, open it.
+      setOpenFaqIndex(openFaqIndex === index ? null : index);
+    };
+  const faqs = [
+      {
+        question: "Is this flood alert service completely free?",
+        answer: "Yes, our core SMS alert service is 100% free for all users. Our mission is to ensure public safety, and we believe critical alerts should be accessible to everyone.",
+      },
+      {
+        question: "How accurate is the flood prediction?",
+        answer: "We use a combination of real-time data from government weather APIs, meteorological satellites, and local rainfall gauges. While no system is perfect, our models are highly accurate and designed to provide warnings with enough time to prepare.",
+      },
+      {
+        question: "What areas do you currently cover?",
+        answer: "Currently, our service covers all major metropolitan areas and surrounding regions. We are rapidly expanding our coverage and you can enter your zip code to see if your specific location is monitored.",
+      },
+      {
+        question: "How do I unsubscribe from the alerts?",
+        answer: "You can unsubscribe at any time by replying 'STOP' to any alert message you receive. You will be immediately removed from our notification list with no questions asked.",
+      },
+    ];
+
+
   return (
     <div className="landing-page">
       <Header loggedOut={true} />
@@ -317,6 +343,23 @@ const LandingPage = () => {
                   Learn More →
                 </a>
               </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      <section className="faq-section">
+        <div className="faq-container">
+          <h2 className="section-title">Frequently Asked Questions</h2>
+          <div className="faq-list">
+            {faqs.map((faq, index) => (
+              <FaqItem
+                key={index}
+                faq={faq}
+                index={index}
+                isOpen={openFaqIndex === index}
+                onClick={handleFaqClick}
+              />
             ))}
           </div>
         </div>
