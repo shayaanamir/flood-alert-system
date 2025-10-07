@@ -15,6 +15,7 @@ import DamageDetails from "../components/DamageDetails";
 import DamageRespond from "../components/DamageRespond";
 import ShelterManagement from "./ShelterManagement";
 import ReportsManagement from "./Resources";
+import axios from "axios";
 import {
   Cloud,
   CloudRain,
@@ -29,6 +30,66 @@ import {
 
 export default function AdminDashboard(props) {
   const [time, setTime] = useState(new Date());
+
+  const [fetched_data, setData] = useState(null);
+  const [fetchedDataDaily, setDataDaily] = useState(null);
+  const [selectedDay, setSelectedDay] = useState(null);
+
+  const handleFetch = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/weather-data/hourly?date=${selectedDay.time}`
+      );
+      const hourlyData = res.data.hourly;
+
+      const hourlyForecast = hourlyData.time.map((hourTime, idx) => ({
+        time: hourTime,
+        temperature: hourlyData.temperature_2m[idx] ?? null,
+        rain: hourlyData.rain[idx] ?? null,
+        precipitationProbability:
+          hourlyData.precipitation_probability[idx] ?? null,
+        weatherCode: hourlyData.weather_code[idx] ?? null,
+      }));
+
+      setData(hourlyForecast);
+    } catch (err) {
+      setData(null);
+      console.log("Error loading data from api", err);
+    }
+  };
+
+  const handleFetchDaily = async () => {
+    try {
+      const res = await axios.get(`http://localhost:5000/weather-data/daily`);
+      const dailyData = res.data.daily;
+
+      const dailyForecast = dailyData.time.map((date, idx) => ({
+        time: date,
+        weatherCode: dailyData.weather_code[idx],
+        precipitationSum: dailyData.precipitation_sum[idx],
+        precipitationProbabilityMax:
+          dailyData.precipitation_probability_max[idx],
+        tempMax: dailyData.temperature_2m_max[idx],
+        tempMin: dailyData.temperature_2m_min[idx],
+      }));
+      setDataDaily(dailyForecast);
+    } catch (err) {
+      setData(null);
+      console.log("Error loading data from api", err);
+    }
+  };
+
+  useEffect(() => {
+    if (selectedDay) {
+      handleFetch();
+    }
+  }, [selectedDay]);
+
+  useEffect(() => {
+    console.log("Data fetched from api", fetched_data);
+    console.log("Daily data fetched from api", fetchedDataDaily);
+    console.log("Seelcted Day", selectedDay);
+  }, [fetched_data, fetchedDataDaily, selectedDay]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -46,8 +107,6 @@ export default function AdminDashboard(props) {
     { label: "Pressure", value: "1013 hPa", icon: Gauge },
     { label: "UV Index", value: "3 Moderate", icon: Sun },
   ];
-
-  const [selectedDay, setSelectedDay] = useState(null);
 
   return (
     <>
@@ -96,7 +155,12 @@ export default function AdminDashboard(props) {
               </svg>
               Send Alerts
             </button>
-            <button className=" dashboard-default dashboard-header-button">
+            <button
+              className=" dashboard-default dashboard-header-button"
+              onClick={() => {
+                handleFetchDaily();
+              }}
+            >
               <svg
                 xmlns="http://www.w3.org/2000/svg"
                 width="16"
@@ -250,11 +314,13 @@ export default function AdminDashboard(props) {
               Weather Forecast
             </div>
             <div className="dashboard-default dashboard-forecast-body">
-              {data.weatherData.map((day, index) => (
+              {fetchedDataDaily?.map((day, index) => (
                 <ForecastDay
                   key={index}
                   data={day}
-                  onClick={() => setSelectedDay(day)}
+                  onClick={() => {
+                    setSelectedDay(day);
+                  }}
                 />
               ))}
             </div>
@@ -281,11 +347,15 @@ export default function AdminDashboard(props) {
             </div>
           </div>
         </div>
-
-        <HourlyForecast
-          data={selectedDay}
-          onClose={() => setSelectedDay(null)}
-        />
+        {selectedDay && fetched_data?.length > 0 && (
+          <HourlyForecast
+            data={fetched_data}
+            dailyData={fetchedDataDaily.filter((h) =>
+              h.time.startsWith(selectedDay.time)
+            )}
+            onClose={() => setSelectedDay(null)}
+          />
+        )}
       </div>
     </>
   );
