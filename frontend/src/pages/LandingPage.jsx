@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import "../styles/LandingPage.css";
 import FaqItem from "../components/FaqItem";
-import Header from "../components/global/Header";
+import Navbar from "../components/Navbar";
 import Footer from "../components/global/Footer";
 import FeatureCard from "../components/FeatureCard";
 import { useNavigate } from "react-router-dom";
@@ -223,10 +223,10 @@ const LandingPage = () => {
 
   return (
     <div className="landing-page">
-      <Header loggedOut={true} />
+      <Navbar />
 
       {/* Hero Section */}
-      <section className="hero">
+      <section id="hero" className="hero">
         <div className="hero-content">
           <h1 className="hero-title">Stay Safe From Floods</h1>
           <p className="hero-subtitle">
@@ -255,7 +255,7 @@ const LandingPage = () => {
       </section>
 
       {/* Features Section */}
-      <section className="features">
+      <section id="features" className="features">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">How FloodAlert Protects You</h2>
@@ -276,7 +276,7 @@ const LandingPage = () => {
       </section>
 
       {/* How It Works Section - Timeline */}
-      <section className="how-it-works">
+      <section id="how-it-works" className="how-it-works">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">How It Works</h2>
@@ -303,7 +303,7 @@ const LandingPage = () => {
       </section>
 
       {/* Impact Section */}
-      <section className="impact">
+      <section id="impact" className="impact">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Our Impact</h2>
@@ -324,7 +324,7 @@ const LandingPage = () => {
       </section>
 
       {/* Safety Resources Section - Bento Grid */}
-      <section className="safety-resources">
+      <section id="safety-resources" className="safety-resources">
         <div className="container">
           <div className="section-header">
             <h2 className="section-title">Flood Safety Resources</h2>
@@ -348,7 +348,7 @@ const LandingPage = () => {
         </div>
       </section>
 
-      <section className="faq-section">
+      <section id="faq-section" className="faq-section">
         <div className="faq-container">
           <h2 className="section-title">Frequently Asked Questions</h2>
           <div className="faq-list">
