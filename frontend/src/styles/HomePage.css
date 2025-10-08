@@ -249,7 +249,7 @@ body {
 .map-popup strong { font-size: 14px; color: #0f172a; }
 .map-popup .risk-critical { font-size: 12px; color: #dc2626; font-weight: 600; text-transform: capitalize; }
 .map-popup .risk-high { font-size: 12px; color: #ea580c; font-weight: 600; text-transform: capitalize; }
-.map-popup .risk-moderate { font-size: 12px; color: #d4b94d; font-weight: 600; text-transform: capitalize; }
+.map-popup .risk-moderate { font-size: 12px; color: #eee890 !important; font-weight: 600; text-transform: capitalize; }
 
 /* Chart loading */
 .chart-loading { padding: 40px; text-align: center; color: #64748b; }
