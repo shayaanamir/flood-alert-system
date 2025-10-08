@@ -3,6 +3,7 @@ import InputBlock from "../components/InputBlock";
 import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
+import axios from "axios";
 
 const LoginPage = () => {
   const [isSignUp, setIsSignUp] = useState(false);
@@ -20,16 +21,17 @@ const LoginPage = () => {
   }, [location.state]);
 
   const navigate = useNavigate();
+  const API_BASE_URL = "http://localhost:5000/login-signup";
 
-  const demoUser = {
-    email: "test@example.com",
-    password: "user123",
-  };
+  // const demoUser = {
+  //   email: "test@example.com",
+  //   password: "user123",
+  // };
 
-  const demoAdmin = {
-    email: "admin@example.com",
-    password: "admin123",
-  };
+  // const demoAdmin = {
+  //   email: "admin@example.com",
+  //   password: "admin123",
+  // };
 
   function toggleStatus() {
     setIsSignUp(!isSignUp);
@@ -46,7 +48,7 @@ const LoginPage = () => {
     return /\S+@\S+\.\S+/.test(mail);
   }
 
-  function handleSubmit(e) {
+  async function handleSubmit(e) {
     e.preventDefault();
     setSubmitted(true);
     setError("");
@@ -61,21 +63,44 @@ const LoginPage = () => {
       return;
     }
 
-    if (isSignUp) {
-      // signup flow
-      if (password !== confirmPass) {
-        setError("Passwords do not match.");
-        return;
-      }
-      navigate("/home");
-    } else {
-      // login flow
-      if (email === demoUser.email && password === demoUser.password) {
-        navigate("/home");
-      } else if (email === demoAdmin.email && password === demoAdmin.password) {
-        navigate("/admin-dashboard");
+    try {
+      if (isSignUp) {
+        // --- SIGNUP flow ---
+        if (password !== confirmPass) {
+          setError("Passwords do not match.");
+          return;
+        }
+
+        const res = await axios.post(`${API_BASE_URL}/signup`, {
+          email,
+          password,
+        });
+
+        if (res.status === 201 || res.status === 200) {
+          alert("Signup successful! Please login.");
+          setIsSignUp(false);
+        }
       } else {
-        setError("Invalid email or password.");
+        // --- LOGIN flow ---
+        const res = await axios.post(`${API_BASE_URL}/login`, {
+          email,
+          password,
+        });
+
+        if (res.status === 200) {
+          const user = res.data.user;
+          console.log("data", user);
+
+          // Example: redirect based on role
+          if (user.role === "admin") navigate("/admin-dashboard");
+          else navigate("/home");
+        }
+      }
+    } catch (err) {
+      if (err.response) {
+        setError(err.response.data.message || "Something went wrong.");
+      } else {
+        setError("Unable to connect to server.");
       }
     }
   }
@@ -134,13 +159,13 @@ const LoginPage = () => {
           {error && submitted && <p className="error-message">{error}</p>}
 
           <div className="default login-footer">
-            <p className="default">
+            <div className="default">
               {isSignUp ? "Already have an account?" : "Don't have an account?"}
               &nbsp;
               <div onClick={toggleStatus} className="status-button">
                 {isSignUp ? "Log in" : "Sign Up"}
               </div>
-            </p>
+            </div>
           </div>
         </form>
       </div>
