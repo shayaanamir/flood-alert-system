@@ -1,46 +1,98 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import Header from '../components/global/Header';
 import Footer from '../components/global/Footer';
 import SearchBox from '../components/SearchBox';
 import LocationCard from '../components/LocationCard';
 import RiskAssessment from '../components/RiskAssessment';
 import RainfallForecast from '../components/RainfallForecast';
+import { useLocationConversion } from '../hooks/useLocationConversion';
+import { useWeatherData } from '../hooks/useWeatherData';
 import '../styles/viewRisk.css';
 
 const ViewRisk = () => {
-  const [selectedLocation, setSelectedLocation] = useState('Mumbai, Maharashtra');
   const [searchQuery, setSearchQuery] = useState('');
+  const [isInitialized, setIsInitialized] = useState(false);
+  const lastLocationRef = useRef('');
+
+  // Initialize location conversion hook
+  const {
+    latitude,
+    longitude,
+    location,
+    setLatitude,
+    setLongitude,
+    setLocation,
+    handleGetCoordinates,
+    loading: locationLoading
+  } = useLocationConversion();
+
+  // Initialize weather data hook with chosenDate
+  const {
+    currentData,
+    dailyData,
+    hourlyData,
+    selectedDay,
+    chosenDate,
+    setChosenDate,
+    loading: weatherLoading,
+    error: weatherError
+  } = useWeatherData(latitude, longitude);
+
+  // Debug: Log the data
+  useEffect(() => {
+    console.log('Current Data:', currentData);
+    console.log('Daily Data:', dailyData);
+    console.log('Selected Day:', selectedDay);
+    console.log('Chosen Date:', chosenDate);
+    console.log('Hourly Data:', hourlyData);
+    console.log('Latitude:', latitude, 'Longitude:', longitude);
+  }, [currentData, dailyData, selectedDay, chosenDate, hourlyData, latitude, longitude]);
+
+  // Set initial location only once
+  useEffect(() => {
+    if (!isInitialized) {
+      setLocation('Mumbai, Maharashtra');
+      setIsInitialized(true);
+    }
+  }, [isInitialized, setLocation]);
+
+  // Trigger coordinate fetch when location changes
+  useEffect(() => {
+    if (location && isInitialized && location !== lastLocationRef.current) {
+      lastLocationRef.current = location;
+      handleGetCoordinates();
+    }
+  }, [location, isInitialized]);
 
   const handleSearch = () => {
     if (searchQuery.trim()) {
-      setSelectedLocation(searchQuery);
+      setLocation(searchQuery);
+      setSearchQuery(''); // Clear search input after search
     }
   };
 
   const handleUseLocation = () => {
-    setSelectedLocation('Your Current Location');
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(
+        (position) => {
+          setLatitude(position.coords.latitude.toString());
+          setLongitude(position.coords.longitude.toString());
+          setLocation('Your Current Location');
+        },
+        (error) => {
+          console.error('Error getting location:', error);
+        }
+      );
+    }
   };
 
-  const locationData = {
-    location: selectedLocation,
-    weather: 'Heavy Rain',
-    temperature: '28°F',
-    riskLevel: 'Moderate',
-    riskDescription: 'There is flood risk. Be prepared to take action if conditions worsen.',
-    expectedRainfall: 45,
-    floodProbability: 65,
-    significantFloodingRisk: true,
-    rainfallForecast: [
-      { time: '00:00', intensity: 'Light', color: '#4A90E2' },
-      { time: '03:00', intensity: 'Light', color: '#4A90E2' },
-      { time: '06:00', intensity: 'Moderate', color: '#F5A623' },
-      { time: '09:00', intensity: 'Heavy', color: '#D0021B' },
-      { time: '12:00', intensity: 'Moderate', color: '#F5A623' },
-      { time: '15:00', intensity: 'Moderate', color: '#F5A623' },
-      { time: '18:00', intensity: 'Light', color: '#4A90E2' },
-      { time: '21:00', intensity: 'Light', color: '#4A90E2' }
-    ]
+  // Example: Function to handle date selection in ViewRisk
+  const handleDateChange = (date) => {
+    console.log('ViewRisk: Date changed to', date);
+    setChosenDate(date);
   };
+
+  const isLoading = locationLoading || weatherLoading;
 
   return (
     <div className="view-risk-page">
@@ -54,25 +106,34 @@ const ViewRisk = () => {
           onUseLocation={handleUseLocation}
         />
 
-        <LocationCard 
-          location={locationData.location}
-          weather={locationData.weather}
-          temperature={locationData.temperature}
-        />
+        {weatherError && (
+          <div className="error-message">
+            Error loading weather data: {weatherError}
+          </div>
+        )}
 
-        <div className="risk-forecast-row">
-          <RiskAssessment 
-            riskLevel={locationData.riskLevel}
-            riskDescription={locationData.riskDescription}
-            expectedRainfall={locationData.expectedRainfall}
-            floodProbability={locationData.floodProbability}
-            significantFloodingRisk={locationData.significantFloodingRisk}
-          />
+        {isLoading ? (
+          <div className="loading-message">Loading weather data...</div>
+        ) : (
+          <>
+            <LocationCard 
+              location={location || 'Mumbai, Maharashtra'}
+              weatherData={currentData}
+            />
 
-          <RainfallForecast 
-            forecastData={locationData.rainfallForecast}
-          />
-        </div>
+            <div className="risk-forecast-row">
+              <RiskAssessment 
+                weatherData={currentData}
+                chosenDate={chosenDate}
+                onDateChange={handleDateChange}
+              />
+              <RainfallForecast 
+                hourlyData={hourlyData}
+                chosenDate={chosenDate}
+              />
+            </div>
+          </>
+        )}
       </div>
 
       <Footer />
