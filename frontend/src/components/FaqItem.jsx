@@ -6,7 +6,6 @@ const FaqItem = ({ faq, index, isOpen, onClick }) => {
     <div className={`faq-item ${isOpen ? "active" : ""}`}>
       <button className="faq-question" onClick={() => onClick(index)}>
         <span>{faq.question}</span>
-        {/* REPLACE THE SPAN WITH THIS DIV */}
         <div className="faq-chevron"></div>
       </button>
       <div className={`faq-answer ${isOpen ? "open" : ""}`}>

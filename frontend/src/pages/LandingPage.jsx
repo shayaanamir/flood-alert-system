@@ -29,7 +29,7 @@ const LandingPage = () => {
 
     // Observe all animatable elements
     const elements = document.querySelectorAll(
-      '.feature-card, .timeline-step, .stat-card, .resource-card, .section-header, .cta-content'
+      '.feature-card, .timeline-step, .stat-card, .resource-card, .section-header, .cta-content, .faq-item'
     );
     
     elements.forEach((el) => {
