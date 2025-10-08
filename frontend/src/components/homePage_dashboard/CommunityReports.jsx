@@ -2,9 +2,9 @@ import React from 'react';
 
 // Hardcoded data for this component
 const communityReports = [
-  { id: 1, avatar: "https://i.pravatar.cc/150?img=1", text: "Water level rising near Main St.", time: "5 min ago" },
-  { id: 2, avatar: "https://i.pravatar.cc/150?img=2", text: "Road blocked at 5th Avenue", time: "12 min ago" },
-  { id: 3, avatar: "https://i.pravatar.cc/150?img=3", text: "Heavy rainfall in Worli area", time: "25 min ago" },
+  { id: 1, avatar: "https://randomuser.me/api/portraits/men/32.jpg", text: "Water level rising near Main St.", time: "5 min ago" },
+  { id: 2, avatar: "https://randomuser.me/api/portraits/women/44.jpg", text: "Road blocked at 5th Avenue", time: "12 min ago" },
+  { id: 3, avatar: "https://randomuser.me/api/portraits/men/65.jpg", text: "Heavy rainfall in Worli area", time: "25 min ago" },
 ];
 
 const CommunityReports = () => (
