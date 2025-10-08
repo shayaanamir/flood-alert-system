@@ -545,6 +545,17 @@ body {
   line-height: 1.6;
 }
 
+/* Scroll animation for FAQ items */
+.faq-item {
+  transition-delay: calc(var(--index, 0) * 0.1s);
+}
+
+.faq-item:nth-child(1) { --index: 0; }
+.faq-item:nth-child(2) { --index: 1; }
+.faq-item:nth-child(3) { --index: 2; }
+.faq-item:nth-child(4) { --index: 3; }
+.faq-item:nth-child(5) { --index: 4; }
+.faq-item:nth-child(6) { --index: 5; }
 
 
 /* Responsive Design */

@@ -1,5 +1,5 @@
-import { useEffect } from "react";
-import "../styles/AdminDashboard.css";
+import data from "../data_temp/sampleData.json";
+import React, { useEffect, useState } from "react";
 import {
   Cloud,
   CloudDrizzle,
@@ -8,10 +8,12 @@ import {
   CloudSnow,
   Zap,
   CloudFog,
+  Droplets,
+  Calendar,
+  Wind,
+  Thermometer,
+  Gauge,
 } from "lucide-react";
-
-import data from "../data_temp/sampleData.json";
-
 const WeatherIcon = ({ type, size = 40 }) => {
   const iconProps = { size, strokeWidth: 2 };
 
@@ -75,39 +77,61 @@ export const getWeatherDescription = (code) => {
   return data.weatherCodeData[code] || "Unknown weather condition";
 };
 
-export default function ForecastDay(data) {
-  useEffect(() => {
-    console.log("Anything?", data);
-  }, []);
+export default function CurrentInfo(props) {
   return (
-    <>
-      <div
-        className="dashboard-default dashboard-forecast-day"
-        onClick={data.onClick}
-      >
-        <div className="dashboard-default dashboard-forecast-icon">
-          <WeatherIcon
-            type={getWeatherDescription(data.data.weatherCode)}
-            size={24}
-          />
-        </div>
-        <div className="dashboard-default dashboard-forecast-text">
-          <span style={{ fontWeight: "500", fontSize: "0.9rem", padding: "0" }}>
-            {data.data.time}
-          </span>
-          <span style={{ fontWeight: "300", fontSize: "0.8rem", padding: "0" }}>
-            {getWeatherDescription(data.data.weatherCode)}
-          </span>
-        </div>
-        <div className="dashboard-default dashboard-forecast-extras">
-          <span style={{ fontWeight: "500", fontSize: "1rem" }}>
-            {data.data.precipitationSum}mm
-          </span>
-          <span style={{ fontWeight: "300", fontSize: "0.9rem" }}>
-            {data.data.tempMax}°C / {data.data.tempMin}°C
-          </span>
-        </div>
+    <div className="weather-detail-card">
+      <div className="weather-detail-icon">
+        {props.label == "wind_speed_10m" ? (
+          <Wind />
+        ) : props.label == "pressure_msl" ? (
+          <Gauge />
+        ) : props.label == "temperature_2m" ? (
+          <Thermometer />
+        ) : props.label == "relative_humidity_2m" ? (
+          <Droplets />
+        ) : props.label == "precipitation" ? (
+          <CloudRain />
+        ) : props.label == "weather_code" ? (
+          <WeatherIcon type={getWeatherDescription(props.value)} />
+        ) : (
+          ""
+        )}
       </div>
-    </>
+      <div className="weather-detail-info">
+        <p>
+          {props.label == "wind_speed_10m"
+            ? "Wind Speed"
+            : props.label == "pressure_msl"
+            ? " Pressure"
+            : props.label == "temperature_2m"
+            ? "Temperature"
+            : props.label == "relative_humidity_2m"
+            ? "Humidity"
+            : props.label == "precipitation"
+            ? "Precipitation"
+            : props.label == "weather_code"
+            ? "Current Weather"
+            : ""}
+        </p>
+        <p>
+          {props.label == "weather_code"
+            ? getWeatherDescription(props.value)
+            : props.value}
+          {props.label == "wind_speed_10m"
+            ? " km/hr"
+            : props.label == "pressure_msl"
+            ? " hPa"
+            : props.label == "temperature_2m"
+            ? "°C"
+            : props.label == "relative_humidity_2m"
+            ? "%"
+            : props.label == "precipitation"
+            ? " mm"
+            : props.label == "weather_code"
+            ? ""
+            : ""}
+        </p>
+      </div>
+    </div>
   );
 }

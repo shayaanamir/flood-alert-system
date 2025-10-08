@@ -1,38 +1,87 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Cloud,
+  CloudDrizzle,
   CloudRain,
   Sun,
-  CloudDrizzle,
-  Wind,
+  CloudSnow,
+  Zap,
+  CloudFog,
   Droplets,
-  Eye,
-  X,
   Calendar,
+  Wind,
 } from "lucide-react";
 
-const WeatherIcon = ({ type, size = 40, color = "white" }) => {
+import data from "../data_temp/sampleData.json";
+
+const WeatherIcon = ({ type, size = 40 }) => {
   const iconProps = { size, strokeWidth: 2 };
 
   switch (type) {
-    case "rain":
-      return (
-        <CloudRain {...iconProps} className="text-blue-600" color={color} />
-      );
-    case "drizzle":
-      return (
-        <CloudDrizzle {...iconProps} className="text-blue-500" color={color} />
-      );
-    case "cloud":
-      return <Cloud {...iconProps} className="text-gray-500" color={color} />;
-    case "sun":
-      return <Sun {...iconProps} className="text-yellow-500" color={color} />;
+    // Clear / Sun
+    case "Clear sky":
+    case "Mainly clear":
+      return <Sun {...iconProps} className="text-yellow-500" />;
+
+    // Cloudy
+    case "Partly cloudy":
+    case "Overcast":
+      return <Cloud {...iconProps} className="text-gray-500" />;
+
+    // Drizzle
+    case "Drizzle: Light":
+    case "Drizzle: Moderate":
+    case "Drizzle: Dense":
+    case "Freezing Drizzle: Light":
+    case "Freezing Drizzle: Dense":
+      return <CloudDrizzle {...iconProps} className="text-blue-500" />;
+
+    // Rain
+    case "Rain: Slight":
+    case "Rain: Moderate":
+    case "Rain: Heavy":
+    case "Freezing Rain: Light":
+    case "Freezing Rain: Heavy":
+    case "Rain showers: Slight":
+    case "Rain showers: Moderate":
+    case "Rain showers: Violent":
+      return <CloudRain {...iconProps} className="text-blue-600" />;
+
+    // Snow
+    case "Snow fall: Slight":
+    case "Snow fall: Moderate":
+    case "Snow fall: Heavy":
+    case "Snow grains":
+    case "Snow showers: Slight":
+    case "Snow showers: Heavy":
+      return <CloudSnow {...iconProps} className="text-blue-300" />;
+
+    // Fog
+    case "Fog":
+    case "Depositing rime fog":
+      return <CloudFog {...iconProps} className="text-gray-400" />;
+
+    // Thunderstorm
+    case "Thunderstorm: Slight or moderate":
+    case "Thunderstorm with slight hail":
+    case "Thunderstorm with heavy hail":
+      return <Zap {...iconProps} className="text-yellow-600" />;
+
+    // Default fallback
     default:
-      return <Cloud {...iconProps} className="text-gray-400" color={color} />;
+      return <Cloud {...iconProps} className="text-gray-400" />;
   }
 };
 
-export default function HourlyPopup({ data, onClose }) {
+export const getWeatherDescription = (code) => {
+  return data.weatherCodeData[code] || "Unknown weather condition";
+};
+
+export default function HourlyPopup({ dailyData, data, onClose }) {
+  useEffect(() => {
+    console.log("horly data: ", dailyData);
+  }, []);
+
   if (!data) return null;
 
   return (
@@ -130,7 +179,10 @@ export default function HourlyPopup({ data, onClose }) {
                   alignContent: "center",
                 }}
               >
-                <WeatherIcon type={data.icon} size={24} />
+                <WeatherIcon
+                  type={getWeatherDescription(dailyData[0].weatherCode)}
+                  size={24}
+                />
               </div>
 
               <div style={{ color: "white" }}>
@@ -149,11 +201,11 @@ export default function HourlyPopup({ data, onClose }) {
                       fontWeight: "500",
                     }}
                   >
-                    {data.condition}
+                    {getWeatherDescription(dailyData[0].weatherCode)}
                   </p>
                   &nbsp;
                   <p style={{ fontSize: "14px", fontWeight: "300", margin: 0 }}>
-                    ({data.day}, {data.date})
+                    ({dailyData[0].time})
                   </p>
                 </div>
 
@@ -173,7 +225,7 @@ export default function HourlyPopup({ data, onClose }) {
                   >
                     <Droplets size={16} />
                     <span style={{ fontWeight: "400", fontSize: "16px" }}>
-                      {data.rainfall}mm
+                      {dailyData[0].precipitationSum}mm
                     </span>
                   </div>
                   <div
@@ -188,7 +240,7 @@ export default function HourlyPopup({ data, onClose }) {
                     }}
                   >
                     <span style={{ fontWeight: "400", fontSize: "16px" }}>
-                      {data.temp}°C
+                      {dailyData[0].tempMax}°C / {dailyData[0].tempMin}°C
                     </span>
                   </div>
                 </div>
@@ -222,7 +274,7 @@ export default function HourlyPopup({ data, onClose }) {
             <div
               style={{ display: "flex", flexDirection: "column", gap: "12px" }}
             >
-              {data.hourly.map((hour, idx) => (
+              {data?.map((hour, idx) => (
                 <div
                   key={idx}
                   style={{
@@ -276,7 +328,11 @@ export default function HourlyPopup({ data, onClose }) {
                         justifyContent: "center",
                       }}
                     >
-                      <WeatherIcon type={hour.icon} size={25} color={"blue"} />
+                      <WeatherIcon
+                        type={getWeatherDescription(hour.weatherCode)}
+                        size={25}
+                        color={"blue"}
+                      />
                     </div>
                     <span
                       style={{
@@ -285,7 +341,7 @@ export default function HourlyPopup({ data, onClose }) {
                         color: "#374151",
                       }}
                     >
-                      {hour.condition}
+                      {getWeatherDescription(hour.weatherCode)}
                     </span>
                   </div>
 
@@ -316,7 +372,7 @@ export default function HourlyPopup({ data, onClose }) {
                           textAlign: "right",
                         }}
                       >
-                        {hour.rainfall}mm
+                        {hour.rain}mm
                       </span>
                     </div>
 
@@ -337,7 +393,7 @@ export default function HourlyPopup({ data, onClose }) {
                           color: "#1f2937",
                         }}
                       >
-                        {hour.temp}°C
+                        {hour.temperature}°C
                       </span>
                     </div>
                   </div>
@@ -376,13 +432,13 @@ export default function HourlyPopup({ data, onClose }) {
                   >
                     Weather Insight
                   </p>
-                  <p style={{ fontSize: "14px", color: "#1e40af", margin: 0 }}>
+                  {/* <p style={{ fontSize: "14px", color: "#1e40af", margin: 0 }}>
                     {data.rainfall > 40
                       ? "Heavy rainfall expected. Plan indoor activities and stay safe."
                       : data.rainfall > 20
                       ? "Moderate rainfall likely. Carry an umbrella when going out."
                       : "Light rainfall possible. Weather conditions are favorable."}
-                  </p>
+                  </p> */}
                 </div>
               </div>
             </div>
