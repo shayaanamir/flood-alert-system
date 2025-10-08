@@ -33,3 +33,18 @@ export const getDailyWeather = async (req, res) => {
     res.status(500).json({ message: "Falied to fetch flood data" });
   }
 };
+
+export const getCurrentWeather = async (req, res) => {
+  try {
+    const { lat, lon, date } = req.query;
+
+    const { data } = await axios.get(
+      `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&current=wind_speed_10m,pressure_msl,temperature_2m,relative_humidity_2m,weather_code,precipitation`
+    );
+
+    res.json(data);
+  } catch (err) {
+    console.error("Error fetching flood data: ", err.message);
+    res.status(500).json({ message: "Falied to fetch flood data" });
+  }
+};

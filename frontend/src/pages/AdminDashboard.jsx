@@ -15,6 +15,7 @@ import DamageDetails from "../components/DamageDetails";
 import DamageRespond from "../components/DamageRespond";
 import ShelterManagement from "./ShelterManagement";
 import ReportsManagement from "./Resources";
+import CurrentInfo from "../components/CurrentInfo";
 import axios from "axios";
 import {
   Cloud,
@@ -42,6 +43,8 @@ export default function AdminDashboard(props) {
   const [location, setLocation] = useState("");
   const [addressResult, setAddressResult] = useState("");
   const [coordsResult, setCoordsResult] = useState("");
+
+  const [currentData, setCurrentData] = useState(null);
 
   const [mode, setMode] = useState("toLocation");
 
@@ -72,6 +75,20 @@ export default function AdminDashboard(props) {
       }));
 
       setData(hourlyForecast);
+    } catch (err) {
+      setData(null);
+      console.log("Error loading data from api", err);
+    }
+  };
+
+  const handleFetchCurrent = async () => {
+    try {
+      const res = await axios.get(
+        `http://localhost:5000/weather-data/current?lat=${latitude}&lon=${longitude}`
+      );
+      console.log("Real data: ", res.data);
+      const data = res.data.current;
+      setCurrentData(data);
     } catch (err) {
       setData(null);
       console.log("Error loading data from api", err);
@@ -112,6 +129,7 @@ export default function AdminDashboard(props) {
       setAddressResult(res.data.address);
       setLocation(res.data.address);
       handleFetchDaily();
+      handleFetchCurrent();
     } catch (err) {
       console.error(err);
       alert("Error fetching location");
@@ -138,32 +156,51 @@ export default function AdminDashboard(props) {
 
       // Now call fetch daily with correct coordinates
       handleFetchDaily();
+      handleFetchCurrent();
     } catch (err) {
       console.error(err);
       alert("Error fetching coordinates");
     }
   };
 
-  // useEffect(() => {
-  //   if (selectedDay) {
-  //     handleFetch();
-  //   }
-  // }, [selectedDay]);
+  useEffect(() => {
+    if (selectedDay) {
+      handleFetch();
+    }
+  }, [selectedDay]);
+
+  useEffect(() => {
+    const getCurrentData = async () => {
+      try {
+        const res = await fetch(
+          `https://api.open-meteo.com/v1/forecast?latitude=${latitude}&longitude=${longitude}&current=temperature_2m,relative_humidity_2m,precipitation,wind_speed_10m,pressure_msl`
+        );
+        const data = await res.json();
+        setCurrentData(data.current);
+      } catch (err) {
+        console.error("Error fetching weather:", err);
+      }
+    };
+
+    getCurrentData();
+  }, [latitude, longitude]);
 
   useEffect(() => {
     handleFetchDaily();
+    handleFetchCurrent();
   }, []);
 
-  useEffect(() => {
-    handleFetchDaily();
-  }, [latitude, longitude]);
+  // useEffect(() => {
+  //   handleFetchDaily();
+  // }, [latitude, longitude]);
 
   useEffect(() => {
     console.log("Data fetched from api", fetched_data);
     console.log("Daily data fetched from api", fetchedDataDaily);
     console.log("Seelcted Day", selectedDay);
     console.log("Address received: ", addressResult);
-  }, [fetched_data, fetchedDataDaily, selectedDay, addressResult]);
+    console.log("Current: ", currentData);
+  }, [fetched_data, fetchedDataDaily, selectedDay, addressResult, currentData]);
 
   useEffect(() => {
     const timer = setInterval(() => {
@@ -468,20 +505,15 @@ export default function AdminDashboard(props) {
               <div className="dashboard-default weather-details">
                 <h3>Weather Details</h3>
                 <div className="weather-details-grid">
-                  {weatherDetails.map((detail, idx) => {
-                    const Icon = detail.icon;
-                    return (
-                      <div key={idx} className="weather-detail-card">
-                        <div className="weather-detail-icon">
-                          <Icon />
-                        </div>
-                        <div className="weather-detail-info">
-                          <p>{detail.label}</p>
-                          <p>{detail.value}</p>
-                        </div>
-                      </div>
-                    );
-                  })}
+                  {currentData ? (
+                    Object.entries(currentData)
+                      .filter(([key]) => key !== "time" && key !== "interval")
+                      .map(([key, value]) => (
+                        <CurrentInfo key={key} label={key} value={value} />
+                      ))
+                  ) : (
+                    <p>Loading weather data...</p>
+                  )}
                 </div>
               </div>
             </div>
