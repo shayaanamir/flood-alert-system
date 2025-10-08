@@ -198,7 +198,7 @@
 }
 
 /* Add padding to body to account for fixed navbar */
-body {
+.landing-page {
   padding-top: 80px;
 }
 
