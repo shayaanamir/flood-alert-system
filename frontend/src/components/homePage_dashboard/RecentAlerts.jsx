@@ -23,9 +23,9 @@ const RecentAlerts = () => (
         {recentAlerts.map((alert) => (
           <tr key={alert.id}>
             <td>{alert.location}</td>
-            <td><span className={`status-badge ${alert.severity}`}>{alert.severity}</span></td>
+            <td><span className={`status-badge status-badge-${alert.severity}`}>{alert.severity}</span></td>
             <td>{alert.time}</td>
-            <td><span className={`status-badge ${alert.status}`}>{alert.status}</span></td>
+            <td><span className={`status-badge status-badge-${alert.status}`}>{alert.status}</span></td>
           </tr>
         ))}
       </tbody>

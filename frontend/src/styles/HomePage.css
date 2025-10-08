@@ -324,10 +324,10 @@ body {
 .status-badge {
   padding: 4px 10px; border-radius: 20px; font-weight: 600; font-size: 0.8rem; display: inline-block; text-transform: capitalize;
 }
-.status-badge.critical { background-color: #fee2e2; color: #b91c1c; }
-.status-badge.moderate { background-color: #aaaa68; color: #c2410c; }
-.status-badge.active { background-color: #dbeafe; color: #2563eb; }
-.status-badge.resolved { background-color: #dcfce7; color: #16a34a; }
+.status-badge-critical { background-color: #fee2e2; color: #b91c1c; }
+.status-badge-moderate { background-color: #ffff40; color: #c2410c; }
+.status-badge-active { background-color: #dbeafe; color: #2563eb; }
+.status-badge-resolved { background-color: #dcfce7; color: #16a34a; }
 
 /* Footer Styles */
 .site-footer-main {
