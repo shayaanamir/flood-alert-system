@@ -13,6 +13,7 @@ const RiskAssessment = ({ weatherData }) => {
 
   useEffect(() => {
     if (!weatherData) return;
+    console.log("DAILY DATA: ", weatherData);
 
     // Calculate risk level - use correct field names
     const precipitation = weatherData.precipitation || 0;
@@ -29,7 +30,7 @@ const RiskAssessment = ({ weatherData }) => {
     setRiskLevel(level);
 
     // Calculate expected rainfall
-    setExpectedRainfall(Math.round(precipitation));
+    setExpectedRainfall(precipitation);
 
     // Calculate flood probability
     const pressure = weatherData.pressure_msl || weatherData.pressure || 1013;
