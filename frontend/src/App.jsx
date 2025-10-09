@@ -9,6 +9,8 @@ import Resources from "./pages/Resources";
 import ViewRisk from "./pages/ViewRisk";
 import Shelters from "./pages/Shelters";
 import ShelterManagement from "./pages/ShelterManagement";
+import AboutPage from "./pages/about";
+import HelpGuidelinesPage from "./pages/HelpGuidelines";
 
 function App() {
   return (
@@ -22,6 +24,8 @@ function App() {
         <Route path="/reports-management" element={<Resources />} />
         <Route path="/shelters" element={<Shelters />} />
         <Route path="/view-risk" element={<ViewRisk />} />
+        <Route path="/about" element={<AboutPage />} />
+        <Route path="/help-guidelines" element={<HelpGuidelinesPage />} />
       </Routes>
     </Router>
   );
