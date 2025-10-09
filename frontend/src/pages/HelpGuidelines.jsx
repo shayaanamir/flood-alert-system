@@ -3,6 +3,45 @@ import Header from '../components/global/Header';
 import Footer from '../components/global/Footer';
 import '../styles/components/helpGuidelines.css';
 
+// --- SVG Icon Components Defined Locally ---
+
+const ShieldIcon = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"></path>
+  </svg>
+);
+
+const InfoIcon = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <circle cx="12" cy="12" r="10"></circle>
+    <line x1="12" y1="16" x2="12" y2="12"></line>
+    <line x1="12" y1="8" x2="12.01" y2="8"></line>
+  </svg>
+);
+
+const HomeIcon = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path>
+    <polyline points="9 22 9 12 15 12 15 22"></polyline>
+  </svg>
+);
+
+const PhoneIcon = (props) => (
+  <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+    <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.63A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+  </svg>
+);
+
+const AlertTriangleIcon = (props) => (
+    <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" {...props}>
+        <path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path>
+        <line x1="12" y1="9" x2="12" y2="13"></line>
+        <line x1="12" y1="17" x2="12.01" y2="17"></line>
+    </svg>
+);
+
+// --- Main Page Component ---
+
 const HelpGuidelinesPage = () => {
   const stats = [
     { number: '15 cm', label: 'Can knock you down' },
@@ -13,7 +52,7 @@ const HelpGuidelinesPage = () => {
 
   const guidelineCards = [
     {
-      icon: '🛡️',
+      icon: <ShieldIcon />,
       title: 'Emergency Preparedness',
       description: 'Learn how to create an emergency kit, develop evacuation plans, and prepare your home for floods.',
       link: '#preparedness',
@@ -29,7 +68,7 @@ const HelpGuidelinesPage = () => {
       ]
     },
     {
-      icon: 'ℹ️',
+      icon: <InfoIcon />,
       title: 'During a Flood',
       description: 'Critical safety tips for what to do when flooding occurs, including evacuation procedures and staying safe.',
       link: '#during-flood',
@@ -46,7 +85,7 @@ const HelpGuidelinesPage = () => {
       ]
     },
     {
-      icon: '🏠',
+      icon: <HomeIcon />,
       title: 'After the Flood',
       description: 'Steps for returning home safely, documenting damage, and beginning the recovery process.',
       link: '#after-flood',
@@ -64,7 +103,7 @@ const HelpGuidelinesPage = () => {
       ]
     },
     {
-      icon: '📧',
+      icon: <PhoneIcon />,
       title: 'Contact Emergency Services',
       description: 'Quick access to emergency contacts, local authorities, and disaster relief organizations in India.',
       link: '#emergency-contacts',
@@ -144,7 +183,9 @@ const HelpGuidelinesPage = () => {
 
         {/* Emergency Alert Box */}
         <div className="help-guidelines-emergency-alert">
-          <div className="help-guidelines-alert-icon">⚠️</div>
+          <div className="help-guidelines-alert-icon">
+            <AlertTriangleIcon />
+          </div>
           <div className="help-guidelines-alert-content">
             <h3 className="help-guidelines-alert-title">Remember: Turn Around, Don't Drown</h3>
             <p className="help-guidelines-alert-text">

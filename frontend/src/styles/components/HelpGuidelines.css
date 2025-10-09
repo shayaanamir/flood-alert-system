@@ -193,9 +193,27 @@
   gap: 20px;
 }
 
+/* Find and replace this class */
+.help-guidelines-card-icon {
+  color: white; /* SVGs will inherit this color for their 'stroke' */
+}
+
+/* Add this new rule for the SVG element inside the icon wrapper */
+.help-guidelines-card-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Find and replace this class */
 .help-guidelines-alert-icon {
-  font-size: 2.5rem;
   flex-shrink: 0;
+  color: #92400e; /* Sets the color of the alert icon */
+}
+
+/* Add this new rule for the SVG element inside the icon wrapper */
+.help-guidelines-alert-icon svg {
+  width: 40px;
+  height: 40px;
 }
 
 .help-guidelines-alert-content {
