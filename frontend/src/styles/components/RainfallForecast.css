@@ -116,38 +116,7 @@
   transition: height 0.3s ease;
 }
 
-/* Specific heights for each bar to match the design */
-.forecast-item:nth-child(1) .intensity-bar {
-  height: 44px;
-}
-
-.forecast-item:nth-child(2) .intensity-bar {
-  height: 52px; 
-}
-
-.forecast-item:nth-child(3) .intensity-bar {
-  height: 70px; 
-}
-
-.forecast-item:nth-child(4) .intensity-bar {
-  height: 110px; 
-}
-
-.forecast-item:nth-child(5) .intensity-bar {
-  height: 80px; 
-}
-
-.forecast-item:nth-child(6) .intensity-bar {
-  height: 64px; 
-}
-
-.forecast-item:nth-child(7) .intensity-bar {
-  height: 38px;
-}
-
-.forecast-item:nth-child(8) .intensity-bar {
-  height: 28px;
-}
+/* Bar heights will be set dynamically via inline styles based on precipitation probability */
 
 .light {
   background-color: #4A90E2 !important;

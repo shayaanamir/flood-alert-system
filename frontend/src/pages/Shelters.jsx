@@ -1,15 +1,24 @@
-import { useState } from "react";
-import "../styles/Shelters.css";
+import { useState, useRef, useEffect } from "react";
+import L from 'leaflet';
+import 'leaflet/dist/leaflet.css';
+
+// Fix for default marker icons in Leaflet
+delete L.Icon.Default.prototype._getIconUrl;
+L.Icon.Default.mergeOptions({
+  iconRetinaUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon-2x.png',
+  iconUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-icon.png',
+  shadowUrl: 'https://cdnjs.cloudflare.com/ajax/libs/leaflet/1.7.1/images/marker-shadow.png',
+});
+
 import Header from "../components/global/Header";
 import Footer from "../components/global/Footer";
 import ShelterCard from "../components/ShelterCard";
-import "../styles/ShelterManagement.css";
 
 export default function Shelters() {
   const [shelters, setShelters] = useState([
     {
       name: "Shelter A",
-      address: "Address 101",
+      address: "Bandra West, Mumbai",
       capacity: 100,
       currentOccupancy: 75,
       contact: "(000) 111-2222",
@@ -18,12 +27,12 @@ export default function Shelters() {
       status: "available",
       accessibility: true,
       petFriendly: false,
-      lat: 40.7128,
-      lng: -74.006,
+      lat: 19.0596,
+      lng: 72.8295,
     },
     {
       name: "Shelter B",
-      address: "Address 202",
+      address: "Worli, Mumbai",
       capacity: 150,
       currentOccupancy: 120,
       contact: "(000) 333-4444",
@@ -32,12 +41,12 @@ export default function Shelters() {
       status: "nearly_full",
       accessibility: true,
       petFriendly: true,
-      lat: 40.7589,
-      lng: -73.9851,
+      lat: 19.0176,
+      lng: 72.8181,
     },
     {
       name: "Shelter C",
-      address: "Address 303",
+      address: "Andheri East, Mumbai",
       capacity: 200,
       currentOccupancy: 180,
       contact: "(000) 555-6666",
@@ -46,12 +55,12 @@ export default function Shelters() {
       status: "nearly_full",
       accessibility: false,
       petFriendly: false,
-      lat: 40.7282,
-      lng: -73.7949,
+      lat: 19.1136,
+      lng: 72.8697,
     },
     {
       name: "Shelter D",
-      address: "Address 404",
+      address: "Dadar, Mumbai",
       capacity: 80,
       currentOccupancy: 80,
       contact: "(000) 777-8888",
@@ -60,8 +69,8 @@ export default function Shelters() {
       status: "full",
       accessibility: true,
       petFriendly: false,
-      lat: 40.8176,
-      lng: -73.9782,
+      lat: 19.0178,
+      lng: 72.8478,
     },
   ]);
 
@@ -71,6 +80,11 @@ export default function Shelters() {
   const [filterAccessible, setFilterAccessible] = useState(false);
   const [selectedShelter, setSelectedShelter] = useState(null);
 
+  const mapRef = useRef(null);
+  const mapInstanceRef = useRef(null);
+  const markersRef = useRef([]);
+
+  // Filter shelters BEFORE using in useEffect
   const filteredShelters = shelters
     .filter((shelter) => {
       const matchesSearch =
@@ -86,14 +100,100 @@ export default function Shelters() {
     })
     .sort((a, b) => a.distance - b.distance);
 
+  // Initialize map
+  useEffect(() => {
+    if (!mapRef.current) return;
+
+    const map = L.map(mapRef.current).setView([19.0760, 72.8777], 12);
+    
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: '© OpenStreetMap contributors',
+      maxZoom: 19,
+    }).addTo(map);
+
+    mapInstanceRef.current = map;
+
+    return () => map.remove();
+  }, []);
+
+  // Update markers
+  useEffect(() => {
+    if (!mapInstanceRef.current) return;
+
+    markersRef.current.forEach(marker => marker.remove());
+    markersRef.current = [];
+
+    filteredShelters.forEach((shelter) => {
+      // Create custom icon based on status
+      const iconColor = 
+        shelter.status === 'available' ? '#22c55e' : 
+        shelter.status === 'nearly_full' ? '#f59e0b' : '#ef4444';
+
+      const customIcon = L.divIcon({
+        html: `<div style="
+          width: 30px;
+          height: 30px;
+          border-radius: 50%;
+          background-color: ${iconColor};
+          border: 3px solid white;
+          box-shadow: 0 2px 8px rgba(0,0,0,0.3);
+        "></div>`,
+        className: 'custom-shelter-marker',
+        iconSize: [30, 30],
+        iconAnchor: [15, 15],
+      });
+
+      const marker = L.marker([shelter.lat, shelter.lng], { icon: customIcon })
+        .addTo(mapInstanceRef.current)
+        .bindPopup(`
+          <div style="padding: 8px; min-width: 200px;">
+            <h3 style="margin: 0 0 8px 0; font-size: 16px; font-weight: 600;">${shelter.name}</h3>
+            <p style="margin: 4px 0; color: #64748b;">${shelter.address}</p>
+            <p style="margin: 4px 0;"><strong>Capacity:</strong> ${shelter.currentOccupancy}/${shelter.capacity}</p>
+            <p style="margin: 4px 0;"><strong>Distance:</strong> ${shelter.distance} km</p>
+            <div style="margin-top: 8px;">
+              <span style="
+                padding: 4px 8px;
+                border-radius: 12px;
+                font-size: 12px;
+                font-weight: 600;
+                background-color: ${shelter.status === 'available' ? '#dcfce7' : shelter.status === 'nearly_full' ? '#fef3c7' : '#fee2e2'};
+                color: ${shelter.status === 'available' ? '#16a34a' : shelter.status === 'nearly_full' ? '#ca8a04' : '#dc2626'};
+              ">
+                ${shelter.status === 'available' ? 'Available' : shelter.status === 'nearly_full' ? 'Nearly Full' : 'Full'}
+              </span>
+            </div>
+          </div>
+        `);
+
+      marker.on('click', () => setSelectedShelter(shelter));
+      markersRef.current.push(marker);
+    });
+
+    if (filteredShelters.length > 0) {
+      const bounds = L.latLngBounds(filteredShelters.map(s => [s.lat, s.lng]));
+      mapInstanceRef.current.fitBounds(bounds, { padding: [50, 50] });
+    }
+  }, [filteredShelters]);
+
+  // Center map on selected shelter
+  useEffect(() => {
+    if (!selectedShelter || !mapInstanceRef.current) return;
+
+    const shelterIndex = filteredShelters.findIndex(s => s === selectedShelter);
+    if (shelterIndex !== -1 && markersRef.current[shelterIndex]) {
+      const marker = markersRef.current[shelterIndex];
+      marker.openPopup();
+      mapInstanceRef.current.setView([selectedShelter.lat, selectedShelter.lng], 14);
+    }
+  }, [selectedShelter, filteredShelters]);
+
   const handleCall = (contact) => {
     window.location.href = `tel:${contact}`;
   };
 
   const handleDirections = (address) => {
-    const url = `https://www.google.com/maps/search/${encodeURIComponent(
-      address
-    )}`;
+    const url = `https://www.google.com/maps/search/${encodeURIComponent(address)}`;
     window.open(url, "_blank");
   };
 
@@ -120,12 +220,10 @@ export default function Shelters() {
                 width="16"
                 height="16"
                 fill="currentColor"
-                class="bi bi-exclamation-triangle-fill"
                 viewBox="0 0 16 16"
               >
                 <path d="M8.982 1.566a1.13 1.13 0 0 0-1.96 0L.165 13.233c-.457.778.091 1.767.98 1.767h13.713c.889 0 1.438-.99.98-1.767zM8 5c.535 0 .954.462.9.995l-.35 3.507a.552.552 0 0 1-1.1 0L7.1 5.995A.905.905 0 0 1 8 5m.002 6a1 1 0 1 1 0 2 1 1 0 0 1 0-2" />
               </svg>
-
               <span>Emergency: Call 101 | Non-Emergency: (000) 999-0000</span>
             </div>
 
@@ -216,83 +314,7 @@ export default function Shelters() {
             </div>
 
             <div className="map-container">
-              <div className="map-placeholder">
-                {/* Grid lines */}
-                <div className="map-grid">
-                  {Array.from({ length: 20 }).map((_, i) => (
-                    <div
-                      key={`v-${i}`}
-                      className="grid-line vertical"
-                      style={{ left: `${i * 5}%` }}
-                    ></div>
-                  ))}
-                  {Array.from({ length: 15 }).map((_, i) => (
-                    <div
-                      key={`h-${i}`}
-                      className="grid-line horizontal"
-                      style={{ top: `${i * 6.67}%` }}
-                    ></div>
-                  ))}
-                </div>
-
-                {/* Shelter markers */}
-                {filteredShelters.map((shelter, index) => (
-                  <div
-                    key={shelter.name}
-                    className={`shelter-marker ${shelter.status} ${
-                      selectedShelter === shelter ? "selected" : ""
-                    }`}
-                    style={{
-                      top: `${20 + index * 15}%`,
-                      left: `${30 + index * 20}%`,
-                    }}
-                    onClick={() => setSelectedShelter(shelter)}
-                  >
-                    <div className="marker-icon">
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        width="15"
-                        height="15"
-                        fill="currentColor"
-                        class="bi bi-geo-alt-fill"
-                        viewBox="0 0 16 16"
-                      >
-                        <path d="M8 16s6-5.686 6-10A6 6 0 0 0 2 6c0 4.314 6 10 6 10m0-7a3 3 0 1 1 0-6 3 3 0 0 1 0 6" />
-                      </svg>
-                    </div>
-                    <div className="marker-label">{shelter.name}</div>
-                  </div>
-                ))}
-
-                {/* Selected shelter info */}
-                {selectedShelter && (
-                  <div className="selected-shelter-info">
-                    <h3>{selectedShelter.name}</h3>
-                    <p>{selectedShelter.address}</p>
-                    <p>Distance: {selectedShelter.distance} km</p>
-                    <p>
-                      Capacity: {selectedShelter.currentOccupancy}/
-                      {selectedShelter.capacity}
-                    </p>
-                    <div className="info-actions">
-                      <button
-                        className="info-btn"
-                        onClick={() =>
-                          handleDirections(selectedShelter.address)
-                        }
-                      >
-                        Directions
-                      </button>
-                      <button
-                        className="info-btn"
-                        onClick={() => handleCall(selectedShelter.contact)}
-                      >
-                        Call
-                      </button>
-                    </div>
-                  </div>
-                )}
-              </div>
+              <div ref={mapRef} style={{ height: '500px', width: '100%' }}></div>
             </div>
           </div>
         </div>
