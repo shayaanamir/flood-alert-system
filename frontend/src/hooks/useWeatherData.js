@@ -31,6 +31,7 @@ export const useWeatherData = (latitude, longitude) => {
       setError(null);
       const data = await weatherService.getDaily(latitude, longitude);
       setDailyData(data);
+      console.log("fetched daily:", dailyData);
     } catch (err) {
       setError(err.message);
     } finally {

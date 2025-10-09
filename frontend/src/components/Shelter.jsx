@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 
 const Shelter = (props) => {
   const capacityPercentage = 45;
@@ -12,6 +12,10 @@ const Shelter = (props) => {
     e.stopPropagation(); // Prevent event bubbling
     props.onSupplyClick();
   };
+
+  useEffect(() => {
+    console.log(props);
+  }, [props]);
 
   return (
     <div
@@ -55,7 +59,7 @@ const Shelter = (props) => {
             fontSize: "13px",
           }}
         >
-          {props.id}
+          ID: {props.id}
         </span>
       </div>
 
@@ -80,7 +84,7 @@ const Shelter = (props) => {
             color: "#6b7280",
           }}
         >
-          {props.zone}
+          Zone: {props.zone}
         </div>
       </div>
 
