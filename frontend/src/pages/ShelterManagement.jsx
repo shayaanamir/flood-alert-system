@@ -6,6 +6,7 @@ import data from "../data_temp/sampleData.json";
 import ManagementTemplate from "../components/MangementTemplate";
 import QuickViews from "../components/QuickViews";
 import useShelter from "../hooks/useShelter";
+import "../styles/ShelterManagement.css";
 
 export default function ShelterManagement(props) {
   const [searchShelterQuery, setSearchShelterQuery] = useState("");
