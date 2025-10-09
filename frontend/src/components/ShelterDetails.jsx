@@ -71,7 +71,7 @@ export default function ShelterDetails({ shelter, onClose }) {
   if (!shelter) return null;
 
   const capacityPercentage =
-    (shelter.capacity.current / shelter.capacity.max) * 100;
+    (shelter.current_occupancy / shelter.max_occupancy) * 100;
 
   return (
     <>
@@ -211,7 +211,7 @@ export default function ShelterDetails({ shelter, onClose }) {
                     color: "#1f2937",
                   }}
                 >
-                  {shelter.capacity.current} / {shelter.capacity.max}
+                  {capacityPercentage}
                 </div>
                 <div
                   style={{
@@ -304,7 +304,7 @@ export default function ShelterDetails({ shelter, onClose }) {
                     color: "#1f2937",
                   }}
                 >
-                  {new Date(shelter.openedDate).toLocaleDateString("en-US", {
+                  {new Date(shelter.opened_date).toLocaleDateString("en-US", {
                     month: "short",
                     day: "numeric",
                     year: "numeric",
@@ -318,7 +318,7 @@ export default function ShelterDetails({ shelter, onClose }) {
                   }}
                 >
                   {Math.floor(
-                    (new Date() - new Date(shelter.openedDate)) /
+                    (new Date() - new Date(shelter.opened_date)) /
                       (1000 * 60 * 60 * 24)
                   )}{" "}
                   days active
@@ -359,7 +359,7 @@ export default function ShelterDetails({ shelter, onClose }) {
                     },
                     {
                       label: "Seniors",
-                      value: shelter.demographics.seniors,
+                      value: shelter.demographics.senior,
                       color: "#8b5cf6",
                     },
                   ].map((demo, idx) => (
@@ -607,7 +607,7 @@ export default function ShelterDetails({ shelter, onClose }) {
                         }}
                       >
                         Last updated:{" "}
-                        {new Date(shelter.lastUpdated).toLocaleString()}
+                        {new Date(shelter.last_updated).toLocaleString()}
                       </p>
                     </div>
                   </div>

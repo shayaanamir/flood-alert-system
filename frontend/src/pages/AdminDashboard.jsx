@@ -1,4 +1,4 @@
-// pages/AdminDashboard.jsx (REFACTORED)
+// pages/AdminDashboard.jsx (UPDATED)
 import React from "react";
 import "../styles/AdminDashboard.css";
 import Header from "../components/global/Header";
@@ -12,6 +12,8 @@ import { WeatherDetailsPanel } from "../components/admin_dashboard/WeatherDetail
 import { useWeatherData } from "../hooks/useWeatherData";
 import { useLocationConversion } from "../hooks/useLocationConversion";
 import { useClock } from "../hooks/useClock";
+import { useMultiLocationAlerts } from "../hooks/useMultiLocationAlerts";
+import MultiLocationAlert from "../components/MultilocationAlert";
 
 export default function AdminDashboard() {
   const time = useClock();
@@ -33,9 +35,21 @@ export default function AdminDashboard() {
     refreshAll,
   } = useWeatherData(locationHook.latitude, locationHook.longitude);
 
+  // Multi-location monitoring alerts
+  const {
+    alerts,
+    loading: alertsLoading,
+    refresh: refreshAlerts,
+  } = useMultiLocationAlerts();
+
   const handleSendAlerts = () => {
     // Implement alert sending logic
     console.log("Sending alerts...");
+  };
+
+  const handleRefreshAll = () => {
+    refreshAll();
+    refreshAlerts();
   };
 
   return (
@@ -46,7 +60,7 @@ export default function AdminDashboard() {
         <DashboardHeader
           time={time}
           location={locationHook.location || locationHook.addressResult}
-          onRefresh={refreshAll}
+          onRefresh={handleRefreshAll}
           onSendAlerts={handleSendAlerts}
         />
 
@@ -224,6 +238,9 @@ export default function AdminDashboard() {
             />
           </div>
         </div>
+
+        {/* Multi-Location Alerts */}
+        <MultiLocationAlert alerts={alerts} loading={alertsLoading} />
 
         {/* Hourly Forecast Modal */}
         {selectedDay && hourlyData?.length > 0 && (

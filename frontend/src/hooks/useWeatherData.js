@@ -32,7 +32,9 @@ export const useWeatherData = (latitude, longitude) => {
       setError(null);
       const data = await weatherService.getDaily(latitude, longitude);
       setDailyData(data);
-      
+
+      console.log("fetched daily:", dailyData);
+
       // Automatically select today (first day in the forecast)
       if (data && data.length > 0 && !selectedDay) {
         setSelectedDay(data[0]);
@@ -50,9 +52,15 @@ export const useWeatherData = (latitude, longitude) => {
     try {
       setLoading(true);
       setError(null);
-      console.log('📍 Fetching hourly for date:', date, 'at coords:', latitude, longitude);
+      console.log(
+        "📍 Fetching hourly for date:",
+        date,
+        "at coords:",
+        latitude,
+        longitude
+      );
       const data = await weatherService.getHourly(latitude, longitude, date);
-      console.log('Hourly data received:', data);
+      console.log("Hourly data received:", data);
       setHourlyData(data);
     } catch (err) {
       setError(err.message);
@@ -69,20 +77,23 @@ export const useWeatherData = (latitude, longitude) => {
 
   // Auto-fetch when coordinates change
   useEffect(() => {
-    console.log('🌍 useWeatherData - Coordinates changed:', { latitude, longitude });
+    console.log("🌍 useWeatherData - Coordinates changed:", {
+      latitude,
+      longitude,
+    });
     if (latitude && longitude) {
-      console.log('Fetching weather data for:', latitude, longitude);
+      console.log("Fetching weather data for:", latitude, longitude);
       fetchCurrent();
       fetchDaily();
     } else {
-      console.log('❌ No coordinates available');
+      console.log("❌ No coordinates available");
     }
   }, [latitude, longitude]);
 
   // Fetch hourly when selectedDay changes
   useEffect(() => {
     if (selectedDay?.time && latitude && longitude) {
-      console.log('📅 Selected day changed, fetching hourly');
+      console.log("📅 Selected day changed, fetching hourly");
       fetchHourly(selectedDay.time);
     }
   }, [selectedDay, latitude, longitude]);
@@ -90,7 +101,7 @@ export const useWeatherData = (latitude, longitude) => {
   // Fetch hourly when chosenDate changes (independent of selectedDay)
   useEffect(() => {
     if (chosenDate && latitude && longitude) {
-      console.log('📆 Chosen date changed, fetching hourly for:', chosenDate);
+      console.log("📆 Chosen date changed, fetching hourly for:", chosenDate);
       fetchHourly(chosenDate);
     }
   }, [chosenDate, latitude, longitude]);

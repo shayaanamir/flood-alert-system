@@ -3,6 +3,7 @@ import cors from "cors";
 import floodRoutes from "./routes/floodRoutes.js";
 import coordinatesRoutes from "./routes/coordinatesRoutes.js";
 import loginRoutes from "./routes/loginRoutes.js";
+import shelterRoutes from "./routes/shelterRoutes.js";
 
 const app = express();
 app.use(cors());
@@ -19,6 +20,8 @@ app.use("/weather-data", floodRoutes);
 app.use("/location-conversion", coordinatesRoutes);
 
 app.use("/login-signup", loginRoutes);
+
+app.use("/shelter", shelterRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));

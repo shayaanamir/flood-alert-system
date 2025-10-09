@@ -4,13 +4,20 @@ import ShelterSupply from "../components/ShelterSupply";
 import { useEffect, useState } from "react";
 import data from "../data_temp/sampleData.json";
 import ManagementTemplate from "../components/MangementTemplate";
-import QuickViews from "./../components/QuickViews";
+import QuickViews from "../components/QuickViews";
+import useShelter from "../hooks/useShelter";
+import "../styles/ShelterManagement.css";
 
 export default function ShelterManagement(props) {
   const [searchShelterQuery, setSearchShelterQuery] = useState("");
   const [selectedShelter, setSelectedShelter] = useState(null);
   const [supplyModalShelter, setSupplyModalShelter] = useState(null);
   const [filterOpen, setFilterOpen] = useState(false);
+
+  const [zone, setZone] = useState(""); // user input for zone
+  const { shelterData, loading, error } = useShelter(
+    zone ? Number(zone) : null
+  );
 
   const filteredShelters = data.sheltersData.filter(
     (shelter) =>
@@ -84,9 +91,11 @@ export default function ShelterManagement(props) {
         <div className="dashboard-default dashboard-shelters-header">
           <input
             className="dashboard-default"
-            type="text"
+            type="number"
+            value={zone}
+            onChange={(e) => setZone(e.target.value)}
             placeholder="Search Shelters"
-          ></input>
+          />
           <button className="dashboard-default button-1">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -124,20 +133,27 @@ export default function ShelterManagement(props) {
             <span>Resources</span>
             <span>Actions</span>
           </div>
-          {filteredShelters.map((shelter, index) => {
+          {loading && <p>Loading...</p>}
+
+          {error && <p style={{ color: "red" }}>{error}</p>}
+
+          {!loading && !error && shelterData.length === 0 && (
+            <p>No shelter data found.</p>
+          )}
+          {shelterData?.map((p) => {
             const capacityPercentage =
-              (shelter.capacity.current / shelter.capacity.max) * 100;
+              (p.current_occupancy / p.max_occupancy) * 100;
             return (
               <Shelter
-                id={shelter.id}
-                name={shelter.name}
-                address={shelter.address.split(",")[0]}
-                zone={shelter.zone}
+                id={p.id}
+                name={p.name}
+                address={p.location}
+                zone={p.zone}
                 capacity={capacityPercentage}
-                foodStatus={shelter.resources.food.status}
-                medicalStatus={shelter.resources.medical.status}
-                onDetailsClick={() => setSelectedShelter(shelter)}
-                onSupplyClick={() => setSupplyModalShelter(shelter)}
+                foodStatus={p.resources.food.status}
+                medicalStatus={p.resources.medical.status}
+                onDetailsClick={() => setSelectedShelter(p)}
+                onSupplyClick={() => setSupplyModalShelter(p)}
               />
             );
           })}
