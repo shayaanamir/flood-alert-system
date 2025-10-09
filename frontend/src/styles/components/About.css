@@ -1,0 +1,287 @@
+/* About Page Styles */
+.about-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f0f4f8 0%, #e8edf2 100%);
+}
+
+.about-page-main {
+  flex: 1;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  width: 100%;
+}
+
+/* Hero Section */
+.about-page-hero {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.about-page-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.about-page-subtitle {
+  font-size: 1.25rem;
+  color: #64748b;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Section Styles */
+.about-page-section {
+  background-color: #ffffff;
+  border-radius: 16px;
+  padding: 48px;
+  margin-bottom: 32px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+  border: 1px solid #e2e8f0;
+}
+
+.about-page-section-header {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+/* Section Icon Styles */
+.about-page-section-icon {
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white; /* This will set the stroke color for the SVG */
+}
+
+.about-page-section-icon svg {
+  width: 32px; /* 2rem */
+  height: 32px; /* 2rem */
+}
+
+/* Feature Card Icon Styles */
+.about-page-feature-icon {
+  margin-bottom: 16px;
+  color: #3b82f6; /* Example color for feature icons */
+}
+
+.about-page-feature-icon svg {
+  width: 48px; /* 3rem */
+  height: 48px; /* 3rem */
+}
+
+.about-page-section-title {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin: 0;
+}
+
+.about-page-section-text {
+  font-size: 1.125rem;
+  color: #475569;
+  line-height: 1.8;
+}
+
+/* Features Section */
+.about-page-features-container {
+  margin-bottom: 48px;
+}
+
+.about-page-features-heading {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 32px;
+  text-align: center;
+}
+
+.about-page-features-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 24px;
+}
+
+.about-page-feature-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 32px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+  transition: all 0.3s ease;
+}
+
+.about-page-feature-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 8px 20px rgba(59, 130, 246, 0.15);
+}
+
+.about-page-feature-icon {
+  font-size: 3rem;
+  margin-bottom: 16px;
+}
+
+.about-page-feature-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.about-page-feature-description {
+  font-size: 0.95rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* Technology Section */
+.about-page-technology-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 32px;
+}
+
+.about-page-technology-item-title {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.about-page-technology-item-text {
+  font-size: 1rem;
+  color: #475569;
+  line-height: 1.7;
+}
+
+/* Contact Section */
+.about-page-contact-section {
+  text-align: center;
+}
+
+.about-page-contact-heading {
+  font-size: 2rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 16px;
+}
+
+.about-page-contact-text {
+  font-size: 1.125rem;
+  color: #64748b;
+  margin-bottom: 32px;
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.about-page-contact-actions {
+  display: flex;
+  gap: 16px;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.about-page-contact-btn {
+  padding: 14px 32px;
+  border-radius: 8px;
+  font-weight: 600;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border: none;
+}
+
+.about-page-primary-btn {
+  background-color: #3b82f6;
+  color: white;
+  box-shadow: 0 2px 8px rgba(59, 130, 246, 0.3);
+}
+
+.about-page-primary-btn:hover {
+  background-color: #2563eb;
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(59, 130, 246, 0.4);
+}
+
+.about-page-secondary-btn {
+  background-color: #f1f5f9;
+  color: #475569;
+  border: 1px solid #e2e8f0;
+}
+
+.about-page-secondary-btn:hover {
+  background-color: #e2e8f0;
+}
+
+/* Responsive Styles */
+@media (max-width: 768px) {
+  .about-page-title {
+    font-size: 2rem;
+  }
+
+  .about-page-subtitle {
+    font-size: 1rem;
+  }
+
+  .about-page-section {
+    padding: 32px 24px;
+  }
+
+  .about-page-section-title {
+    font-size: 1.5rem;
+  }
+
+  .about-page-features-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-page-technology-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .about-page-contact-actions {
+    flex-direction: column;
+  }
+
+  .about-page-contact-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .about-page-main {
+    padding: 32px 16px;
+  }
+
+  .about-page-title {
+    font-size: 1.75rem;
+  }
+
+  
+@media (max-width: 480px) {
+  /* ... other styles ... */
+
+  .about-page-section-icon {
+    width: 50px;
+    height: 50px;
+  }
+  
+  /* Add this new rule for the SVG inside */
+  .about-page-section-icon svg {
+    width: 24px; /* 1.5rem */
+    height: 24px; /* 1.5rem */
+  }
+}
+}

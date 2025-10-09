@@ -1,0 +1,352 @@
+/* Help Guidelines Page Styles */
+.help-guidelines-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 100vh;
+  background: linear-gradient(180deg, #f0f4f8 0%, #e8edf2 100%);
+}
+
+.help-guidelines-main {
+  flex: 1;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 48px 24px;
+  width: 100%;
+}
+
+/* Hero Section */
+.help-guidelines-hero {
+  text-align: center;
+  margin-bottom: 64px;
+}
+
+.help-guidelines-title {
+  font-size: 3rem;
+  font-weight: 700;
+  color: #0f172a;
+  margin-bottom: 16px;
+  background: linear-gradient(135deg, #1e3a8a, #3b82f6);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.help-guidelines-subtitle {
+  font-size: 1.25rem;
+  color: #64748b;
+  max-width: 800px;
+  margin: 0 auto;
+}
+
+/* Quick Stats */
+.help-guidelines-stats-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 24px;
+  margin-bottom: 48px;
+}
+
+.help-guidelines-stat-card {
+  background-color: #ffffff;
+  border-radius: 12px;
+  padding: 24px;
+  text-align: center;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.help-guidelines-stat-number {
+  font-size: 2.5rem;
+  font-weight: 700;
+  color: #dc2626;
+  margin-bottom: 8px;
+}
+
+.help-guidelines-stat-label {
+  font-size: 0.875rem;
+  color: #64748b;
+  font-weight: 500;
+}
+
+/* Guidelines Grid */
+.help-guidelines-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(450px, 1fr));
+  gap: 32px;
+  margin-bottom: 48px;
+}
+
+.help-guidelines-card {
+  background-color: #ffffff;
+  border-radius: 16px;
+  border: 1px solid #e2e8f0;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+  overflow: hidden;
+  transition: all 0.3s ease;
+}
+
+.help-guidelines-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 24px rgba(59, 130, 246, 0.15);
+}
+
+/* Card Header */
+.help-guidelines-card-header {
+  padding: 32px;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.help-guidelines-card-icon-wrapper {
+  width: 64px;
+  height: 64px;
+  border-radius: 16px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.help-guidelines-card-icon {
+  font-size: 32px;
+}
+
+.help-guidelines-card-title {
+  font-size: 1.75rem;
+  font-weight: 600;
+  color: #0f172a;
+  margin-bottom: 12px;
+}
+
+.help-guidelines-card-description {
+  font-size: 1rem;
+  color: #64748b;
+  line-height: 1.6;
+}
+
+/* Card Content */
+.help-guidelines-card-content {
+  padding: 32px;
+}
+
+.help-guidelines-card-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.help-guidelines-card-item {
+  display: flex;
+  gap: 12px;
+  font-size: 0.95rem;
+  color: #475569;
+  line-height: 1.6;
+}
+
+.help-guidelines-card-item-number {
+  flex-shrink: 0;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.875rem;
+  font-weight: 600;
+}
+
+.help-guidelines-card-item-text {
+  flex: 1;
+}
+
+/* Card Footer */
+.help-guidelines-card-footer {
+  padding: 20px 32px;
+  background-color: #f8fafc;
+  border-top: 1px solid #e2e8f0;
+}
+
+.help-guidelines-card-link {
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.95rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  transition: all 0.2s ease;
+}
+
+.help-guidelines-card-link:hover {
+  opacity: 0.8;
+}
+
+/* Emergency Alert Box */
+.help-guidelines-emergency-alert {
+  background-color: #fef3c7;
+  border: 2px solid #f59e0b;
+  border-radius: 12px;
+  padding: 32px;
+  display: flex;
+  align-items: flex-start;
+  gap: 20px;
+}
+
+/* Find and replace this class */
+.help-guidelines-card-icon {
+  color: white; /* SVGs will inherit this color for their 'stroke' */
+}
+
+/* Add this new rule for the SVG element inside the icon wrapper */
+.help-guidelines-card-icon svg {
+  width: 32px;
+  height: 32px;
+}
+
+/* Find and replace this class */
+.help-guidelines-alert-icon {
+  flex-shrink: 0;
+  color: #92400e; /* Sets the color of the alert icon */
+}
+
+/* Add this new rule for the SVG element inside the icon wrapper */
+.help-guidelines-alert-icon svg {
+  width: 40px;
+  height: 40px;
+}
+
+.help-guidelines-alert-content {
+  flex: 1;
+}
+
+.help-guidelines-alert-title {
+  font-size: 1.5rem;
+  font-weight: 600;
+  color: #92400e;
+  margin-bottom: 12px;
+}
+
+.help-guidelines-alert-text {
+  font-size: 1.125rem;
+  color: #78350f;
+  line-height: 1.7;
+  margin-bottom: 16px;
+}
+
+.help-guidelines-alert-actions {
+  display: flex;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.help-guidelines-alert-btn {
+  padding: 12px 24px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+  font-size: 0.95rem;
+  transition: all 0.2s ease;
+}
+
+.help-guidelines-alert-btn.help-guidelines-primary-btn {
+  background-color: #f59e0b;
+  color: white;
+  border: none;
+}
+
+.help-guidelines-alert-btn.help-guidelines-primary-btn:hover {
+  background-color: #d97706;
+}
+
+.help-guidelines-alert-btn.help-guidelines-secondary-btn {
+  background-color: #ffffff;
+  color: #f59e0b;
+  border: 2px solid #f59e0b;
+}
+
+.help-guidelines-alert-btn.help-guidelines-secondary-btn:hover {
+  background-color: #fef3c7;
+}
+
+/* Responsive Styles */
+@media (max-width: 1024px) {
+  .help-guidelines-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+@media (max-width: 768px) {
+  .help-guidelines-title {
+    font-size: 2rem;
+  }
+
+  .help-guidelines-subtitle {
+    font-size: 1rem;
+  }
+
+  .help-guidelines-stats-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .help-guidelines-card-header {
+    padding: 24px;
+  }
+
+  .help-guidelines-card-content {
+    padding: 24px;
+  }
+
+  .help-guidelines-card-title {
+    font-size: 1.5rem;
+  }
+
+  .help-guidelines-emergency-alert {
+    flex-direction: column;
+    padding: 24px;
+  }
+
+  .help-guidelines-alert-title {
+    font-size: 1.25rem;
+  }
+
+  .help-guidelines-alert-text {
+    font-size: 1rem;
+  }
+
+  .help-guidelines-alert-actions {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .help-guidelines-alert-btn {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .help-guidelines-main {
+    padding: 32px 16px;
+  }
+
+  .help-guidelines-title {
+    font-size: 1.75rem;
+  }
+
+  .help-guidelines-stats-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .help-guidelines-stat-number {
+    font-size: 2rem;
+  }
+
+  .help-guidelines-card-icon-wrapper {
+    width: 50px;
+    height: 50px;
+  }
+
+  .help-guidelines-card-icon {
+    font-size: 24px;
+  }
+}

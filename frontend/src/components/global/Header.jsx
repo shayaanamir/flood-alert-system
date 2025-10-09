@@ -7,15 +7,21 @@ const Header = (props) => {
     <header className={props.loggedOut ? "header header-landing" : "header"}>
       <div className="header-container">
         <div className={props.loggedOut ? "logo logo-landing" : "logo"}>
-          <img src="/icon.svg" height="45px" width="35px" className="logo-img" />
+          <img src="/icon.svg" height="45px" width="35px" className="logo-img" alt="FloodAlert Logo"/>
           <h4>FloodAlert</h4>
         </div>
 
         {props.loggedOut ? (
           <nav className="navigation">
-            <a className="nav-link nav-link-landing">Home</a>
-            <a className="nav-link nav-link-landing">About</a>
-            <a className="nav-link nav-link-landing">Contact</a>
+            <a className="nav-link nav-link-landing" onClick={() => navigate("/")}>
+              Home
+            </a>
+            <a className="nav-link nav-link-landing" onClick={() => navigate("/about")}>
+              About
+            </a>
+            <a className="nav-link nav-link-landing" onClick={() => navigate("/contact")}>
+              Contact
+            </a>
             <a
               className="nav-link nav-link-landing"
               onClick={() => {
@@ -102,8 +108,12 @@ const Header = (props) => {
             >
               Find Shelter
             </a>
-            <a className="nav-link">Help</a>
-            <a className="nav-link">About</a>
+            <a className="nav-link" onClick={() => navigate("/help-guidelines")}>
+              Help
+            </a>
+            <a className="nav-link" onClick={() => navigate("/about")}>
+              About
+            </a>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="50px"
@@ -119,6 +129,7 @@ const Header = (props) => {
               />
             </svg>
           </nav>
+
         )}
       </div>
     </header>
