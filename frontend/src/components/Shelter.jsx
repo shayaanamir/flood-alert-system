@@ -143,7 +143,7 @@ const Shelter = (props) => {
         >
           <div
             style={{
-              width: `${props.capacity}%`,
+              width: `${Math.round(props.capacity, 2)}%`,
               height: "100%",
               backgroundColor: "#22c55e",
               borderRadius: "3px",
