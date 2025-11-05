@@ -3,8 +3,8 @@ import React from 'react';
 const RecentAlerts = ({ alerts = [] }) => {
     const getSeverityColor = (severity) => {
         switch (severity) {
-            case 'Critical': return '#ff2a2aff';
-            case 'Moderate': return '#ffd700';
+            case 'Critical': return 'rgba(255, 82, 82, 1)';
+            case 'Moderate': return '#fffd7dff';
             case 'Low': return '#90ee90';
             default: return '#ccc';
         }

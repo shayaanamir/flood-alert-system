@@ -21,6 +21,7 @@ const HomePage = () => {
     const [weatherData, setWeatherData] = useState(null);
     const [alertStats, setAlertStats] = useState(null);
     const [recentAlerts, setRecentAlerts] = useState([]);
+    
 
     // Fetch weather data
     useEffect(() => {
@@ -65,40 +66,39 @@ const HomePage = () => {
     }, []);
 
     const summaryCardData = [
-        { 
-            id: 1, 
-            icon: <WarningIcon />, 
-            title: "Current Risk Level", 
-            value: weatherData ? (weatherData.precipitation > 10 ? "High" : weatherData.precipitation > 5 ? "Medium" : "Low") : "...", 
-            subtitle: "Based on live data", 
-            customClass: "risk-level" 
-        },
-        { 
-            id: 2, 
-            icon: <BellIcon />, 
-            title: "Active Alerts", 
-            value: alertStats ? alertStats.total.toString() : "...", 
-            subtitle: alertStats ? `${alertStats.critical} critical, ${alertStats.moderate} moderate` : "Loading...", 
-            customClass: "active-alerts" 
-        },
-        { 
-            id: 3, 
-            icon: <ShelterIcon />, 
-            title: "Nearby Shelters", 
-            value: "12", 
-            subtitle: "Available within 5km", 
-            customClass: "nearby-shelters" 
-        },
-        { 
-            id: 4, 
-            icon: <RainfallIcon />, 
-            title: "Rainfall (Now)", 
-            value: weatherData ? `${weatherData.precipitation}mm` : "...", 
-            subtitle: "Real-time data", 
-            customClass: "rainfall-total" 
-        },
-    ];
-
+    { 
+        id: 1, 
+        icon: <WarningIcon />, 
+        title: "Current Risk Level", 
+        value: weatherData ? (weatherData.precipitation > 10 ? "High" : weatherData.precipitation > 5 ? "Medium" : "Low") : "...", 
+        subtitle: "Based on live data", 
+        customClass: "risk-level" 
+    },
+    { 
+        id: 2, 
+        icon: <BellIcon />, 
+        title: "Active Alerts", 
+        value: alertStats ? alertStats.total.toString() : "...", 
+        subtitle: alertStats ? `${alertStats.critical} critical, ${alertStats.moderate} moderate` : "Loading...", 
+        customClass: "active-alerts" 
+    },
+    { 
+        id: 3, 
+        icon: <ShelterIcon />, 
+        title: "Nearby Shelters", 
+        value: "12", 
+        subtitle: "Available within 5km", 
+        customClass: "nearby-shelters" 
+    },
+    { 
+        id: 4, 
+        icon: <RainfallIcon />, 
+        title: "Rainfall (Now)", 
+        value: weatherData ? `${weatherData.precipitation}mm` : "...", 
+        subtitle: "Real-time data", 
+        customClass: "rainfall-total" 
+    },
+];
     const mapLayers = ["Rainfall", "Road Closures", "Shelters"];
 
     return (

@@ -56,13 +56,15 @@ export const getRecentAlerts = async (req, res) => {
 // Get alert statistics
 export const getAlertStats = async (req, res) => {
   try {
-    const total = await Alert.countDocuments({ status: 'Active' });
+    const total = await Alert.countDocuments({ 
+      status: { $in: ['Active', 'Pending'] }  // ← Count both Active and Pending
+    });
     const critical = await Alert.countDocuments({ 
-      status: 'Active', 
+      status: { $in: ['Active', 'Pending'] },
       severity: 'Critical' 
     });
     const moderate = await Alert.countDocuments({ 
-      status: 'Active', 
+      status: { $in: ['Active', 'Pending'] },
       severity: 'Moderate' 
     });
     
