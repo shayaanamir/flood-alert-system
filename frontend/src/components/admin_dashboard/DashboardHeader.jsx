@@ -10,9 +10,7 @@ export const DashboardHeader = ({
   return (
     <div className="dashboard-default dashboard-header">
       <div className="dashboard-default dashboard-header-title">
-        <span style={{ fontWeight: "600", fontSize: "1.4rem", color: "white" }}>
-          Emergency Flood Management
-        </span>
+        <span>Emergency Flood Management</span>
         <span
           style={{
             fontWeight: "300",
