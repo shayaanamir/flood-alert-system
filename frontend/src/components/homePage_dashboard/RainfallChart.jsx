@@ -1,273 +1,131 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState, useRef } from "react";
 
-const RainfallChart = () => {
-  const [chartData, setChartData] = useState({ 
-    points: [], 
-    pathData: '', 
-    maxValue: 0
-  });
-  const [isLoading, setIsLoading] = useState(true);
+const DEFAULT_COORDS = { lat: 19.0760, lon: 72.8777 }; // Mumbai
+const REFRESH_MS = 5 * 60 * 1000; // 5 minutes
+const W = 800;
+const H = 200;
+const PAD = { l: 40, r: 20, t: 20, b: 30 };
+
+/**
+ * Lightweight RainfallChart
+ * props:
+ *  - coords: { lat, lon } optional
+ *  - hourly: { time:[], precipitation:[] } optional (preferred)
+ *  - refresh: boolean (default false) - when true, re-fetch every 5 minutes
+ */
+export default function RainfallChart({ coords, hourly, refresh = false }) {
+  const [points, setPoints] = useState([]); // [{x,y,val,label}]
+  const [loading, setLoading] = useState(!hourly);
   const [error, setError] = useState(null);
+  const timerRef = useRef(null);
 
-  const chartWidth = 900;
-  const chartHeight = 320;
-  const padding = { top: 40, right: 80, bottom: 50, left: 60 };
+  // Small helper: process hourly -> points
+  function process(hourlyObj) {
+    const times = Array.isArray(hourlyObj?.time) ? hourlyObj.time : [];
+    const precip = Array.isArray(hourlyObj?.precipitation) ? hourlyObj.precipitation : [];
+    const start = Math.max(0, precip.length - 12);
+    const p = precip.slice(start);
+    const t = times.slice(start);
+    const max = Math.max(...p, 1);
+    const drawableW = W - PAD.l - PAD.r;
+    const drawableH = H - PAD.t - PAD.b;
+    const n = Math.max(1, p.length);
 
-  // Risk thresholds (mm/h)
-  const thresholds = {
-    critical: 50,    // Red zone
-    high: 25,        // Orange zone
-    moderate: 10,    // Yellow zone
-    low: 0          // Green zone
-  };
+    return p.map((v, i) => {
+      const x = PAD.l + (i / Math.max(1, n - 1)) * drawableW;
+      const y = PAD.t + (1 - v / max) * drawableH;
+      const label = t[i] ? new Date(t[i]).toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" }) : "";
+      return { x, y, v, label };
+    });
+  }
 
-  const processApiData = (apiData) => {
-    const times = apiData.hourly.time;
-    const precipitation = apiData.hourly.precipitation;
-    
-    // Take past 12 hours only
-    const past12 = precipitation.slice(0, 12);
-    const times12 = times.slice(0, 12);
-    
-    const maxValue = Math.max(...past12, thresholds.critical + 10, 1);
-    const drawableWidth = chartWidth - padding.left - padding.right;
-    const drawableHeight = chartHeight - padding.top - padding.bottom;
-
-    const points = past12.map((value, i) => ({
-      x: padding.left + (i / (past12.length - 1)) * drawableWidth,
-      y: chartHeight - padding.bottom - (value / maxValue) * drawableHeight,
-      value: value,
-      time: new Date(times12[i]).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }),
-      isPast: true
-    }));
-
-    const pathData = points.map((p, i) => i === 0 ? `M ${p.x},${p.y}` : `L ${p.x},${p.y}`).join(' ');
-    
-    return { points, pathData, maxValue };
-  };
+  async function fetchHourly(lat, lon) {
+    try {
+      setLoading(true);
+      setError(null);
+      const url = `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}&longitude=${encodeURIComponent(lon)}&hourly=precipitation&past_hours=12&timezone=auto`;
+      const res = await fetch(url);
+      if (!res.ok) throw new Error(`API ${res.status}`);
+      const json = await res.json();
+      if (!json?.hourly) throw new Error("Bad response");
+      setPoints(process(json.hourly));
+    } catch (err) {
+      console.error("RainfallChart:", err);
+      setError(err.message || "Fetch error");
+      setPoints([]);
+    } finally {
+      setLoading(false);
+    }
+  }
 
   useEffect(() => {
-    const apiUrl = 'https://api.open-meteo.com/v1/forecast?latitude=19.0760&longitude=72.8777&hourly=precipitation&past_hours=12';
+    // If parent provided hourly data, use it and skip fetching
+    if (hourly && hourly.time && hourly.precipitation) {
+      setPoints(process(hourly));
+      setLoading(false);
+      setError(null);
+      return;
+    }
 
-    fetch(apiUrl)
-      .then(response => response.json())
-      .then(data => setChartData(processApiData(data)))
-      .catch(error => setError(error.message))
-      .finally(() => setIsLoading(false));
-  }, []);
+    const lat = (coords && coords.lat) ?? DEFAULT_COORDS.lat;
+    const lon = (coords && coords.lon) ?? DEFAULT_COORDS.lon;
+    fetchHourly(lat, lon);
 
-  if (isLoading) return (
-    <div style={{ padding: '40px', textAlign: 'center', color: '#64748b' }}>
-      Loading chart data... ⏳
-    </div>
-  );
-  
-  if (error) return (
-    <div style={{ padding: '40px', textAlign: 'center', color: '#ef4444' }}>
-      Error fetching data: {error}
-    </div>
-  );
+    // optional refresh
+    if (refresh) {
+      timerRef.current = setInterval(() => fetchHourly(lat, lon), REFRESH_MS);
+    }
+    return () => {
+      if (timerRef.current) clearInterval(timerRef.current);
+    };
+  }, [coords, hourly, refresh]);
 
-  const { points, pathData, maxValue } = chartData;
-  const drawableHeight = chartHeight - padding.top - padding.bottom;
+  if (loading) return <div style={{ padding: 24, color: "#64748b" }}>Loading chart...</div>;
+  if (error) return <div style={{ padding: 24, color: "#ef4444" }}>Error: {error}</div>;
+  if (!points || points.length === 0) return <div style={{ padding: 24, color: "#64748b" }}>No rainfall data</div>;
 
-  // Calculate Y positions for threshold lines
-  const getThresholdY = (value) => {
-    return chartHeight - padding.bottom - (value / maxValue) * drawableHeight;
-  };
+  // Build simple path
+  const path = points.map((p, i) => `${i === 0 ? "M" : "L"} ${p.x} ${p.y}`).join(" ");
 
   return (
-    <svg width="100%" height={chartHeight} viewBox={`0 0 ${chartWidth} ${chartHeight}`} className="rainfall-chart">
-      {/* Risk zones backgrounds */}
-      <defs>
-        <linearGradient id="criticalZone" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#dc2626" stopOpacity="0.1" />
-          <stop offset="100%" stopColor="#dc2626" stopOpacity="0.05" />
-        </linearGradient>
-        <linearGradient id="highZone" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#ea580c" stopOpacity="0.1" />
-          <stop offset="100%" stopColor="#ea580c" stopOpacity="0.05" />
-        </linearGradient>
-        <linearGradient id="moderateZone" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#eab308" stopOpacity="0.1" />
-          <stop offset="100%" stopColor="#eab308" stopOpacity="0.05" />
-        </linearGradient>
-        <linearGradient id="rainfallGradient" x1="0" x2="0" y1="0" y2="1">
-          <stop offset="0%" stopColor="#3b82f6" stopOpacity="0.3" />
-          <stop offset="100%" stopColor="#3b82f6" stopOpacity="0.05" />
-        </linearGradient>
-      </defs>
-
-      {/* Critical zone */}
-      <rect 
-        x={padding.left} 
-        y={padding.top} 
-        width={chartWidth - padding.left - padding.right} 
-        height={getThresholdY(thresholds.critical) - padding.top}
-        fill="url(#criticalZone)"
-      />
-
-      {/* High zone */}
-      <rect 
-        x={padding.left} 
-        y={getThresholdY(thresholds.critical)} 
-        width={chartWidth - padding.left - padding.right} 
-        height={getThresholdY(thresholds.high) - getThresholdY(thresholds.critical)}
-        fill="url(#highZone)"
-      />
-
-      {/* Moderate zone */}
-      <rect 
-        x={padding.left} 
-        y={getThresholdY(thresholds.high)} 
-        width={chartWidth - padding.left - padding.right} 
-        height={getThresholdY(thresholds.moderate) - getThresholdY(thresholds.high)}
-        fill="url(#moderateZone)"
-      />
-
-      {/* Grid lines */}
-      {[0, 1, 2, 3, 4, 5].map((i) => {
-        const y = chartHeight - padding.bottom - (i * drawableHeight / 5);
-        const value = Math.round((maxValue / 5) * i);
-        return (
-          <g key={i}>
-            <line 
-              x1={padding.left} 
-              y1={y} 
-              x2={chartWidth - padding.right} 
-              y2={y} 
-              stroke="#e2e8f0" 
-              strokeWidth="1" 
-              strokeDasharray={i === 0 ? "0" : "4 4"}
-            />
-            <text x={padding.left - 10} y={y + 4} textAnchor="end" fontSize="11" fill="#94a3b8">
-              {value}
-            </text>
-          </g>
-        );
-      })}
-
-      {/* Threshold lines with labels */}
-      <line 
-        x1={padding.left} 
-        y1={getThresholdY(thresholds.critical)} 
-        x2={chartWidth - padding.right} 
-        y2={getThresholdY(thresholds.critical)} 
-        stroke="#dc2626" 
-        strokeWidth="2" 
-        strokeDasharray="6 3"
-      />
-      <text 
-        x={chartWidth - padding.right + 10} 
-        y={getThresholdY(thresholds.critical) + 4} 
-        textAnchor="start" 
-        fontSize="11" 
-        fill="#dc2626"
-        fontWeight="600"
-      >
-        Critical
-      </text>
-
-      <line 
-        x1={padding.left} 
-        y1={getThresholdY(thresholds.high)} 
-        x2={chartWidth - padding.right} 
-        y2={getThresholdY(thresholds.high)} 
-        stroke="#ea580c" 
-        strokeWidth="2" 
-        strokeDasharray="6 3"
-      />
-      <text 
-        x={chartWidth - padding.right + 10} 
-        y={getThresholdY(thresholds.high) + 4} 
-        textAnchor="start" 
-        fontSize="11" 
-        fill="#ea580c"
-        fontWeight="600"
-      >
-        High
-      </text>
-
-      <line 
-        x1={padding.left} 
-        y1={getThresholdY(thresholds.moderate)} 
-        x2={chartWidth - padding.right} 
-        y2={getThresholdY(thresholds.moderate)} 
-        stroke="#eab308" 
-        strokeWidth="2" 
-        strokeDasharray="6 3"
-      />
-      <text 
-        x={chartWidth - padding.right + 10} 
-        y={getThresholdY(thresholds.moderate) + 4} 
-        textAnchor="start" 
-        fontSize="11" 
-        fill="#eab308"
-        fontWeight="600"
-      >
-        Moderate
-      </text>
-
-      {/* X-axis labels - show every 2 hours */}
-      {points.filter((_, i) => i % 2 === 0).map((p, idx) => (
-        <text 
-          key={idx} 
-          x={p.x} 
-          y={chartHeight - padding.bottom + 20} 
-          textAnchor="middle" 
-          fontSize="11" 
-          fill="#64748b"
-          fontWeight="400"
-        >
-          {p.time}
-        </text>
+    <svg viewBox={`0 0 ${W} ${H}`} width="100%" height={H} className="rainfall-chart">
+      {/* simple background grid (3 lines) */}
+      {[0, 0.5, 1].map((f, i) => (
+        <line
+          key={i}
+          x1={PAD.l}
+          x2={W - PAD.r}
+          y1={PAD.t + f * (H - PAD.t - PAD.b)}
+          y2={PAD.t + f * (H - PAD.t - PAD.b)}
+          stroke="#eef2f6"
+          strokeWidth={1}
+        />
       ))}
 
-      {/* Remove the vertical "NOW" line and past/forecast separator */}
-
-      {/* Y-axis label */}
-      <text 
-        x={padding.left - 45} 
-        y={chartHeight / 2} 
-        textAnchor="middle" 
-        fontSize="12" 
-        fill="#64748b" 
-        transform={`rotate(-90, ${padding.left - 45}, ${chartHeight / 2})`}
-      >
-        Rainfall (mm/h)
-      </text>
-
-      {/* Data line gradient fill */}
-      <path 
-        d={`${pathData} L ${points[points.length - 1]?.x || 0} ${chartHeight - padding.bottom} L ${points[0]?.x || 0} ${chartHeight - padding.bottom} Z`} 
-        fill="url(#rainfallGradient)" 
-      />
-
-      {/* Data line - all past data (solid) */}
-      <path 
-        d={pathData} 
-        fill="none" 
-        stroke="#3b82f6" 
-        strokeWidth="3" 
-        strokeLinecap="round" 
-        strokeLinejoin="round" 
-      />
-
-      {/* Data points - show every 2 hours */}
+      {/* x labels (every 2 points) */}
       {points.filter((_, i) => i % 2 === 0).map((p, i) => (
+        <text key={i} x={p.x} y={H - PAD.b + 16} fontSize="10" fill="#64748b" textAnchor="middle">{p.label}</text>
+      ))}
+
+      {/* simple filled area (light) */}
+      <path d={`${path} L ${points[points.length - 1].x} ${H - PAD.b} L ${points[0].x} ${H - PAD.b} Z`} fill="#3b82f6" opacity="0.12" />
+
+      {/* stroke line */}
+      <path d={path} fill="none" stroke="#2563eb" strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
+
+      {/* points */}
+      {points.map((p, i) => (
         <g key={i}>
-          <circle cx={p.x} cy={p.y} r={5} fill="white" stroke="#3b82f6" strokeWidth="2" />
-          <title>{`${p.time}: ${p.value.toFixed(1)} mm/h`}</title>
+          <circle cx={p.x} cy={p.y} r={3.5} fill="#fff" stroke="#2563eb" strokeWidth={1.5} />
+          <title>{`${p.label}: ${Number(p.v).toFixed(1)} mm`}</title>
         </g>
       ))}
 
-      {/* Legend */}
-      <g transform={`translate(${padding.left}, ${chartHeight - 15})`}>
-        <line x1="0" y1="0" x2="25" y2="0" stroke="#3b82f6" strokeWidth="3" />
-        <text x="30" y="4" fontSize="11" fill="#64748b">Past 12 Hours</text>
-      </g>
+      {/* Y label */}
+      <text x={12} y={H / 2} textAnchor="middle" fontSize="11" fill="#64748b" transform={`rotate(-90, 12, ${H / 2})`}>mm/h</text>
+
+      {/* legend */}
+      <text x={PAD.l} y={PAD.t - 6} fontSize="11" fill="#0f172a" fontWeight="600">Past 12 hours</text>
     </svg>
   );
-};
-
-export default RainfallChart;
+}
