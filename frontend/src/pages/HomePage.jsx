@@ -18,6 +18,7 @@ import RecentAlerts from "../components/homePage_dashboard/RecentAlerts";
 
 const DEFAULT_COORDS = { lat: 19.0760, lon: 72.8777 }; // Mumbai fallback
 const NEARBY_RADIUS_KM = 10; // 10 km radius
+const WEATHER_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
 const HomePage = () => {
   const [activeLayer, setActiveLayer] = useState("Rainfall");
@@ -77,13 +78,9 @@ const HomePage = () => {
       }
 
       const url = `http://localhost:5000/shelter/nearby?lat=${encodeURIComponent(latNum)}&lon=${encodeURIComponent(lonNum)}&radius_km=${encodeURIComponent(radiusKm)}`;
-      // keep a console.debug for developer troubleshooting but not visible UI
-      console.debug("findNearbyShelters calling", url);
-
       const res = await fetch(url);
       if (!res.ok) {
-        const text = await res.text();
-        console.error("findNearbyShelters: non-ok response", res.status, text);
+        console.error("findNearbyShelters: non-ok response", res.status);
         setNearbyShelters([]);
         setNearbySheltersCount(0);
         return;
@@ -94,9 +91,22 @@ const HomePage = () => {
       const prepared = dataArr.map((s) => {
         const sLat = parseFloat(s.latitude ?? s.lat ?? s.location?.lat);
         const sLon = parseFloat(s.longitude ?? s.lon ?? s.location?.lon);
-        const distance_km = s.distance_km != null ? s.distance_km : (isFinite(sLat) && isFinite(sLon) ? Number(haversineDistanceKm(latNum, lonNum, sLat, sLon).toFixed(3)) : null);
-        return { id: s.id ?? s._id, name: s.name, address: s.address, status: s.status, latitude: sLat, longitude: sLon, distance_km };
-      }).sort((a,b) => (a.distance_km ?? 9999) - (b.distance_km ?? 9999));
+        const distance_km =
+          s.distance_km != null
+            ? s.distance_km
+            : isFinite(sLat) && isFinite(sLon)
+            ? Number(haversineDistanceKm(latNum, lonNum, sLat, sLon).toFixed(3))
+            : null;
+        return {
+          id: s.id ?? s._id,
+          name: s.name,
+          address: s.address,
+          status: s.status,
+          latitude: sLat,
+          longitude: sLon,
+          distance_km,
+        };
+      }).sort((a, b) => (a.distance_km ?? 9999) - (b.distance_km ?? 9999));
 
       setNearbyShelters(prepared);
       setNearbySheltersCount(prepared.length);
@@ -138,26 +148,27 @@ const HomePage = () => {
     );
   }, []); // run once
 
-  // Weather fetch (Open-Meteo)
+  // Weather fetch (Open-Meteo) - ensures we pick nearest hourly precipitation
   useEffect(() => {
     let isMounted = true;
+    let interval = null;
 
     async function fetchWeather() {
       try {
         const lat = coords?.lat ?? DEFAULT_COORDS.lat;
         const lon = coords?.lon ?? DEFAULT_COORDS.lon;
+
         const url =
           `https://api.open-meteo.com/v1/forecast?latitude=${encodeURIComponent(lat)}` +
           `&longitude=${encodeURIComponent(lon)}` +
           `&hourly=temperature_2m,precipitation,relativehumidity_2m,windspeed_10m` +
           `&current_weather=true&timezone=auto`;
 
-        console.debug("fetchWeather ->", url);
-
         const res = await fetch(url);
         if (!res.ok) throw new Error(`Weather fetch failed: ${res.status}`);
         const data = await res.json();
 
+        // find nearest hourly index to now
         const hourlyTimes = Array.isArray(data.hourly?.time) ? data.hourly.time : [];
         let nearestIndex = 0;
         if (hourlyTimes.length > 0) {
@@ -179,6 +190,7 @@ const HomePage = () => {
         const hourlyWind = Array.isArray(data.hourly?.windspeed_10m) ? data.hourly.windspeed_10m : [];
         const current = data.current_weather || {};
 
+        // use hourly nearest or current fallback if available
         const precipitation = (hourlyPrecip.length > 0 ? hourlyPrecip[nearestIndex] : (current.precipitation ?? 0)) ?? 0;
         const temperature = (hourlyTemp.length > 0 ? hourlyTemp[nearestIndex] : current.temperature) ?? null;
         const humidity = (hourlyHum.length > 0 ? hourlyHum[nearestIndex] : null) ?? null;
@@ -187,7 +199,7 @@ const HomePage = () => {
 
         const parsed = {
           temperature,
-          precipitation, // mm
+          precipitation, // mm for the hour
           windSpeed,
           humidity,
           timestamp,
@@ -196,20 +208,26 @@ const HomePage = () => {
             precipitation: hourlyPrecip,
             temperature: hourlyTemp,
             humidity: hourlyHum,
-            windspeed: hourlyWind
+            windspeed: hourlyWind,
           }
         };
 
         if (!isMounted) return;
         setWeatherData(parsed);
+        console.log("HomePage parsed weather:", parsed); // <-- debug: confirms fetch worked
       } catch (err) {
-        console.error("fetchWeather error", err);
+        if (isMounted) console.error("fetchWeather error", err);
       }
     }
 
+    // initial fetch and periodic refresh
     fetchWeather();
-    const interval = setInterval(fetchWeather, 5 * 60 * 1000);
-    return () => { isMounted = false; clearInterval(interval); };
+    interval = setInterval(fetchWeather, WEATHER_REFRESH_MS);
+
+    return () => {
+      isMounted = false;
+      if (interval) clearInterval(interval);
+    };
   }, [coords]);
 
   // Alerts & recent (unchanged)
