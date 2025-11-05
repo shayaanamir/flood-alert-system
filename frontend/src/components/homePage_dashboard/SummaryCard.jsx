@@ -1,7 +1,14 @@
-import React from 'react';
+import React from "react";
 
-const SummaryCard = ({ icon, title, value, subtitle, customClass }) => (
-  <div className={`dashboard-card summary-card ${customClass}`}>
+const SummaryCard = ({ icon, title, value, subtitle, customClass, badge, badgeClass }) => (
+  <div className={`dashboard-card summary-card ${customClass}`} style={{ position: "relative" }}>
+    {/* optional badge top-right */}
+    {badge && (
+      <div className={`summary-card-badge ${badgeClass || ""}`} aria-hidden>
+        {badge}
+      </div>
+    )}
+
     <div className="card-header">
       {icon}
       <span>{title}</span>
