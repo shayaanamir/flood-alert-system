@@ -2,20 +2,22 @@ import React, { useState, useEffect } from 'react';
 import { jwtDecode } from 'jwt-decode';
 import Header from '../components/global/Header';
 import '../styles/ProfilePage.css';
+import axios from 'axios';
 
 const ProfilePage = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [fetchingLocation, setFetchingLocation] = useState(false);
   const [profile, setProfile] = useState({
     full_name: '',
     email: '',
     phone: '',
-    user_id: ''
+    location: ''
   });
   const [userId, setUserId] = useState(null);
-
   const API_URL = 'http://localhost:5000/profile';
+  const LOCATION_API_URL = 'http://localhost:5000/location-conversion';
 
   useEffect(() => {
     // Get user ID from JWT token
@@ -26,7 +28,6 @@ const ProfilePage = () => {
       setLoading(false);
       return;
     }
-
     try {
       const decoded = jwtDecode(token);
       setUserId(decoded.id);
@@ -68,7 +69,7 @@ const ProfilePage = () => {
           full_name: result.data.full_name || '',
           email: result.data.email || '',
           phone: result.data.phone || '',
-          user_id: result.data.user_id || ''
+          location: result.data.location || ''
         });
         setError(null);
       } else {
@@ -97,6 +98,46 @@ const ProfilePage = () => {
     }));
   };
 
+  // Function to get user's current location
+  const handleGetMyLocation = async () => {
+    setFetchingLocation(true);
+    setError(null);
+
+    if (!navigator.geolocation) {
+      setError('Geolocation is not supported by your browser');
+      setFetchingLocation(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        try {
+          // Convert coordinates to address
+          const res = await axios.get(
+            `${LOCATION_API_URL}/location-from-coords?lat=${lat}&lon=${lon}`
+          );
+          setProfile(prev => ({
+            ...prev,
+            location: res.data.address
+          }));
+          setFetchingLocation(false);
+        } catch (err) {
+          console.error('Error fetching location:', err);
+          setError('Failed to fetch location address');
+          setFetchingLocation(false);
+        }
+      },
+      (error) => {
+        console.error('Geolocation error:', error);
+        setError('Unable to retrieve your location. Please enter manually.');
+        setFetchingLocation(false);
+      }
+    );
+  };
+
   const handleSave = async () => {
     try {
       setLoading(true);
@@ -111,7 +152,8 @@ const ProfilePage = () => {
         body: JSON.stringify({
           full_name: profile.full_name,
           email: profile.email,
-          phone: profile.phone
+          phone: profile.phone,
+          location: profile.location
         }),
       });
 
@@ -128,7 +170,7 @@ const ProfilePage = () => {
         full_name: result.data.full_name || '',
         email: result.data.email || '',
         phone: result.data.phone || '',
-        user_id: result.data.user_id || ''
+        location: result.data.location || ''
       });
       
       setIsEditing(false);
@@ -288,8 +330,41 @@ const ProfilePage = () => {
                   </div>
 
                   <div className="profile-page-form-group">
-                    <label className="profile-page-label">User ID</label>
-                    <p className="profile-page-value">{profile.user_id}</p>
+                    <label className="profile-page-label">Location</label>
+                    {isEditing ? (
+                      <div className="profile-location-input-wrapper">
+                        <input
+                          type="text"
+                          name="location"
+                          value={profile.location}
+                          onChange={handleInputChange}
+                          className="profile-page-input"
+                          placeholder="Enter your location"
+                        />
+                        <button
+                          type="button"
+                          className="profile-get-location-button"
+                          onClick={handleGetMyLocation}
+                          disabled={fetchingLocation}
+                          title="Get my current location"
+                        >
+                          {fetchingLocation ? (
+                            <svg className="spinner" viewBox="0 0 24 24">
+                              <circle cx="12" cy="12" r="10" stroke="currentColor" strokeWidth="2" fill="none" strokeDasharray="32" strokeDashoffset="32">
+                                <animate attributeName="stroke-dashoffset" dur="1s" repeatCount="indefinite" from="32" to="0" />
+                              </circle>
+                            </svg>
+                          ) : (
+                            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                              <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                              <circle cx="12" cy="10" r="3"></circle>
+                            </svg>
+                          )}
+                        </button>
+                      </div>
+                    ) : (
+                      <p className="profile-page-value">{profile.location || 'Not provided'}</p>
+                    )}
                   </div>
                 </div>
               </div>

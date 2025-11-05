@@ -257,12 +257,12 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="dashboard-default dashboard-map-body">
-              {/* <RainHotspotMap
+              <RainHotspotMap
                 latitude={locationHook.latitude}
                 longitude={locationHook.longitude}
                 zoom={10}
                 weatherService={weatherService}
-              /> */}
+              />
             </div>
           </div>
 
