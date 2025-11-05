@@ -1,36 +1,96 @@
 import React from 'react';
 
-// Data can be moved or fetched from an API later
-const recentAlerts = [
-  { id: 1, location: "Downtown Area", severity: "critical", time: "2:30 PM", status: "active" },
-  { id: 2, location: "Riverside District", severity: "moderate", time: "1:45 PM", status: "resolved" },
-  { id: 3, location: "Industrial Zone", severity: "moderate", time: "12:20 PM", status: "active" },
-];
+const RecentAlerts = ({ alerts = [] }) => {
+    const getSeverityColor = (severity) => {
+        switch (severity) {
+            case 'Critical': return 'rgba(255, 82, 82, 1)';
+            case 'Moderate': return '#fffd7dff';
+            case 'Low': return '#90ee90';
+            default: return '#ccc';
+        }
+    };
 
-const RecentAlerts = () => (
-  <div className="dashboard-card recent-alerts-card">
-    <h3 className="card-title">Recent Alerts</h3>
-    <table className="alerts-table">
-      <thead>
-        <tr>
-          <th>Location</th>
-          <th>Severity</th>
-          <th>Time</th>
-          <th>Status</th>
-        </tr>
-      </thead>
-      <tbody>
-        {recentAlerts.map((alert) => (
-          <tr key={alert.id}>
-            <td>{alert.location}</td>
-            <td><span className={`status-badge status-badge-${alert.severity}`}>{alert.severity}</span></td>
-            <td>{alert.time}</td>
-            <td><span className={`status-badge status-badge-${alert.status}`}>{alert.status}</span></td>
-          </tr>
-        ))}
-      </tbody>
-    </table>
-  </div>
-);
+    const getStatusColor = (status) => {
+        switch (status) {
+            case 'Active': return '#4dcdffff';
+            case 'Resolved': return '#90ee90';
+            case 'Pending': return '#ffd700';
+            default: return '#ccc';
+        }
+    };
+
+    const formatTime = (timestamp) => {
+        const date = new Date(timestamp);
+        return date.toLocaleTimeString('en-US', { 
+            hour: 'numeric', 
+            minute: '2-digit',
+            hour12: true 
+        });
+    };
+
+    return (
+        <div className="dashboard-card recent-alerts-card">
+            <h3 className="card-title">Recent Alerts</h3>
+            <div className="alerts-table-container">
+                <table className="alerts-table">
+                    <thead>
+                        <tr>
+                            <th>LOCATION</th>
+                            <th>SEVERITY</th>
+                            <th>TIME</th>
+                            <th>STATUS</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {alerts.length > 0 ? (
+                            alerts.map((alert) => (
+                                <tr key={alert._id}>
+                                    <td>{alert.location}</td>
+                                    <td>
+                                        <span 
+                                            className="severity-badge"
+                                            style={{ 
+                                                backgroundColor: getSeverityColor(alert.severity),
+                                                color: '#000',
+                                                padding: '4px 12px',
+                                                borderRadius: '12px',
+                                                fontSize: '12px',
+                                                fontWeight: '500'
+                                            }}
+                                        >
+                                            {alert.severity}
+                                        </span>
+                                    </td>
+                                    <td>{formatTime(alert.timestamp)}</td>
+                                    <td>
+                                        <span 
+                                            className="status-badge"
+                                            style={{ 
+                                                backgroundColor: getStatusColor(alert.status),
+                                                color: '#000',
+                                                padding: '4px 12px',
+                                                borderRadius: '12px',
+                                                fontSize: '12px',
+                                                fontWeight: '500'
+                                            }}
+                                        >
+                                            {alert.status}
+                                        </span>
+                                    </td>
+                                </tr>
+                            ))
+                        ) : (
+                            <tr>
+                                <td colSpan="4" style={{ textAlign: 'center' }}>
+                                    No recent alerts
+                                </td>
+                            </tr>
+                        )}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    );
+};
 
 export default RecentAlerts;

@@ -10,6 +10,9 @@ import damageRoutes from "./routes/damageRoutes.js";
 import statsRoutes from "./routes/statsRoutes.js"; // ADD THIS
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
+import alertRoutes from "./routes/alertRoutes.js";
+import twilioRoutes from "./routes/twilioRoutes.js";
+import twilio from "twilio";
 
 const app = express();
 app.use(cors());
@@ -41,8 +44,13 @@ app.use("/profile", profileRoutes);
 // Damage report routes
 app.use("/damage-reports", damageRoutes);
 
-// Statistics routes - ADD THIS
+// Statistics routes
 app.use("/stats", statsRoutes);
+
+app.use("/alerts", alertRoutes);
+
+//Twilio
+app.use("/alerts", twilioRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
