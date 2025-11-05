@@ -2,10 +2,10 @@
 import React from "react";
 import "../styles/AdminDashboard.css";
 import Header from "../components/global/Header";
-import QuickViews from "../components/QuickViews";
-import ForecastDay from "../components/ForecastDay";
-import RainHotspotMap from "../components/RainHotspotMap";
-import HourlyForecast from "../components/HourlyForecast";
+import QuickViews from "../components/global/QuickViews";
+import ForecastDay from "../components/admin_dashboard/ForecastDay";
+import RainHotspotMap from "../components/admin_dashboard/RainHotspotMap";
+import HourlyForecast from "../components/admin_dashboard/HourlyForecast";
 import { DashboardHeader } from "../components/admin_dashboard/DashboardHeader";
 import { LocationConverter } from "../components/admin_dashboard/LocationConverter";
 import { WeatherDetailsPanel } from "../components/admin_dashboard/WeatherDetailsPanel";

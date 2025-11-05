@@ -1,4 +1,4 @@
-import "../styles/AdminDashboard.css";
+import "../../styles/AdminDashboard.css";
 import { useState, useEffect } from "react";
 
 export default function QuickViews(props) {

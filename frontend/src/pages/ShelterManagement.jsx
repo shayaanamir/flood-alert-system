@@ -1,10 +1,10 @@
-import Shelter from "../components/Shelter";
-import ShelterDetails from "../components/ShelterDetails";
-import ShelterSupply from "../components/ShelterSupply";
+import Shelter from "../components/shelters_admin_page/Shelter";
+import ShelterDetails from "../components/shelters_admin_page/ShelterDetails";
+import ShelterSupply from "../components/shelters_admin_page/ShelterSupply";
 import { useEffect, useState } from "react";
 import data from "../data_temp/sampleData.json";
 import ManagementTemplate from "../components/MangementTemplate";
-import QuickViews from "../components/QuickViews";
+import QuickViews from "../components/global/QuickViews";
 import useShelter from "../hooks/useShelter";
 import "../styles/ShelterManagement.css";
 

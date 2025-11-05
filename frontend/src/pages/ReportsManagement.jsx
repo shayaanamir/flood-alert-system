@@ -1,12 +1,12 @@
-import Shelter from "../components/Shelter";
-import AddressTableRow from "../components/AddressTableRow";
-import Header from "./../components/global/Header";
-import DamageDetails from "../components/DamageDetails";
-import DamageRespond from "../components/DamageRespond";
+// import Shelter from "../components/reports_admin_page/Shelter";
+// import AddressTableRow from "../components/AddressTableRow";
+// import Header from "./../components/global/Header";
+import DamageDetails from "../components/reports_admin_page/DamageDetails";
+import DamageRespond from "../components/reports_admin_page/DamageRespond";
 import React, { useEffect, useState } from "react";
 import data from "../data_temp/sampleData.json";
-import DamageReport from "../components/DamageReport";
-import QuickViews from "../components/QuickViews";
+import DamageReport from "../components/reports_admin_page/DamageReport";
+import QuickViews from "../components/global/QuickViews";
 
 export default function ReportsManagement() {
   const [searchReportsQuery, setSearchReportsQuery] = useState("");

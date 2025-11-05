@@ -89,6 +89,9 @@ const LoginPage = () => {
 
         if (res.status === 200) {
           const user = res.data.user;
+          const token = res.data.token;
+          localStorage.setItem("token", token);
+          localStorage.setItem("userRole", user.role);
           console.log("data", user);
 
           // Example: redirect based on role
