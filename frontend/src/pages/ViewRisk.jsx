@@ -7,6 +7,7 @@ import RiskAssessment from '../components/RiskAssessment';
 import RainfallForecast from '../components/RainfallForecast';
 import { useLocationConversion } from '../hooks/useLocationConversion';
 import { useWeatherData } from '../hooks/useWeatherData';
+import { locationService } from '../services/locationService';
 import '../styles/viewRisk.css';
 
 const ViewRisk = () => {
@@ -72,19 +73,36 @@ const ViewRisk = () => {
   };
 
   const handleUseLocation = () => {
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(
-        (position) => {
-          setLatitude(position.coords.latitude.toString());
-          setLongitude(position.coords.longitude.toString());
-          setLocation('Your Current Location');
-        },
-        (error) => {
-          console.error('Error getting location:', error);
+  if (navigator.geolocation) {
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude.toString();
+        const lon = position.coords.longitude.toString();
+        
+        // Set coordinates first
+        setLatitude(lat);
+        setLongitude(lon);
+        
+        // Fetch the actual location name using reverse geocoding
+        try {
+          const address = await locationService.getLocationFromCoords(lat, lon);
+          setLocation(address);
+          lastLocationRef.current = address; // Update ref to prevent duplicate fetches
+        } catch (error) {
+          console.error('Error getting location name:', error);
+          setLocation('Your Current Location'); // Fallback if reverse geocoding fails
+          lastLocationRef.current = 'Your Current Location';
         }
-      );
-    }
-  };
+      },
+      (error) => {
+        console.error('Error getting location:', error);
+        alert('Unable to get your location. Please enable location permissions.');
+      }
+    );
+  } else {
+    alert('Geolocation is not supported by your browser');
+  }
+};
 
   // Example: Function to handle date selection in ViewRisk
   const handleDateChange = (date) => {
