@@ -11,7 +11,8 @@ const useShelter = (zone) => {
       setLoading(true);
       setError(null);
       try {
-        const data = await getShelterByZone(zone || 11);
+        const data = await getShelterByZone(zone);
+
         setShelterData(data);
       } catch (err) {
         setError("Failed to fetch shelter data.");
@@ -22,7 +23,6 @@ const useShelter = (zone) => {
 
     fetchData();
   }, [zone]);
-
   return { shelterData, loading, error };
 };
 
