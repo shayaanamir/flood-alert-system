@@ -520,8 +520,8 @@ export default function ShelterManagement(props) {
             address={p.address}
             zone={p.zone}
             capacity={(p.capacity.current / p.capacity.max) * 100}
-            foodStatus={p.resources.food.status}
-            medicalStatus={p.resources.medical.status}
+            foodStatus={p.resources.food?.status || "No Details"}
+            medicalStatus={p.resources.medical?.status || "No Details"}
             onDetailsClick={() => setSelectedShelter(p)}
             onSupplyClick={() => setSupplyModalShelter(p)}
           />
