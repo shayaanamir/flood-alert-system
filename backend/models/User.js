@@ -13,6 +13,7 @@ const userSchema = new mongoose.Schema({
   created_at: { type: Date, default: Date.now },
   updated_at: { type: Date, default: Date.now },
   role: { type: String, default: "user" },
+  location: {type: String, required: false}
 });
 
 userSchema.pre("save", function (next) {
