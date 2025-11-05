@@ -9,7 +9,7 @@ const router = express.Router();
 
 router.post("/signup", async (req, res) => {
   try {
-    const { email, password } = req.body;
+    const { email, password, fullname, phone, location } = req.body;
 
     if (!email || !password) {
       return res
@@ -25,10 +25,10 @@ router.post("/signup", async (req, res) => {
     const hashedPass = await bcrypt.hash(password, 10);
 
     const newUser = await User.create({
-      user_id: 2,
-      full_name: "efg",
+      full_name: fullname,
       email: email,
       password: hashedPass,
+      phone: phone,
     });
 
     res

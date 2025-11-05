@@ -12,6 +12,8 @@ const LoginPage = () => {
   const [confirmPass, setConfirmPass] = useState("");
   const [error, setError] = useState("");
   const [submitted, setSubmitted] = useState(false);
+  const [fullname, setName] = useState("");
+  const [phone, setPhone] = useState("");
 
   const location = useLocation();
   useEffect(() => {
@@ -74,6 +76,9 @@ const LoginPage = () => {
         const res = await axios.post(`${API_BASE_URL}/signup`, {
           email,
           password,
+          fullname,
+          phone,
+          location,
         });
 
         if (res.status === 201 || res.status === 200) {
@@ -100,10 +105,23 @@ const LoginPage = () => {
         }
       }
     } catch (err) {
+      console.error("Login/Signup Error:", err);
+
       if (err.response) {
-        setError(err.response.data.message || "Something went wrong.");
+        // Server responded with a non-2xx status code
+        setError(
+          `Server Error: ${err.response.status} - ${
+            err.response.data?.message || JSON.stringify(err.response.data)
+          }`
+        );
+      } else if (err.request) {
+        // Request was made but no response received
+        setError(
+          "No response received from the server. It might be down or unreachable."
+        );
       } else {
-        setError("Unable to connect to server.");
+        // Something else happened while setting up the request
+        setError(`Error: ${err.message}`);
       }
     }
   }
@@ -125,6 +143,15 @@ const LoginPage = () => {
               and dashboard
             </p>
           </div>
+          {isSignUp && (
+            <InputBlock
+              title="Enter Name"
+              type="text"
+              placeholder="Enter Name"
+              value={fullname}
+              onChange={(e) => setName(e.target.value)}
+            />
+          )}
           <InputBlock
             title="Email Address"
             type="text"
@@ -146,6 +173,16 @@ const LoginPage = () => {
               placeholder="Re-Enter password"
               value={confirmPass}
               onChange={(e) => setConfirmPass(e.target.value)}
+            />
+          )}
+
+          {isSignUp && (
+            <InputBlock
+              title="Enter Phone No."
+              type="text"
+              placeholder="Enter Phone No."
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
             />
           )}
 
