@@ -18,11 +18,15 @@
   width: 100%;
   flex-direction: row;
   align-items: flex-start;
+  display: flex;
+  align-items: stretch; /* ✅ makes children (panel + content) same height */
+  width: 100%;
 }
 
 .reports-panel {
   width: 20vw;
-  height: 250vh;
+  min-height: 100%;
+  height: auto;
   background-color: #1f2937;
   justify-content: flex-start;
   align-items: center;
@@ -120,4 +124,20 @@
 .reports-content-body {
   height: fit-content;
   width: 100%;
+}
+
+@media (max-width: 768px) {
+  .reports-header span {
+    font-size: 1.2rem;
+  }
+  .dashboard-shelters-header {
+    flex-direction: column;
+    height: fit-content;
+  }
+  .dashboard-shelters-header input {
+    height: 50px;
+  }
+  .collapse-btn {
+    display: none;
+  }
 }

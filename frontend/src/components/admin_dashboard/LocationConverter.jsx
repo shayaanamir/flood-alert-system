@@ -56,7 +56,7 @@ export const LocationConverter = ({
 
         {/* Convert Button */}
         <button className="convert-btn" onClick={onConvert} disabled={loading}>
-          {loading ? "Converting..." : "Convert"}
+          {loading ? "Searching..." : "Search"}
         </button>
       </div>
 

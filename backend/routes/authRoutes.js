@@ -29,6 +29,7 @@ router.post("/signup", async (req, res) => {
       email: email,
       password: hashedPass,
       phone: phone,
+      location: location,
     });
 
     res

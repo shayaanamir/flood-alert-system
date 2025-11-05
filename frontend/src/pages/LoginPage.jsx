@@ -14,6 +14,8 @@ const LoginPage = () => {
   const [submitted, setSubmitted] = useState(false);
   const [fullname, setName] = useState("");
   const [phone, setPhone] = useState("");
+  const [userLocation, setUserLocation] = useState("");
+  const [fetchingLocation, setFetchingLocation] = useState(false);
 
   const location = useLocation();
   useEffect(() => {
@@ -24,16 +26,7 @@ const LoginPage = () => {
 
   const navigate = useNavigate();
   const API_BASE_URL = "http://localhost:5000/login-signup";
-
-  // const demoUser = {
-  //   email: "test@example.com",
-  //   password: "user123",
-  // };
-
-  // const demoAdmin = {
-  //   email: "admin@example.com",
-  //   password: "admin123",
-  // };
+  const LOCATION_API_URL = "http://localhost:5000/location-conversion";
 
   function toggleStatus() {
     setIsSignUp(!isSignUp);
@@ -44,11 +37,49 @@ const LoginPage = () => {
     setEmail("");
     setPassword("");
     setConfirmPass("");
+    setUserLocation("");
   }, [isSignUp]);
 
   function validateEmail(mail) {
     return /\S+@\S+\.\S+/.test(mail);
   }
+
+  // Function to get user's current location
+  const handleGetMyLocation = async () => {
+    setFetchingLocation(true);
+    setError("");
+
+    if (!navigator.geolocation) {
+      setError("Geolocation is not supported by your browser");
+      setFetchingLocation(false);
+      return;
+    }
+
+    navigator.geolocation.getCurrentPosition(
+      async (position) => {
+        const lat = position.coords.latitude;
+        const lon = position.coords.longitude;
+
+        try {
+          // Convert coordinates to address
+          const res = await axios.get(
+            `${LOCATION_API_URL}/location-from-coords?lat=${lat}&lon=${lon}`
+          );
+          setUserLocation(res.data.address);
+          setFetchingLocation(false);
+        } catch (err) {
+          console.error("Error fetching location:", err);
+          setError("Failed to fetch location address");
+          setFetchingLocation(false);
+        }
+      },
+      (error) => {
+        console.error("Geolocation error:", error);
+        setError("Unable to retrieve your location. Please enter manually.");
+        setFetchingLocation(false);
+      }
+    );
+  };
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -78,7 +109,7 @@ const LoginPage = () => {
           password,
           fullname,
           phone,
-          location,
+          location: userLocation,
         });
 
         if (res.status === 201 || res.status === 200) {
@@ -129,7 +160,10 @@ const LoginPage = () => {
   return (
     <>
       <div className="default login-container">
-        <form className="default login-div" onSubmit={handleSubmit}>
+        <form
+          className={`default login-div ${isSignUp ? "" : "signup-div"}`}
+          onSubmit={handleSubmit}
+        >
           <img
             src="/icon.svg"
             height="56px"
@@ -184,6 +218,61 @@ const LoginPage = () => {
               value={phone}
               onChange={(e) => setPhone(e.target.value)}
             />
+          )}
+
+          {isSignUp && (
+            <div className="default signup-location-input-container">
+              <InputBlock
+                title="Location"
+                type="text"
+                placeholder="Enter your location"
+                value={userLocation}
+                onChange={(e) => setUserLocation(e.target.value)}
+              />
+              <button
+                type="button"
+                className="signup-get-location-button"
+                onClick={handleGetMyLocation}
+                disabled={fetchingLocation}
+                title="Get my current location"
+              >
+                {fetchingLocation ? (
+                  <svg className="signup-spinner" viewBox="0 0 24 24">
+                    <circle
+                      cx="12"
+                      cy="12"
+                      r="10"
+                      stroke="currentColor"
+                      strokeWidth="2"
+                      fill="none"
+                      strokeDasharray="32"
+                      strokeDashoffset="32"
+                    >
+                      <animate
+                        attributeName="stroke-dashoffset"
+                        dur="1s"
+                        repeatCount="indefinite"
+                        from="32"
+                        to="0"
+                      />
+                    </circle>
+                  </svg>
+                ) : (
+                  <svg
+                    xmlns="http://www.w3.org/2000/svg"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    strokeWidth="2"
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                  >
+                    <path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"></path>
+                    <circle cx="12" cy="10" r="3"></circle>
+                  </svg>
+                )}
+              </button>
+            </div>
           )}
 
           <div className="default login-sub-footer">

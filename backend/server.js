@@ -7,6 +7,7 @@ import loginRoutes from "./routes/loginRoutes.js";
 import shelterRoutes from "./routes/shelterRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
 import damageRoutes from "./routes/damageRoutes.js";
+import statsRoutes from "./routes/statsRoutes.js"; // ADD THIS
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 import alertRoutes from "./routes/alertRoutes.js";
@@ -42,6 +43,9 @@ app.use("/profile", profileRoutes);
 
 // Damage report routes
 app.use("/damage-reports", damageRoutes);
+
+// Statistics routes
+app.use("/stats", statsRoutes);
 
 app.use("/alerts", alertRoutes);
 

@@ -1,4 +1,3 @@
-// controllers/profileController.js
 import User from '../models/User.js';
 
 // Get user profile by ObjectId
@@ -33,7 +32,7 @@ export const getUserProfile = async (req, res) => {
 // Update user profile
 export const updateUserProfile = async (req, res) => {
   try {
-    const { full_name, email, phone } = req.body;
+    const { full_name, email, phone, location } = req.body;
     
     // Validate required fields
     if (!full_name || !email) {
@@ -49,6 +48,7 @@ export const updateUserProfile = async (req, res) => {
         full_name,
         email,
         phone,
+        location,
         updated_at: new Date()
       },
       { new: true, runValidators: true }

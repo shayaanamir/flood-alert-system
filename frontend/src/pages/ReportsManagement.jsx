@@ -1,35 +1,47 @@
-// import Shelter from "../components/reports_admin_page/Shelter";
-// import AddressTableRow from "../components/AddressTableRow";
-// import Header from "./../components/global/Header";
+import React, { useEffect, useState } from "react";
 import DamageDetails from "../components/reports_admin_page/DamageDetails";
 import DamageRespond from "../components/reports_admin_page/DamageRespond";
-import React, { useEffect, useState } from "react";
-import data from "../data_temp/sampleData.json";
 import DamageReport from "../components/reports_admin_page/DamageReport";
 import QuickViews from "../components/global/QuickViews";
 
 export default function ReportsManagement() {
+  const [reports, setReports] = useState([]); // fetched data
   const [searchReportsQuery, setSearchReportsQuery] = useState("");
   const [selectedReport, setSelectedReport] = useState(null);
   const [respondReport, setRespondReport] = useState(null);
+  const [loading, setLoading] = useState(true);
 
-  const filteredReports = data.reportsData.filter(
-    (report) =>
-      report.title.toLowerCase().includes(searchReportsQuery.toLowerCase()) ||
-      report.location
-        .toLowerCase()
-        .includes(searchReportsQuery.toLowerCase()) ||
-      report.severity.toLowerCase().includes(searchReportsQuery.toLowerCase())
-  );
+  // 🔹 Fetch all damage reports from backend
+  useEffect(() => {
+    const fetchReports = async () => {
+      try {
+        const res = await fetch("http://localhost:5000/damage-reports");
+        const data = await res.json();
+        console.log("Fetched reports:", data); // 👈 Add this
+        setReports(data);
+      } catch (error) {
+        console.error("Error fetching reports:", error);
+      } finally {
+        setLoading(false);
+      }
+    };
+    fetchReports();
+  }, []);
+
+  // 🔹 Filter reports by title, location, or severity
+  const filteredReports = reports.data;
+
+  useEffect(() => {
+    console.log("reports fetched", reports);
+  });
 
   return (
     <>
       <div className="reports-default dashboard-shelters">
-        {/* <Header isAdmin={true} /> */}
         <div className="dashboard-default dashboard-quicks">
           <QuickViews
             info1="Total Reports"
-            info2="257"
+            info2="3"
             status="Medium"
             info3="+12% From Last Month"
             icon={
@@ -47,65 +59,17 @@ export default function ReportsManagement() {
             }
             popupText="This indicates the current likelihood of flooding in the area based on recent rainfall and terrain data."
           />
-          <QuickViews
-            info1="Verified Reports"
-            info2="156"
-            status="Low "
-            info3="+8% From Last Month"
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-check-lg"
-                viewBox="0 0 16 16"
-              >
-                <path d="M12.736 3.97a.733.733 0 0 1 1.047 0c.286.289.29.756.01 1.05L7.88 12.01a.733.733 0 0 1-1.065.02L3.217 8.384a.757.757 0 0 1 0-1.06.733.733 0 0 1 1.047 0l3.052 3.093 5.4-6.425z" />
-              </svg>
-            }
-            popupText="This indicates the current likelihood of flooding in the area based on recent rainfall and terrain data."
-          />
-          <QuickViews
-            info1="Pending Review"
-            info2="42"
-            status="High"
-            info3="-4% From Last Month"
-            icon={
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="16"
-                height="16"
-                fill="currentColor"
-                class="bi bi-clock"
-                viewBox="0 0 16 16"
-              >
-                <path d="M8 3.5a.5.5 0 0 0-1 0V9a.5.5 0 0 0 .252.434l3.5 2a.5.5 0 0 0 .496-.868L8 8.71z" />
-                <path d="M8 16A8 8 0 1 0 8 0a8 8 0 0 0 0 16m7-8A7 7 0 1 1 1 8a7 7 0 0 1 14 0" />
-              </svg>
-            }
-            popupText="This indicates the current likelihood of flooding in the area based on recent rainfall and terrain data."
-          />
+          {/* You can compute Verified/Pending counts later using report.status */}
         </div>
+
         <div className="dashboard-default dashboard-shelters-header">
           <input
             className="dashboard-default"
             type="text"
             placeholder="Search Reports"
-          ></input>
-          <button className="dashboard-default button-1">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              width="20"
-              height="20"
-              fill="currentColor"
-              class="bi bi-funnel-fill"
-              viewBox="0 0 16 16"
-            >
-              <path d="M1.5 1.5A.5.5 0 0 1 2 1h12a.5.5 0 0 1 .5.5v2a.5.5 0 0 1-.128.334L10 8.692V13.5a.5.5 0 0 1-.342.474l-3 1A.5.5 0 0 1 6 14.5V8.692L1.628 3.834A.5.5 0 0 1 1.5 3.5z" />
-            </svg>
-            Filters
-          </button>
+            value={searchReportsQuery}
+            onChange={(e) => setSearchReportsQuery(e.target.value)}
+          />
           <button className="dashboard-default button-2">
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -121,16 +85,25 @@ export default function ReportsManagement() {
             Export Reports
           </button>
         </div>
+
         <div className="dashboard-default dashboard-reports-body">
-          {filteredReports.map((report) => (
-            <DamageReport
-              report={report}
-              onView={() => setSelectedReport(report)}
-              onRespond={() => setRespondReport(report)}
-            />
-          ))}
+          {loading ? (
+            <p>Loading reports...</p>
+          ) : filteredReports.length === 0 ? (
+            <p>No reports found.</p>
+          ) : (
+            filteredReports.map((report) => (
+              <DamageReport
+                key={report._id}
+                report={report}
+                onView={() => setSelectedReport(report)}
+                onRespond={() => setRespondReport(report)}
+              />
+            ))
+          )}
         </div>
       </div>
+
       <DamageRespond
         report={respondReport}
         onClose={() => setRespondReport(null)}
