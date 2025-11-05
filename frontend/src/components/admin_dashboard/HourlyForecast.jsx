@@ -12,7 +12,7 @@ import {
   Wind,
 } from "lucide-react";
 
-import data from "../data_temp/sampleData.json";
+import data from "../../data_temp/sampleData.json";
 
 const WeatherIcon = ({ type, size = 40 }) => {
   const iconProps = { size, strokeWidth: 2 };

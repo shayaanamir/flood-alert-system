@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import "../styles/AdminDashboard.css";
+import "../../styles/AdminDashboard.css";
 import {
   Cloud,
   CloudDrizzle,
@@ -10,7 +10,7 @@ import {
   CloudFog,
 } from "lucide-react";
 
-import data from "../data_temp/sampleData.json";
+import data from "../../data_temp/sampleData.json";
 
 const WeatherIcon = ({ type, size = 40 }) => {
   const iconProps = { size, strokeWidth: 2 };
