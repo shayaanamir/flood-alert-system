@@ -148,7 +148,7 @@ export default function DamageDetails({ report, onClose, onRespond }) {
                 </h2>
               </div>
               <p style={{ margin: "4px 0", opacity: 0.9, fontSize: "14px" }}>
-                Report ID: {report.id}
+                Report ID: {report._id}
               </p>
               <div
                 style={{
@@ -328,7 +328,7 @@ export default function DamageDetails({ report, onClose, onRespond }) {
                   >
                     <User size={18} style={{ color: "#3b82f6" }} />
                     <span style={{ fontSize: "15px", fontWeight: "500" }}>
-                      {report.reportedBy}
+                      {report.reporter_contact.name}
                     </span>
                   </div>
                 </div>
@@ -354,7 +354,7 @@ export default function DamageDetails({ report, onClose, onRespond }) {
                   >
                     <Clock size={18} style={{ color: "#3b82f6" }} />
                     <span style={{ fontSize: "15px", fontWeight: "500" }}>
-                      {report.timestamp}
+                      {report.created_at}
                     </span>
                   </div>
                 </div>
@@ -377,7 +377,7 @@ export default function DamageDetails({ report, onClose, onRespond }) {
                       color: "#dc2626",
                     }}
                   >
-                    Priority {report.priority}
+                    {report.severity}
                   </div>
                 </div>
               </div>
@@ -522,8 +522,8 @@ export default function DamageDetails({ report, onClose, onRespond }) {
                     color: "#1e40af",
                   }}
                 >
-                  <span>📞 {report.contact.phone}</span>
-                  <span>✉️ {report.contact.email}</span>
+                  <span>📞 {report.reporter_contact.phone}</span>
+                  <span>✉️ {report.reporter_contact.email}</span>
                 </div>
               </div>
             </div>

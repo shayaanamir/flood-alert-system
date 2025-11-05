@@ -49,7 +49,7 @@ const DamageReport = (report) => {
             fontSize: "13px",
           }}
         >
-          {report.report.timeAgo}
+          {report.report.created_at}
         </span>
       </div>
 
@@ -118,7 +118,7 @@ const DamageReport = (report) => {
             fontSize: "13px",
           }}
         >
-          {report.report.reportedBy}
+          {report.report.reporter_contact.name}
         </span>
         <div
           style={{
