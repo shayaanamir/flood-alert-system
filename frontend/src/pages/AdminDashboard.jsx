@@ -1,4 +1,4 @@
-// pages/AdminDashboard.jsx (UPDATED)
+// pages/AdminDashboard.jsx (UPDATED WITH REAL DATA)
 import React from "react";
 import "../styles/AdminDashboard.css";
 import Header from "../components/global/Header";
@@ -13,6 +13,7 @@ import { useWeatherData } from "../hooks/useWeatherData";
 import { useLocationConversion } from "../hooks/useLocationConversion";
 import { useClock } from "../hooks/useClock";
 import { useMultiLocationAlerts } from "../hooks/useMultiLocationAlerts";
+import { useDashboardStats } from "../hooks/useDashboardStats";
 import MultiLocationAlert from "../components/MultilocationAlert";
 
 export default function AdminDashboard() {
@@ -42,6 +43,9 @@ export default function AdminDashboard() {
     refresh: refreshAlerts,
   } = useMultiLocationAlerts();
 
+  // Dashboard statistics
+  const { stats, loading: statsLoading, error: statsError } = useDashboardStats();
+
   const handleSendAlerts = () => {
     // Implement alert sending logic
     console.log("Sending alerts...");
@@ -50,6 +54,21 @@ export default function AdminDashboard() {
   const handleRefreshAll = () => {
     refreshAll();
     refreshAlerts();
+    window.location.reload(); // Refresh stats by reloading
+  };
+
+  // Helper function to get status level
+  const getStatusLevel = (percentage) => {
+    if (percentage >= 80) return "High";
+    if (percentage >= 50) return "Medium";
+    return "Low";
+  };
+
+  // Helper function to get report status
+  const getReportStatus = (critical) => {
+    if (critical > 10) return "High";
+    if (critical > 5) return "Medium";
+    return "Low";
   };
 
   return (
@@ -64,7 +83,7 @@ export default function AdminDashboard() {
           onSendAlerts={handleSendAlerts}
         />
 
-        {/* Quick Views Section */}
+        {/* Quick Views Section - UPDATED WITH REAL DATA */}
         <div className="dashboard-default dashboard-quick-actions">
           <QuickViews
             info1="Total Rainfall"
@@ -106,9 +125,13 @@ export default function AdminDashboard() {
           />
           <QuickViews
             info1="People in Shelters"
-            info2="247"
-            info3="43% of capacity"
-            status="Medium"
+            info2={statsLoading ? "..." : stats.shelters.totalPeople}
+            info3={
+              statsLoading
+                ? "Loading..."
+                : `${stats.shelters.capacityPercentage}% of capacity`
+            }
+            status={getStatusLevel(stats.shelters.capacityPercentage)}
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -121,12 +144,17 @@ export default function AdminDashboard() {
                 <path d="M5.793 1a1 1 0 0 1 1.414 0l.647.646a.5.5 0 1 1-.708.708L6.5 1.707 2 6.207V12.5a.5.5 0 0 0 .5.5.5.5 0 0 1 0 1A1.5 1.5 0 0 1 1 12.5V7.207l-.146.147a.5.5 0 0 1-.708-.708zm3 1a1 1 0 0 1 1.414 0L12 3.793V2.5a.5.5 0 0 1 .5-.5h1a.5.5 0 0 1 .5.5v3.293l1.854 1.853a.5.5 0 0 1-.708.708L15 8.207V13.5a1.5 1.5 0 0 1-1.5 1.5h-8A1.5 1.5 0 0 1 4 13.5V8.207l-.146.147a.5.5 0 1 1-.708-.708zm.707.707L5 7.207V13.5a.5.5 0 0 0 .5.5h8a.5.5 0 0 0 .5-.5V7.207z" />
               </svg>
             }
+            popupText="Total number of people currently in shelters across all locations."
           />
           <QuickViews
             info1="Damage Reports"
-            info2="28"
-            info3="12 critical"
-            status="High"
+            info2={statsLoading ? "..." : stats.reports.total}
+            info3={
+              statsLoading
+                ? "Loading..."
+                : `${stats.reports.critical} critical`
+            }
+            status={getReportStatus(stats.reports.critical)}
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -139,8 +167,15 @@ export default function AdminDashboard() {
                 <path d="M5.52.359A.5.5 0 0 1 6 0h4a.5.5 0 0 1 .474.658L8.694 6H12.5a.5.5 0 0 1 .395.807l-7 9a.5.5 0 0 1-.873-.454L6.823 9.5H3.5a.5.5 0 0 1-.48-.641zM6.374 1 4.168 8.5H7.5a.5.5 0 0 1 .478.647L6.78 13.04 11.478 7H8a.5.5 0 0 1-.474-.658L9.306 1z" />
               </svg>
             }
+            popupText="Total damage reports submitted, with critical incidents highlighted."
           />
         </div>
+
+        {statsError && (
+          <div style={{ padding: "10px 20px", color: "red", fontSize: "14px" }}>
+            Error loading statistics: {statsError}
+          </div>
+        )}
 
         {/* Location Converter */}
         <LocationConverter
@@ -202,7 +237,10 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="dashboard-default dashboard-map-body">
-              <RainHotspotMap />
+              <RainHotspotMap 
+                latitude={locationHook.latitude}
+                longitude={locationHook.longitude}
+              />
             </div>
           </div>
 
