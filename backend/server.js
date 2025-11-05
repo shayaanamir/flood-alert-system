@@ -6,6 +6,7 @@ import coordinatesRoutes from "./routes/coordinatesRoutes.js";
 import loginRoutes from "./routes/loginRoutes.js";
 import shelterRoutes from "./routes/shelterRoutes.js";
 import profileRoutes from "./routes/profileRoutes.js";
+import damageRoutes from "./routes/damageRoutes.js";
 import connectDB from "./config/db.js";
 import authRoutes from "./routes/authRoutes.js";
 
@@ -35,6 +36,9 @@ app.use("/login-signup", authRoutes);
 
 // Profile routes
 app.use("/profile", profileRoutes);
+
+// Damage report routes
+app.use("/damage-reports", damageRoutes);
 
 const PORT = 5000;
 app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
