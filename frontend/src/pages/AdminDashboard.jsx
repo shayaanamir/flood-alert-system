@@ -14,6 +14,7 @@ import { useLocationConversion } from "../hooks/useLocationConversion";
 import { useClock } from "../hooks/useClock";
 import { useMultiLocationAlerts } from "../hooks/useMultiLocationAlerts";
 import MultiLocationAlert from "../components/MultilocationAlert";
+import axios from "axios";
 
 export default function AdminDashboard() {
   const time = useClock();
@@ -42,9 +43,25 @@ export default function AdminDashboard() {
     refresh: refreshAlerts,
   } = useMultiLocationAlerts();
 
-  const handleSendAlerts = () => {
-    // Implement alert sending logic
-    console.log("Sending alerts...");
+  const handleSendAlerts = async () => {
+    try {
+      // Optionally show loading or disable button
+      console.log("Sending alerts...");
+
+      const response = await axios.post("http://localhost:5000/alerts/send", {
+        to: "+91 9152080687", // <-- Verified or real number
+        message: "⚠️ Flood Alert! Evacuate to a nearby shelter immediately.",
+      });
+
+      alert("✅ Alert sent successfully!");
+      console.log("Response:", response.data);
+    } catch (error) {
+      console.error("❌ Error sending alert:", error);
+      alert(
+        "Failed to send alert: " +
+          (error.response?.data?.error || error.message)
+      );
+    }
   };
 
   const handleRefreshAll = () => {
