@@ -2,7 +2,9 @@
 import { useState, useEffect } from "react";
 import { weatherService } from "../services/weatherService";
 
-export const useWeatherData = (latitude, longitude) => {
+export const useWeatherData = (latitude, longitude, options = {}) => {
+  const { autoSelectFirstDay = false } = options;
+
   const [currentData, setCurrentData] = useState(null);
   const [dailyData, setDailyData] = useState(null);
   const [hourlyData, setHourlyData] = useState(null);
@@ -33,10 +35,10 @@ export const useWeatherData = (latitude, longitude) => {
       const data = await weatherService.getDaily(latitude, longitude);
       setDailyData(data);
 
-      console.log("fetched daily:", dailyData);
+      console.log("fetched daily:", data);
 
-      // Automatically select today (first day in the forecast)
-      if (data && data.length > 0 && !selectedDay) {
+      // Only auto-select if explicitly enabled (for ViewRisk page)
+      if (autoSelectFirstDay && data && data.length > 0 && !selectedDay) {
         setSelectedDay(data[0]);
       }
     } catch (err) {
