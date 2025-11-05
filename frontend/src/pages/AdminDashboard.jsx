@@ -15,6 +15,7 @@ import { useClock } from "../hooks/useClock";
 import { useMultiLocationAlerts } from "../hooks/useMultiLocationAlerts";
 import { useDashboardStats } from "../hooks/useDashboardStats";
 import MultiLocationAlert from "../components/MultilocationAlert";
+import { weatherService } from "../services/weatherService";
 import axios from "axios";
 
 export default function AdminDashboard() {
@@ -45,7 +46,11 @@ export default function AdminDashboard() {
   } = useMultiLocationAlerts();
 
   // Dashboard statistics
-  const { stats, loading: statsLoading, error: statsError } = useDashboardStats();
+  const {
+    stats,
+    loading: statsLoading,
+    error: statsError,
+  } = useDashboardStats();
 
   const handleSendAlerts = async () => {
     try {
@@ -167,9 +172,7 @@ export default function AdminDashboard() {
             info1="Damage Reports"
             info2={statsLoading ? "..." : stats.reports.total}
             info3={
-              statsLoading
-                ? "Loading..."
-                : `${stats.reports.critical} critical`
+              statsLoading ? "Loading..." : `${stats.reports.critical} critical`
             }
             status={getReportStatus(stats.reports.critical)}
             icon={
@@ -254,10 +257,12 @@ export default function AdminDashboard() {
               </div>
             </div>
             <div className="dashboard-default dashboard-map-body">
-              <RainHotspotMap 
+              {/* <RainHotspotMap
                 latitude={locationHook.latitude}
                 longitude={locationHook.longitude}
-              />
+                zoom={10}
+                weatherService={weatherService}
+              /> */}
             </div>
           </div>
 

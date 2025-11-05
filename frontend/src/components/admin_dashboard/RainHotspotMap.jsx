@@ -10,93 +10,6 @@ import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "leaflet.heat";
 
-// Enhanced sample data with more points
-const sampleGeoJson = {
-  type: "FeatureCollection",
-  features: [
-    {
-      type: "Feature",
-      properties: {
-        name: "Koramangala",
-        rainfall: 145,
-        avgHistorical: 45,
-        trend: "up",
-      },
-      geometry: { type: "Point", coordinates: [77.6117, 12.9352] },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Indiranagar",
-        rainfall: 98,
-        avgHistorical: 38,
-        trend: "stable",
-      },
-      geometry: { type: "Point", coordinates: [77.6408, 12.9716] },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Whitefield",
-        rainfall: 167,
-        avgHistorical: 42,
-        trend: "up",
-      },
-      geometry: { type: "Point", coordinates: [77.7499, 12.9698] },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Jayanagar",
-        rainfall: 56,
-        avgHistorical: 35,
-        trend: "down",
-      },
-      geometry: { type: "Point", coordinates: [77.5833, 12.925] },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Malleshwaram",
-        rainfall: 23,
-        avgHistorical: 28,
-        trend: "down",
-      },
-      geometry: { type: "Point", coordinates: [77.57, 13.0] },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Electronic City",
-        rainfall: 189,
-        avgHistorical: 48,
-        trend: "up",
-      },
-      geometry: { type: "Point", coordinates: [77.6648, 12.8456] },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "Hebbal",
-        rainfall: 71,
-        avgHistorical: 32,
-        trend: "stable",
-      },
-      geometry: { type: "Point", coordinates: [77.5971, 13.0358] },
-    },
-    {
-      type: "Feature",
-      properties: {
-        name: "BTM Layout",
-        rainfall: 134,
-        avgHistorical: 41,
-        trend: "up",
-      },
-      geometry: { type: "Point", coordinates: [77.6101, 12.9165] },
-    },
-  ],
-};
-
 const getColor = (d) =>
   d > 150
     ? "#b91c1c"
@@ -128,26 +41,32 @@ const getRiskColor = (rainfall) =>
     ? "#f97316"
     : "#22c55e";
 
-const styleFeature = (feature) => {
-  const rainfall = feature.properties?.rainfall ?? 0;
-  return {
-    fillColor: getColor(rainfall),
-    weight: 2,
-    color: "#ffffff",
-    fillOpacity: 0.7,
-  };
-};
-
 const pointToLayer = (feature, latlng) => {
   const val = feature.properties?.rainfall ?? 0;
-  const r = Math.max(8, Math.min(35, Math.sqrt(val) * 2));
-  const circle = L.circleMarker(latlng, {
-    radius: r,
+
+  // Don't render markers with 0 rainfall
+  if (val === 0) {
+    return null;
+  }
+
+  // Vary radius based on rainfall + random variation for natural look
+  const baseRadius = Math.sqrt(val) * 800;
+  const randomVariation = Math.random() * 0.2 + 2.3; // 80% to 120% of base
+  const radiusInMeters = Math.max(
+    1500,
+    Math.min(12000, baseRadius * randomVariation)
+  );
+
+  // Vary opacity based on rainfall intensity for depth
+  const fillOpacity = Math.min(0.85, 0.4 + val / 200);
+
+  const circle = L.circle(latlng, {
+    radius: radiusInMeters,
     fillColor: getColor(val),
     color: "#ffffff",
-    weight: 2,
-    opacity: 1,
-    fillOpacity: 0.9,
+    weight: 1.5,
+    opacity: 0.7,
+    fillOpacity: fillOpacity,
     className: "pulse-marker",
   });
 
@@ -172,14 +91,16 @@ const pointToLayer = (feature, latlng) => {
           )} mm</span>
         </div>
         <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
-          <span style="color: #64748b; font-size: 13px;">Historical Avg</span>
+          <span style="color: #64748b; font-size: 13px;">Temperature</span>
           <span style="font-weight: 500; color: #475569; font-size: 13px;">${
-            feature.properties?.avgHistorical ?? "n/a"
-          } mm</span>
+            feature.properties?.temperature?.toFixed(1) ?? "n/a"
+          }°C</span>
         </div>
         <div style="display: flex; justify-content: space-between;">
-          <span style="color: #64748b; font-size: 13px;">Trend</span>
-          <span style="font-weight: 600; color: ${trendColor}; font-size: 14px;">${trendIcon}</span>
+          <span style="color: #64748b; font-size: 13px;">Precipitation Prob</span>
+          <span style="font-weight: 600; color: ${trendColor}; font-size: 14px;">${
+    feature.properties?.precipitationProb ?? "n/a"
+  }%</span>
         </div>
       </div>
       <div style="display: flex; align-items: center; gap: 6px; padding: 6px 10px; background: ${getRiskColor(
@@ -260,9 +181,10 @@ function MapHeatManager({ heatPoints }) {
   useEffect(() => {
     if (!map || !heatPoints || heatPoints.length === 0) return;
     const heat = L.heatLayer(heatPoints, {
-      radius: 30,
-      blur: 25,
+      radius: 35, // Increased radius for smoother blend
+      blur: 35, // Increased blur for more natural gradient
       maxZoom: 17,
+      max: 1.2, // Reduced max for softer appearance
       gradient: {
         0.0: "#3b82f6",
         0.3: "#10b981",
@@ -278,42 +200,235 @@ function MapHeatManager({ heatPoints }) {
   return null;
 }
 
-export default function RainHotspotMap({
-  center = [12.9716, 77.5946],
-  zoom = 12,
-  data = sampleGeoJson,
-}) {
-  const [geoData, setGeoData] = useState(data);
-
+function MapUpdater({ center, zoom }) {
+  const map = useMap();
   useEffect(() => {
-    const interval = setInterval(() => {
-      setGeoData((prevData) => {
-        const newData = JSON.parse(JSON.stringify(prevData));
-        newData.features.forEach((f) => {
-          const jitter = (Math.random() - 0.5) * 12;
-          const newRainfall = Math.max(
-            0,
-            (f.properties.rainfall ?? 0) + jitter
-          );
-          const oldRainfall = f.properties.rainfall ?? 0;
+    if (center && center[0] && center[1]) {
+      map.setView(center, zoom);
+    }
+  }, [center, zoom, map]);
+  return null;
+}
 
-          f.properties.rainfall = newRainfall;
-          f.properties.trend =
-            newRainfall > oldRainfall + 2
-              ? "up"
-              : newRainfall < oldRainfall - 2
-              ? "down"
-              : "stable";
+// Delay helper for rate limiting
+const delay = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+
+export default function RainHotspotMap({
+  latitude,
+  longitude,
+  zoom = 10,
+  weatherService, // Pass weatherService as prop
+}) {
+  const [geoData, setGeoData] = useState({
+    type: "FeatureCollection",
+    features: [],
+  });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState(null);
+  const [previousData, setPreviousData] = useState(null);
+  const [progress, setProgress] = useState({ current: 0, total: 0 });
+
+  // Generate a more natural-looking grid with randomization
+  const generateLocationGrid = (
+    centerLat,
+    centerLon,
+    gridSize = 9, // Increased from 5 to 9 (81 points)
+    spacing = 0.15 // Increased from 0.05 to 0.15 (~15km between points)
+  ) => {
+    const locations = [];
+    const halfGrid = Math.floor(gridSize / 2);
+
+    // Ensure centerLat and centerLon are numbers
+    const baseLat = parseFloat(centerLat);
+    const baseLon = parseFloat(centerLon);
+
+    for (let i = -halfGrid; i <= halfGrid; i++) {
+      for (let j = -halfGrid; j <= halfGrid; j++) {
+        // Add random offset to break the grid pattern (±30% of spacing)
+        const randomOffsetLat = (Math.random() - 0.5) * spacing * 0.6;
+        const randomOffsetLon = (Math.random() - 0.5) * spacing * 0.6;
+
+        const lat = baseLat + i * spacing + randomOffsetLat;
+        const lon = baseLon + j * spacing + randomOffsetLon;
+
+        // Generate meaningful area names based on direction
+        const latDir = i > 0 ? "North" : i < 0 ? "South" : "Central";
+        const lonDir = j > 0 ? "East" : j < 0 ? "West" : "Central";
+        const distance = Math.abs(i) + Math.abs(j);
+        const zone =
+          distance === 0
+            ? "Center"
+            : distance <= 2
+            ? "Inner"
+            : distance <= 4
+            ? "Mid"
+            : "Outer";
+
+        locations.push({
+          lat,
+          lon,
+          name: `${zone} ${latDir}${lonDir !== "Central" ? ` ${lonDir}` : ""}`,
         });
-        return newData;
-      });
-    }, 4000);
+      }
+    }
+
+    return locations;
+  };
+
+  // Fetch weather data with rate limiting and error handling
+  const fetchWeatherData = async () => {
+    if (!latitude || !longitude) {
+      console.warn("No coordinates provided");
+      return;
+    }
+
+    if (!weatherService) {
+      console.error("weatherService is not provided");
+      setError("Weather service is not available");
+      return;
+    }
+
+    setLoading(true);
+    setError(null);
+    setProgress({ current: 0, total: 0 });
+
+    try {
+      const locations = generateLocationGrid(latitude, longitude);
+      setProgress({ current: 0, total: locations.length });
+
+      const validResults = [];
+      const batchSize = 5; // Process 5 locations at a time
+      const delayBetweenBatches = 1000; // 1 second delay between batches
+
+      // Process locations in batches to avoid overwhelming the API
+      for (let i = 0; i < locations.length; i += batchSize) {
+        const batch = locations.slice(i, i + batchSize);
+
+        const batchPromises = batch.map(async (loc) => {
+          try {
+            const current = await weatherService.getCurrent(loc.lat, loc.lon);
+            const daily = await weatherService.getDaily(loc.lat, loc.lon);
+
+            // Calculate rainfall with slight random variation for natural distribution
+            const currentRain = current.rain || 0;
+            const dailyRain = daily[0]?.precipitationSum || 0;
+            const baseRainfall = currentRain + dailyRain;
+
+            // Add micro-variation (±5%) to break uniformity in weather patterns
+            const microVariation = 1 + (Math.random() * 0.1 - 0.05);
+            const totalRainfall = baseRainfall * microVariation;
+
+            // Skip locations with 0 rainfall
+            if (totalRainfall <= 0.5) {
+              return null;
+            }
+
+            return {
+              type: "Feature",
+              properties: {
+                name: loc.name,
+                rainfall: totalRainfall,
+                temperature: current.temperature_2m,
+                precipitationProb: daily[0]?.precipitationProbabilityMax || 0,
+                trend: "stable",
+              },
+              geometry: {
+                type: "Point",
+                coordinates: [loc.lon, loc.lat],
+              },
+            };
+          } catch (error) {
+            console.warn(
+              `Failed to fetch data for ${loc.name}:`,
+              error.message
+            );
+            return null;
+          }
+        });
+
+        const batchResults = await Promise.all(batchPromises);
+        validResults.push(...batchResults.filter((r) => r !== null));
+
+        setProgress({ current: i + batch.length, total: locations.length });
+
+        // Delay between batches (except for the last batch)
+        if (i + batchSize < locations.length) {
+          await delay(delayBetweenBatches);
+        }
+      }
+
+      if (validResults.length === 0) {
+        setError("No weather data could be retrieved");
+        return;
+      }
+
+      // Calculate trends by comparing with previous data
+      if (previousData && previousData.features.length > 0) {
+        validResults.forEach((result) => {
+          const coords = result.geometry.coordinates;
+          const prevFeature = previousData.features.find(
+            (f) =>
+              Math.abs(f.geometry.coordinates[0] - coords[0]) < 0.01 &&
+              Math.abs(f.geometry.coordinates[1] - coords[1]) < 0.01
+          );
+
+          if (prevFeature) {
+            const oldRainfall = prevFeature.properties.rainfall;
+            const newRainfall = result.properties.rainfall;
+
+            if (newRainfall > oldRainfall + 2) {
+              result.properties.trend = "up";
+            } else if (newRainfall < oldRainfall - 2) {
+              result.properties.trend = "down";
+            } else {
+              result.properties.trend = "stable";
+            }
+          }
+        });
+      }
+
+      const newGeoData = {
+        type: "FeatureCollection",
+        features: validResults,
+      };
+
+      setPreviousData(newGeoData);
+      setGeoData(newGeoData);
+      console.log(
+        `Successfully loaded ${validResults.length} weather stations`
+      );
+    } catch (error) {
+      console.error("Error fetching weather data:", error);
+      setError(error.message || "Failed to fetch weather data");
+    } finally {
+      setLoading(false);
+      setProgress({ current: 0, total: 0 });
+    }
+  };
+
+  // Fetch data when coordinates change
+  useEffect(() => {
+    if (latitude && longitude) {
+      console.log("Coordinates changed, fetching weather data...");
+      fetchWeatherData();
+    }
+  }, [latitude, longitude]);
+
+  // Auto-refresh every 10 minutes (increased from 5 to reduce load)
+  useEffect(() => {
+    if (!latitude || !longitude) return;
+
+    const interval = setInterval(() => {
+      console.log("Auto-refreshing weather data...");
+      fetchWeatherData();
+    }, 600000); // 10 minutes
+
     return () => clearInterval(interval);
-  }, []);
+  }, [latitude, longitude]);
 
   const heatPoints = useMemo(() => {
     return geoData.features
-      .filter((f) => f.geometry.type === "Point")
+      .filter((f) => f.geometry.type === "Point" && f.properties?.rainfall > 0)
       .map((f) => {
         const [lon, lat] = f.geometry.coordinates;
         const intensity = Math.min(
@@ -324,8 +439,98 @@ export default function RainHotspotMap({
       });
   }, [geoData]);
 
+  const center = useMemo(() => {
+    if (latitude && longitude) {
+      return [latitude, longitude];
+    }
+    return [12.9716, 77.5946]; // Default to Bangalore
+  }, [latitude, longitude]);
+
   return (
-    <div style={{ height: "100vh", width: "100%" }}>
+    <div style={{ height: "100vh", width: "100%", position: "relative" }}>
+      {loading && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: 1000,
+            background: "rgba(255, 255, 255, 0.95)",
+            padding: "12px 20px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontSize: "13px",
+            fontWeight: "600",
+            color: "#2563EB",
+          }}
+        >
+          <div style={{ marginBottom: "4px" }}>Loading weather data...</div>
+          {progress.total > 0 && (
+            <div style={{ fontSize: "11px", color: "#64748b" }}>
+              {progress.current} / {progress.total} locations
+            </div>
+          )}
+        </div>
+      )}
+
+      {error && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            right: "10px",
+            zIndex: 1000,
+            background: "rgba(239, 68, 68, 0.95)",
+            padding: "12px 20px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontSize: "13px",
+            fontWeight: "600",
+            color: "white",
+            maxWidth: "300px",
+          }}
+        >
+          <div style={{ marginBottom: "8px" }}>⚠️ {error}</div>
+          <button
+            onClick={fetchWeatherData}
+            style={{
+              background: "white",
+              color: "#ef4444",
+              border: "none",
+              padding: "4px 12px",
+              borderRadius: "4px",
+              fontSize: "12px",
+              fontWeight: "600",
+              cursor: "pointer",
+            }}
+          >
+            Retry
+          </button>
+        </div>
+      )}
+
+      {!loading && geoData.features.length > 0 && (
+        <div
+          style={{
+            position: "absolute",
+            top: "10px",
+            left: "10px",
+            zIndex: 1000,
+            background: "rgba(255, 255, 255, 0.95)",
+            padding: "8px 16px",
+            borderRadius: "8px",
+            boxShadow: "0 2px 8px rgba(0,0,0,0.1)",
+            fontSize: "12px",
+            color: "#64748b",
+          }}
+        >
+          <strong style={{ color: "#1e293b" }}>
+            {geoData.features.length}
+          </strong>{" "}
+          stations loaded
+        </div>
+      )}
+
       <style>{`
         .leaflet-container {
           height: 100%;
@@ -366,13 +571,10 @@ export default function RainHotspotMap({
         }
         
         .pulse-marker {
-          animation: markerPulse 2s ease-in-out infinite;
+          animation: markerPulse 3s ease-in-out infinite;
         }
         
-        @keyframes markerPulse {
-          0%, 100% { opacity: 0.9; }
-          50% { opacity: 1; }
-        }
+
       `}</style>
 
       <MapContainer
@@ -380,6 +582,8 @@ export default function RainHotspotMap({
         zoom={zoom}
         style={{ height: "100%", width: "100%" }}
       >
+        <MapUpdater center={center} zoom={zoom} />
+
         <LayersControl position="topright">
           <LayersControl.BaseLayer checked name="Street Map">
             <TileLayer
@@ -403,7 +607,11 @@ export default function RainHotspotMap({
           </LayersControl.BaseLayer>
 
           <LayersControl.Overlay checked name="Rain Stations">
-            <GeoJSON data={geoData} pointToLayer={pointToLayer} />
+            <GeoJSON
+              key={JSON.stringify(geoData)}
+              data={geoData}
+              pointToLayer={pointToLayer}
+            />
           </LayersControl.Overlay>
 
           <LayersControl.Overlay checked name="Heatmap">
