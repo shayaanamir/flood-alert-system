@@ -1,12 +1,12 @@
 
-# 🌊 Flood Alert System
+# Flood Alert System
 
 A full-stack MERN application designed to help communities monitor, prepare for, and respond to floods in real time.  
 It integrates live weather data, rainfall analytics, nearby shelter information, and community-sourced damage reports — all in one responsive dashboard.
 
 ---
 
-## 🚀 Features
+## Features
 
 - **Real-Time Weather & Rainfall Data** – Live temperature, rainfall, humidity, and wind data via Open-Meteo API.
 - **Flood Risk Dashboard** – Displays dynamic flood risk levels and rainfall trends.
@@ -19,25 +19,25 @@ It integrates live weather data, rainfall analytics, nearby shelter information,
 
 ---
 
-## 🧩 Tech Stack
+## Tech Stack
 
 ### **Frontend**
-- ⚛️ React + Vite
-- 🗺️ Leaflet for interactive mapping
-- ⚡ Axios for API calls
-- 🧭 React Router for routing
-- 🎨 CSS / Tailwind for styling
+- React + Vite
+- Leaflet for interactive mapping
+- Axios for API calls
+- React Router for routing
+- CSS / Tailwind for styling
 
 ### **Backend**
-- 🟢 Node.js + Express.js
-- 🍃 MongoDB + Mongoose
-- 📡 Open-Meteo API (for weather and rainfall)
-- 🔑 JWT (optional for authentication)
-- ☎️ Twilio (optional for SMS alerts)
+- Node.js + Express.js
+- MongoDB + Mongoose
+- Open-Meteo API (for weather and rainfall)
+- JWT (optional for authentication)
+- Twilio (optional for SMS alerts)
 
 ---
 
-## 🛠️ Project Structure
+## Project Structure
 
 ```
 
@@ -76,7 +76,7 @@ flood-alert-system/
 
 ---
 
-## ⚙️ Environment Variables
+## Environment Variables
 
 Create a `.env` file inside the **backend** directory:
 
@@ -91,7 +91,7 @@ PORT=5000
 
 ---
 
-## 💻 Installation Guide
+## Installation Guide
 
 ### **Backend Setup**
 
@@ -115,21 +115,21 @@ npm run dev
 
 ---
 
-## 🧠 Core Functionalities
+## Core Functionalities
 
-### 🌤 Weather & Risk Dashboard
+### Weather & Risk Dashboard
 
 * Fetches live data from Open-Meteo API.
 * Displays rainfall intensity, wind speed, and humidity.
 * Updates automatically every 5 minutes.
 
-### 🏠 Nearby Shelters
+### Nearby Shelters
 
 * Fetches data from `/shelter/nearby?lat={userLat}&lon={userLon}&radius_km=10`
 * Displays shelters on map and in list form.
 * Supports filtering: Available, Pet-friendly, Accessible.
 
-### 📋 Community Reports
+### Community Reports
 
 * Users can submit and view flood-related reports.
 * Schema includes:
@@ -137,7 +137,7 @@ npm run dev
   * Title, Description, Location, Severity, Status, and Contact Info.
 * Endpoint: `/report` and `/report/:id`.
 
-### 📈 Rainfall Trends
+### Rainfall Trends
 
 * Uses live rainfall data to generate SVG-based charts.
 * Risk thresholds:
@@ -148,7 +148,7 @@ npm run dev
 
 ---
 
-## 📡 API Overview
+## API Overview
 
 | Method   | Endpoint                               | Description                                  |
 | :------- | :------------------------------------- | :------------------------------------------- |
@@ -163,7 +163,7 @@ npm run dev
 ---
 
 
-## 🧭 Deployment
+## Deployment
 
 For local testing:
 
