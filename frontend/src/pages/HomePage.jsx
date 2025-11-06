@@ -10,18 +10,23 @@ import { WarningIcon, BellIcon, ShelterIcon, RainfallIcon } from '../components/
 
 // Dashboard Components
 import SummaryCard from "../components/homePage_dashboard/SummaryCard";
-import FloodRiskMap from "../components/homePage_dashboard/FloodRiskMap";
+import RainHotspotMap from "../components/admin_dashboard/RainHotspotMap";
+import ShelterMap from "../components/ShelterMap";
 import WeatherSummary from "../components/homePage_dashboard/WeatherSummary";
 import CommunityReports from "../components/homePage_dashboard/CommunityReports";
 import RainfallChart from "../components/homePage_dashboard/RainfallChart";
 import RecentAlerts from "../components/homePage_dashboard/RecentAlerts";
+
+// Services
+import { shelterService } from "../services/shelterService";
+import { weatherService } from "../services/weatherService";
 
 const DEFAULT_COORDS = { lat: 19.0760, lon: 72.8777 }; // Mumbai fallback
 const NEARBY_RADIUS_KM = 10; // 10 km radius
 const WEATHER_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
 const HomePage = () => {
-  const [activeLayer, setActiveLayer] = useState("Rainfall");
+  const [activeLayer, setActiveLayer] = useState("Shelters");
   const [weatherData, setWeatherData] = useState(null);
   const [alertStats, setAlertStats] = useState(null);
   const [recentAlerts, setRecentAlerts] = useState([]);
@@ -37,6 +42,7 @@ const HomePage = () => {
   });
   const [nearbySheltersCount, setNearbySheltersCount] = useState(0);
   const [nearbyShelters, setNearbyShelters] = useState([]);
+  const [selectedShelter, setSelectedShelter] = useState(null);
 
   // Risk thresholds (mm per hour)
   const HIGH_RISK_THRESHOLD = 50;
@@ -49,27 +55,12 @@ const HomePage = () => {
     return "Low";
   };
 
-  // Haversine distance helper (client-side fallback)
-  const haversineDistanceKm = (lat1, lon1, lat2, lon2) => {
-    const toRad = (deg) => (deg * Math.PI) / 180;
-    const R = 6371;
-    const dLat = toRad(lat2 - lat1);
-    const dLon = toRad(lon2 - lon1);
-    const a =
-      Math.sin(dLat / 2) * Math.sin(dLat / 2) +
-      Math.cos(toRad(lat1)) *
-        Math.cos(toRad(lat2)) *
-        Math.sin(dLon / 2) *
-        Math.sin(dLon / 2);
-    const c = 2 * Math.atan2(Math.sqrt(a), Math.sqrt(1 - a));
-    return R * c;
-  };
-
-  // Find nearby shelters
+  // Find nearby shelters using the service
   const findNearbyShelters = async (latitude, longitude, radiusKm = NEARBY_RADIUS_KM) => {
     try {
       const latNum = Number(latitude);
       const lonNum = Number(longitude);
+      
       if (!isFinite(latNum) || !isFinite(lonNum)) {
         console.warn("findNearbyShelters invalid coords:", latitude, longitude);
         setNearbyShelters([]);
@@ -77,39 +68,18 @@ const HomePage = () => {
         return;
       }
 
-      const url = `http://localhost:5000/shelter/nearby?lat=${encodeURIComponent(latNum)}&lon=${encodeURIComponent(lonNum)}&radius_km=${encodeURIComponent(radiusKm)}`;
-      const res = await fetch(url);
-      if (!res.ok) {
-        console.error("findNearbyShelters: non-ok response", res.status);
+      const response = await shelterService.getNearbyShelters(latNum, lonNum, radiusKm);
+      
+      if (response.success && response.data) {
+        const shelters = response.data.sort((a, b) => 
+          (a.distance_km ?? 9999) - (b.distance_km ?? 9999)
+        );
+        setNearbyShelters(shelters);
+        setNearbySheltersCount(shelters.length);
+      } else {
         setNearbyShelters([]);
         setNearbySheltersCount(0);
-        return;
       }
-
-      const json = await res.json();
-      const dataArr = json.data ?? (Array.isArray(json) ? json : []);
-      const prepared = dataArr.map((s) => {
-        const sLat = parseFloat(s.latitude ?? s.lat ?? s.location?.lat);
-        const sLon = parseFloat(s.longitude ?? s.lon ?? s.location?.lon);
-        const distance_km =
-          s.distance_km != null
-            ? s.distance_km
-            : isFinite(sLat) && isFinite(sLon)
-            ? Number(haversineDistanceKm(latNum, lonNum, sLat, sLon).toFixed(3))
-            : null;
-        return {
-          id: s.id ?? s._id,
-          name: s.name,
-          address: s.address,
-          status: s.status,
-          latitude: sLat,
-          longitude: sLon,
-          distance_km,
-        };
-      }).sort((a, b) => (a.distance_km ?? 9999) - (b.distance_km ?? 9999));
-
-      setNearbyShelters(prepared);
-      setNearbySheltersCount(prepared.length);
     } catch (err) {
       console.error("Error finding nearby shelters:", err);
       setNearbyShelters([]);
@@ -214,7 +184,7 @@ const HomePage = () => {
 
         if (!isMounted) return;
         setWeatherData(parsed);
-        console.log("HomePage parsed weather:", parsed); // <-- debug: confirms fetch worked
+        console.log("HomePage parsed weather:", parsed);
       } catch (err) {
         if (isMounted) console.error("fetchWeather error", err);
       }
@@ -230,7 +200,7 @@ const HomePage = () => {
     };
   }, [coords]);
 
-  // Alerts & recent (unchanged)
+  // Alerts & recent
   useEffect(() => {
     fetch("http://localhost:5000/alerts/stats")
       .then(res => res.json())
@@ -280,7 +250,11 @@ const HomePage = () => {
     }
   ];
 
-  const mapLayers = ["Rainfall", "Road Closures", "Shelters"];
+  const mapLayers = ["Shelters", "Rainfall"];
+
+  const handleShelterSelect = (shelter) => {
+    setSelectedShelter(shelter);
+  };
 
   return (
     <>
@@ -297,22 +271,27 @@ const HomePage = () => {
             <div className="dashboard-card nearby-list-card">
               <h3>Nearby Shelters (within {NEARBY_RADIUS_KM} km)</h3>
               <ul style={{ margin: 0, paddingLeft: "1rem" }}>
-                {nearbyShelters.map((s) => (
-                  <li key={s.id}>
+                {nearbyShelters.slice(0, 5).map((s) => (
+                  <li key={s.id || s._id}>
                     <strong>{s.name}</strong>
-                    {s.distance_km != null ? ` — ${s.distance_km} km` : ""}
+                    {s.distance_km != null ? ` – ${s.distance_km.toFixed(1)} km` : ""}
                     {s.address ? ` · ${s.address}` : ""}
                     {s.status ? ` · ${s.status}` : ""}
                   </li>
                 ))}
               </ul>
+              {nearbyShelters.length > 5 && (
+                <p style={{ margin: "8px 0 0 1rem", fontSize: "14px", color: "#64748b" }}>
+                  + {nearbyShelters.length - 5} more shelters
+                </p>
+              )}
             </div>
           )}
 
           <div className="main-dashboard-grid">
             <div className="dashboard-card map-card">
               <div className="card-header-alt">
-                <h3>Real-time Flood Risk Map</h3>
+                <h3>Real-time Maps</h3>
                 <div className="map-toggles">
                   {mapLayers.map((layer) => (
                     <button
@@ -325,7 +304,28 @@ const HomePage = () => {
                   ))}
                 </div>
               </div>
-              <FloodRiskMap activeLayer={activeLayer} centerCoords={coords ?? DEFAULT_COORDS} />
+              
+             <div style={{ height: "500px", width: "100%", overflow: "hidden", position: "relative" }}>
+              {activeLayer === "Rainfall" ? (
+                <div style={{ height: "100%", width: "100%" }}>
+                  <RainHotspotMap
+                    latitude={coords?.lat ?? DEFAULT_COORDS.lat}
+                    longitude={coords?.lon ?? DEFAULT_COORDS.lon}
+                    zoom={10}
+                    weatherService={weatherService}
+                  />
+                </div>
+              ) : (
+                <ShelterMap
+                  shelters={nearbyShelters}
+                  selectedShelter={selectedShelter}
+                  onShelterSelect={handleShelterSelect}
+                  center={coords ? [coords.lat, coords.lon] : [DEFAULT_COORDS.lat, DEFAULT_COORDS.lon]}
+                  zoom={11}
+                  height="500px"
+                />
+              )}
+              </div>
             </div>
 
             <div className="right-section-container">
