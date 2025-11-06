@@ -14,7 +14,7 @@ import { useLocationConversion } from "../hooks/useLocationConversion";
 import { useClock } from "../hooks/useClock";
 import { useMultiLocationAlerts } from "../hooks/useMultiLocationAlerts";
 import { useDashboardStats } from "../hooks/useDashboardStats";
-import MultiLocationAlert from "../components/MultilocationAlert";
+import MultiLocationAlert from "../components/MultilocationAlert.jsx";
 import { weatherService } from "../services/weatherService";
 import axios from "axios";
 

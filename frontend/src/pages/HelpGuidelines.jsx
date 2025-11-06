@@ -1,7 +1,7 @@
 import React from 'react';
 import Header from '../components/global/Header';
 import Footer from '../components/global/Footer';
-import '../styles/components/helpGuidelines.css';
+import '../styles/components/HelpGuidelines.css';
 
 // --- SVG Icon Components Defined Locally ---
 
