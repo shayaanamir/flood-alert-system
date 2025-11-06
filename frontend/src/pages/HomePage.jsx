@@ -25,6 +25,20 @@ const DEFAULT_COORDS = { lat: 19.0760, lon: 72.8777 }; // Mumbai fallback
 const NEARBY_RADIUS_KM = 10; // 10 km radius
 const WEATHER_REFRESH_MS = 5 * 60 * 1000; // 5 minutes
 
+// Helper function to compare weather data and prevent unnecessary re-renders
+const weatherDataEqual = (prev, next) => {
+  if (!prev && !next) return true;
+  if (!prev || !next) return false;
+  
+  return (
+    prev.temperature === next.temperature &&
+    prev.precipitation === next.precipitation &&
+    prev.windSpeed === next.windSpeed &&
+    prev.humidity === next.humidity &&
+    prev.timestamp === next.timestamp
+  );
+};
+
 const HomePage = () => {
   const [activeLayer, setActiveLayer] = useState("Shelters");
   const [weatherData, setWeatherData] = useState(null);
@@ -183,8 +197,16 @@ const HomePage = () => {
         };
 
         if (!isMounted) return;
-        setWeatherData(parsed);
-        console.log("HomePage parsed weather:", parsed);
+        
+        // Only update state if data has actually changed
+        setWeatherData(prevData => {
+          if (weatherDataEqual(prevData, parsed)) {
+            console.log("Weather data unchanged, skipping update");
+            return prevData; // Return same reference to prevent re-render
+          }
+          console.log("HomePage parsed weather (updated):", parsed);
+          return parsed;
+        });
       } catch (err) {
         if (isMounted) console.error("fetchWeather error", err);
       }
