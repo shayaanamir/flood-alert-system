@@ -16,32 +16,6 @@ const Footer = () => {
           </p>
         </div>
         
-        <div className="footer-section">
-          <h4>Resources</h4>
-          <ul className="footer-links">
-            <li><a href="#">About Us</a></li>
-            <li><a href="#">FAQ</a></li>
-            <li><a href="#">Flood Safety</a></li>
-            <li><a href="#">Contact</a></li>
-          </ul>
-        </div>
-        
-        <div className="footer-section">
-          <h4>Legal</h4>
-          <ul className="footer-links">
-            <li><a href="#">Privacy Policy</a></li>
-            <li><a href="#">Terms of Service</a></li>
-            <li><a href="#">Data Policy</a></li>
-          </ul>
-        </div>
-        
-        <div className="footer-section">
-          <h4>Emergency</h4>
-          <ul className="footer-links">
-            <li><a href="#">Contact Emergency</a></li>
-            <li><a href="#">Hotlines</a></li>
-          </ul>
-        </div>
       </div>
       
       <div className="footer-bottom">

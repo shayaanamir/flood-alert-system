@@ -86,7 +86,6 @@ const Header = (props) => {
             >
               Reports
             </a>
-            <a className="nav-link">Settings</a>
             <div className="profile-dropdown-container" ref={dropdownRef}>
               <div 
                 className="profile-icon-wrapper"

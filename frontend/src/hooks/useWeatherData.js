@@ -20,6 +20,7 @@ export const useWeatherData = (latitude, longitude, options = {}) => {
       setError(null);
       const data = await weatherService.getCurrent(latitude, longitude);
       setCurrentData(data);
+      console.log("current", data);
     } catch (err) {
       setError(err.message);
     } finally {

@@ -10,6 +10,7 @@ export const getHourlyWeather = async (req, res) => {
       `https://api.open-meteo.com/v1/forecast?latitude=${lat}&longitude=${lon}&hourly=rain,temperature_2m,precipitation_probability,weather_code&start_date=${date}&end_date=${date}`
     );
 
+    console.log(data);
     res.json(data);
   } catch (err) {
     console.error("Error fetching flood data: ", err.message);

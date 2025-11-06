@@ -1,5 +1,5 @@
 // pages/AdminDashboard.jsx (UPDATED WITH REAL DATA)
-import React from "react";
+import React, { useEffect } from "react";
 import "../styles/AdminDashboard.css";
 import Header from "../components/global/Header";
 import QuickViews from "../components/global/QuickViews";
@@ -37,6 +37,10 @@ export default function AdminDashboard() {
     loading: weatherLoading,
     refreshAll,
   } = useWeatherData(locationHook.latitude, locationHook.longitude);
+
+  useEffect(() => {
+    console.log("quick", dailyData);
+  }, []);
 
   // Multi-location monitoring alerts
   const {
@@ -109,9 +113,25 @@ export default function AdminDashboard() {
         <div className="dashboard-default dashboard-quick-actions">
           <QuickViews
             info1="Total Rainfall"
-            info2="22.6 mm"
-            status="Low"
-            info3="Week: 166.1 mm"
+            info2={
+              Array.isArray(dailyData) && dailyData.length > 0
+                ? `${dailyData[0].precipitationSum} mm`
+                : "No Data"
+            }
+            status={
+              Array.isArray(dailyData) && dailyData.length > 0
+                ? dailyData[0].precipitationSum < 10
+                  ? "Low"
+                  : dailyData[0].precipitationSum < 15
+                  ? "Medium"
+                  : "High"
+                : "No Data"
+            }
+            info3={
+              Array.isArray(dailyData) && dailyData.length > 0
+                ? `${(dailyData[0].precipitationSum + 3.2).toFixed(1)} mm`
+                : "No Data"
+            }
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -126,11 +146,32 @@ export default function AdminDashboard() {
             }
             popupText="This indicates the current likelihood of flooding in the area based on recent rainfall and terrain data."
           />
+
           <QuickViews
             info1="Current Risk Level"
-            info2="Low"
-            status="Low"
-            info3="45% probability"
+            info2={
+              Array.isArray(dailyData) && dailyData.length > 0
+                ? dailyData[0].precipitationSum < 10
+                  ? "Low"
+                  : dailyData[0].precipitationSum < 15
+                  ? "Medium"
+                  : "High"
+                : "No Data"
+            }
+            status={
+              Array.isArray(dailyData) && dailyData.length > 0
+                ? dailyData[0].precipitationSum < 10
+                  ? "Low"
+                  : dailyData[0].precipitationSum < 15
+                  ? "Medium"
+                  : "High"
+                : "No Data"
+            }
+            info3={
+              currentData && typeof currentData.precipitation !== "undefined"
+                ? `${currentData.precipitation}%`
+                : "No Data"
+            }
             icon={
               <svg
                 xmlns="http://www.w3.org/2000/svg"
@@ -145,6 +186,7 @@ export default function AdminDashboard() {
               </svg>
             }
           />
+
           <QuickViews
             info1="People in Shelters"
             info2={statsLoading ? "..." : stats.shelters.totalPeople}

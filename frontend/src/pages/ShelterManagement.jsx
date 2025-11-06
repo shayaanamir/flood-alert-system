@@ -174,16 +174,27 @@ export default function ShelterManagement(props) {
   const [openFilter, setOpenFilter] = useState(null);
 
   // === 🧮 Compute statistics ===
-  const totalShelters = shelterData.length;
-  const fullShelters = shelterData.filter(
-    (s) => s.capacity.current / s.capacity.max >= 0.9
-  ).length;
-  const lowResourceShelters = shelterData.filter((s) =>
-    Object.values(s.resources).some((r) => r.status?.toLowerCase() === "low")
-  ).length;
-  const inactiveShelters = shelterData.filter(
-    (s) => s.status.toLowerCase() === "inactive"
-  ).length;
+  const totalShelters = Array.isArray(shelterData.data)
+    ? shelterData.data.length
+    : 0;
+
+  const fullShelters = Array.isArray(shelterData.data)
+    ? shelterData.data.filter((s) => s.capacity.current / s.capacity.max >= 0.9)
+        .length
+    : 0;
+
+  const lowResourceShelters = Array.isArray(shelterData.data)
+    ? shelterData.data.filter((s) =>
+        Object.values(s.resources).some(
+          (r) => r.status?.toLowerCase() === "low"
+        )
+      ).length
+    : 0;
+
+  const inactiveShelters = Array.isArray(shelterData.data)
+    ? shelterData.data.filter((s) => s.status.toLowerCase() === "inactive")
+        .length
+    : 0;
 
   // === 💡 Determine statuses dynamically ===
   const capacityStatus =
@@ -203,25 +214,29 @@ export default function ShelterManagement(props) {
   const inactiveStatus = inactiveShelters > 0 ? "Medium" : "Good";
 
   useEffect(() => {
-    console.log("Shelters: ", shelterData);
+    console.log("Shelters: ", shelterData.data);
   }, []);
 
   const filterOptions = useMemo(
     () => ({
-      zone: [...new Set(shelterData?.map((s) => s.zone))].sort(),
+      zone: [...new Set(shelterData.data?.map((s) => s.zone))].sort(),
       status: ["Active", "Inactive"],
       foodStatus: [
         ...new Set(
-          shelterData?.map((s) => s.resources?.food?.status).filter(Boolean)
+          shelterData.data
+            ?.map((s) => s.resources?.food?.status)
+            .filter(Boolean)
         ),
       ].sort(),
       medicalStatus: [
         ...new Set(
-          shelterData?.map((s) => s.resources?.medical?.status).filter(Boolean)
+          shelterData.data
+            ?.map((s) => s.resources?.medical?.status)
+            .filter(Boolean)
         ),
       ].sort(),
     }),
-    [shelterData]
+    [shelterData.data]
   );
 
   const handleSort = (field) => {
@@ -245,8 +260,8 @@ export default function ShelterManagement(props) {
   };
 
   const filteredAndSortedData = useMemo(() => {
-    if (!shelterData) return [];
-    let result = [...shelterData];
+    if (!shelterData.data) return [];
+    let result = [...shelterData.data];
 
     // Apply filters
     if (filters.zone.length)
@@ -285,7 +300,7 @@ export default function ShelterManagement(props) {
       });
     }
     return result;
-  }, [shelterData, filters, sortConfig]);
+  }, [shelterData.data, filters, sortConfig]);
 
   const activeFiltersCount = Object.values(filters).reduce(
     (acc, curr) => acc + (curr?.length || 0),
