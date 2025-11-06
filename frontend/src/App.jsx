@@ -9,7 +9,7 @@ import Resources from "./pages/Resources";
 import ViewRisk from "./pages/ViewRisk";
 import Shelters from "./pages/Shelters";
 import ShelterManagement from "./pages/ShelterManagement";
-import AboutPage from "./pages/about";
+import AboutPage from "./pages/About";
 import HelpGuidelinesPage from "./pages/HelpGuidelines";
 import ProfilePage from "./pages/ProfilePage";
 function App() {
