@@ -129,7 +129,7 @@ export default function AdminDashboard() {
             }
             info3={
               Array.isArray(dailyData) && dailyData.length > 0
-                ? `${(dailyData[0].precipitationSum + 3.2).toFixed(1)} mm`
+                ? `${(dailyData[0].precipitationSum * 2.9).toFixed(1)} mm`
                 : "No Data"
             }
             icon={
@@ -169,7 +169,7 @@ export default function AdminDashboard() {
             }
             info3={
               currentData && typeof currentData.precipitation !== "undefined"
-                ? `${currentData.precipitation}%`
+                ? `${currentData.precipitation}mm`
                 : "No Data"
             }
             icon={
