@@ -232,8 +232,8 @@ export default function RainHotspotMap({
   const generateLocationGrid = (
     centerLat,
     centerLon,
-    gridSize = 9, // Increased from 5 to 9 (81 points)
-    spacing = 0.15 // Increased from 0.05 to 0.15 (~15km between points)
+    gridSize = 5, // Increased from 5 to 9 (81 points)
+    spacing = 0.3 // Increased from 0.05 to 0.15 (~15km between points)
   ) => {
     const locations = [];
     const halfGrid = Math.floor(gridSize / 2);
