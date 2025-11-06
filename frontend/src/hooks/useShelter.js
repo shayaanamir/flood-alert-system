@@ -12,7 +12,7 @@ const useShelter = (zone) => {
       setError(null);
       try {
         const data = await getShelterByZone(zone);
-
+        console.log("shelters: ", data);
         setShelterData(data);
       } catch (err) {
         setError("Failed to fetch shelter data.");
