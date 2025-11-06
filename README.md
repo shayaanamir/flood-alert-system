@@ -1,140 +1,176 @@
-# Flood Alert System
 
-A comprehensive MERN stack application designed to provide real-time flood alerts, shelter information, damage reporting, and risk assessment for communities prone to flooding. The system integrates weather data, location-based services, and administrative tools to enhance disaster preparedness and response.
+# 🌊 Flood Alert System
 
-## Features
+A full-stack MERN application designed to help communities monitor, prepare for, and respond to floods in real time.  
+It integrates live weather data, rainfall analytics, nearby shelter information, and community-sourced damage reports — all in one responsive dashboard.
 
-- **Real-time Weather Monitoring**: Fetches and displays current weather data, rainfall forecasts, and flood risk assessments.
-- **Shelter Management**: Admin panel for managing emergency shelters, including capacity, supplies, and location details.
-- **Damage Reporting**: Users can report flood damage, and admins can respond and track reports.
-- **Alert System**: Automated SMS alerts via Twilio for flood warnings and updates.
-- **Interactive Maps**: Visualize flood hotspots, shelters, and risk areas using Leaflet maps.
-- **User Authentication**: Secure login and profile management with JWT tokens.
-- **Admin Dashboard**: Comprehensive dashboard for monitoring stats, managing reports, and overseeing system operations.
-- **Community Reports**: View and manage community-submitted flood reports and alerts.
-- **Risk Assessment**: Evaluate flood risk based on location and weather data.
+---
 
-## Tech Stack
+## 🚀 Features
 
-### Backend
-- **Node.js** with **Express.js** for server-side logic
-- **MongoDB** with **Mongoose** for database management
-- **JWT** for authentication
-- **Twilio** for SMS alerts
-- **Axios** for external API calls (weather data)
-- **bcryptjs** for password hashing
+- **Real-Time Weather & Rainfall Data** – Live temperature, rainfall, humidity, and wind data via Open-Meteo API.
+- **Flood Risk Dashboard** – Displays dynamic flood risk levels and rainfall trends.
+- **Nearby Shelters** – Automatically fetches safe shelters within a 10 km radius using geolocation.
+- **Community Damage Reports** – Allows users to report and view verified flood incidents.
+- **Interactive Maps** – Built with Leaflet for real-time visualization of shelters and flood-prone areas.
+- **Alert Monitoring** – Displays critical, moderate, and low-level alerts on the dashboard.
+- **Responsive Design** – Optimized for desktop and mobile.
+- **Modular Backend** – Well-structured API routes for reports, shelters, and alerts.
 
-### Frontend
-- **React** with **Vite** for fast development and building
-- **React Router** for client-side routing
-- **Leaflet** and **React-Leaflet** for interactive maps
-- **Axios** for API communication
-- **Lucide React** for icons
-- **JWT Decode** for token handling
+---
 
-## Installation
+## 🧩 Tech Stack
 
-### Prerequisites
-- Node.js (v14 or higher)
-- MongoDB (local or cloud instance)
-- Twilio account for SMS alerts (optional)
+### **Frontend**
+- ⚛️ React + Vite
+- 🗺️ Leaflet for interactive mapping
+- ⚡ Axios for API calls
+- 🧭 React Router for routing
+- 🎨 CSS / Tailwind for styling
 
-### Backend Setup
-1. Navigate to the `backend` directory:
-   ```bash
-   cd backend
-   ```
+### **Backend**
+- 🟢 Node.js + Express.js
+- 🍃 MongoDB + Mongoose
+- 📡 Open-Meteo API (for weather and rainfall)
+- 🔑 JWT (optional for authentication)
+- ☎️ Twilio (optional for SMS alerts)
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+---
 
-3. Create a `.env` file in the `backend` directory with the following variables:
-   ```
-   MONGO_URI=your_mongodb_connection_string
-   JWT_SECRET=your_jwt_secret
-   TWILIO_ACCOUNT_SID=your_twilio_account_sid
-   TWILIO_AUTH_TOKEN=your_twilio_auth_token
-   TWILIO_PHONE_NUMBER=your_twilio_phone_number
-   ```
+## 🛠️ Project Structure
 
-4. Start the backend server:
-   ```bash
-   npm start
-   ```
-   The server will run on `http://localhost:5000`.
+```
 
-### Frontend Setup
-1. Navigate to the `frontend` directory:
-   ```bash
-   cd frontend
-   ```
+flood-alert-system/
+│
+├── backend/
+│   ├── controllers/
+│   │   ├── shelterController.js
+│   │   └── damageController.js
+│   ├── models/
+│   │   ├── Shelter.js
+│   │   └── Report.js
+│   ├── routes/
+│   │   ├── shelterRoutes.js
+│   │   └── damageRoutes.js
+│   ├── server.js
+│   └── .env
+│
+├── frontend/
+│   ├── src/
+│   │   ├── components/
+│   │   ├── pages/
+│   │   │   ├── HomePage.jsx
+│   │   │   ├── Shelters.jsx
+│   │   │   ├── ViewRisk.jsx
+│   │   │   └── ReportDamage.jsx
+│   │   ├── styles/
+│   │   ├── utils/
+│   │   └── main.jsx
+│   ├── vite.config.js
+│   └── package.json
+│
+└── README.md
 
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
+````
 
-3. Start the development server:
-   ```bash
-   npm run dev
-   ```
-   The frontend will run on `http://localhost:5173` (default Vite port).
+---
 
-## Usage
+## ⚙️ Environment Variables
 
-1. **Landing Page**: Access the main landing page at `/`.
-2. **Login**: Users can log in at `/login`.
-3. **Home Dashboard**: View weather summaries, recent alerts, and flood risk maps at `/home`.
-4. **Admin Dashboard**: Admins can access the dashboard at `/admin-dashboard` for system management.
-5. **Shelters**: Browse available shelters at `/shelters`.
-6. **Report Damage**: Submit flood damage reports at `/report-dmg`.
-7. **View Risk**: Assess flood risk for specific locations at `/view-risk`.
+Create a `.env` file inside the **backend** directory:
 
-## API Endpoints
+```bash
+MONGO_URI="mongodb+srv://floodalert:admin123@floodalert.26hahle.mongodb.net/flood-alert-db"
+JWT_SECRET="your_jwt_secret"
+TWILIO_ACCOUNT_SID="your_twilio_account_sid"
+TWILIO_AUTH_TOKEN="your_twilio_auth_token"
+TWILIO_PHONE_NUMBER="your_twilio_phone_number"
+PORT=5000
+````
 
-### Weather Data
-- `GET /weather-data` - Fetch current weather and flood data
+---
 
-### Authentication
-- `POST /login-signup/login` - User login
-- `POST /login-signup/signup` - User registration
+## 💻 Installation Guide
 
-### Shelters
-- `GET /shelter` - Get all shelters
-- `POST /shelter` - Add a new shelter (admin)
-- `PUT /shelter/:id` - Update shelter details (admin)
-- `DELETE /shelter/:id` - Delete a shelter (admin)
+### **Backend Setup**
 
-### Alerts
-- `GET /alerts` - Get all alerts
-- `POST /alerts` - Create a new alert (admin)
+```bash
+cd backend
+npm install
+nodemon server.js
+```
 
-### Damage Reports
-- `GET /damage-reports` - Get all damage reports
-- `POST /damage-reports` - Submit a new damage report
-- `PUT /damage-reports/:id` - Update report status (admin)
+> Runs the Express server at **[http://localhost:5000](http://localhost:5000)**
 
-### Profile
-- `GET /profile` - Get user profile
-- `PUT /profile` - Update user profile
+### **Frontend Setup**
 
-### Statistics
-- `GET /stats` - Get system statistics
+```bash
+cd frontend
+npm install
+npm run dev
+```
 
-## Contributing
+> Launches the React client at **[http://localhost:5173](http://localhost:5173)**
 
-1. Fork the repository.
-2. Create a new branch for your feature: `git checkout -b feature-name`.
-3. Make your changes and commit them: `git commit -m 'Add some feature'`.
-4. Push to the branch: `git push origin feature-name`.
-5. Submit a pull request.
+---
 
-## License
+## 🧠 Core Functionalities
 
-This project is licensed under the ISC License.
+### 🌤 Weather & Risk Dashboard
 
-## Contact
+* Fetches live data from Open-Meteo API.
+* Displays rainfall intensity, wind speed, and humidity.
+* Updates automatically every 5 minutes.
 
-For questions or support, please contact the development team.
+### 🏠 Nearby Shelters
+
+* Fetches data from `/shelter/nearby?lat={userLat}&lon={userLon}&radius_km=10`
+* Displays shelters on map and in list form.
+* Supports filtering: Available, Pet-friendly, Accessible.
+
+### 📋 Community Reports
+
+* Users can submit and view flood-related reports.
+* Schema includes:
+
+  * Title, Description, Location, Severity, Status, and Contact Info.
+* Endpoint: `/report` and `/report/:id`.
+
+### 📈 Rainfall Trends
+
+* Uses live rainfall data to generate SVG-based charts.
+* Risk thresholds:
+
+  * **Critical:** ≥ 50 mm/h
+  * **High:** ≥ 25 mm/h
+  * **Moderate:** ≥ 10 mm/h
+
+---
+
+## 📡 API Overview
+
+| Method   | Endpoint                               | Description                                  |
+| :------- | :------------------------------------- | :------------------------------------------- |
+| **GET**  | `/shelter`                             | Fetch all shelters                           |
+| **GET**  | `/shelter/nearby?lat=&lon=&radius_km=` | Get shelters within a radius (default 10 km) |
+| **GET**  | `/shelter/:id`                         | Get a shelter by ID                          |
+| **GET**  | `/alerts/recent`                       | Fetch latest flood alerts                    |
+| **GET**  | `/alerts/stats`                        | Get alert statistics summary                 |
+| **POST** | `/report`                              | Submit a new community damage report         |
+| **GET**  | `/report`                              | View all community reports                   |
+
+---
+
+
+## 🧭 Deployment
+
+For local testing:
+
+```bash
+# Run backend
+cd backend && nodemon server.js
+
+# Run frontend
+cd frontend && npm run dev
+```
