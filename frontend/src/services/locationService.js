@@ -1,7 +1,7 @@
 // services/locationService.js
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/location-conversion";
+const BASE_URL = "https://flood-alert-system-dkru.onrender.com/location-conversion";
 
 export const locationService = {
   // Reverse geocoding: coordinates -> location

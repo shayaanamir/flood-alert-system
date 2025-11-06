@@ -1,7 +1,7 @@
 // services/shelterService.js
 import axios from "axios";
 
-const API_BASE_URL = "http://localhost:5000/shelter";
+const API_BASE_URL = "https://flood-alert-system-dkru.onrender.com/shelter";
 
 // Existing function - get shelters by zone
 export const getShelterByZone = async (zone) => {

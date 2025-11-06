@@ -25,8 +25,8 @@ const LoginPage = () => {
   }, [location.state]);
 
   const navigate = useNavigate();
-  const API_BASE_URL = "http://localhost:5000/login-signup";
-  const LOCATION_API_URL = "http://localhost:5000/location-conversion";
+  const API_BASE_URL = "https://flood-alert-system-dkru.onrender.com/login-signup";
+  const LOCATION_API_URL = "https://flood-alert-system-dkru.onrender.com/location-conversion";
 
   function toggleStatus() {
     setIsSignUp(!isSignUp);

@@ -101,7 +101,7 @@ npm install
 nodemon server.js
 ```
 
-> Runs the Express server at **[http://localhost:5000](http://localhost:5000)**
+> Runs the Express server at **[https://flood-alert-system-dkru.onrender.com](https://flood-alert-system-dkru.onrender.com)**
 
 ### **Frontend Setup**
 

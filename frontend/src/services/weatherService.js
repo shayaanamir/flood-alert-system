@@ -1,7 +1,7 @@
 // services/weatherService.js
 import axios from "axios";
 
-const BASE_URL = "http://localhost:5000/weather-data";
+const BASE_URL = "https://flood-alert-system-dkru.onrender.com/weather-data";
 
 export const weatherService = {
   // Fetch current weather data

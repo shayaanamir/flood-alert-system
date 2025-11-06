@@ -29,7 +29,7 @@ export default function ReportDmg() {
   const [submitMessage, setSubmitMessage] = useState({ type: "", text: "" });
   const [userId, setUserId] = useState(null);
 
-  const API_URL = "http://localhost:5000/profile";
+  const API_URL = "https://flood-alert-system-dkru.onrender.com/profile";
 
   // Fetch user information from token and profile
   useEffect(() => {
@@ -337,7 +337,7 @@ export default function ReportDmg() {
         },
       };
 
-      const response = await fetch("http://localhost:5000/damage-reports", {
+      const response = await fetch("https://flood-alert-system-dkru.onrender.com/damage-reports", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

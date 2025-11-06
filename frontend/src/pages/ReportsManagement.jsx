@@ -15,7 +15,7 @@ export default function ReportsManagement() {
   useEffect(() => {
     const fetchReports = async () => {
       try {
-        const res = await fetch("http://localhost:5000/damage-reports");
+        const res = await fetch("https://flood-alert-system-dkru.onrender.com/damage-reports");
         const data = await res.json();
         console.log("Fetched reports:", data); // 👈 Add this
         setReports(data);

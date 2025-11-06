@@ -1,6 +1,6 @@
 import axios from "axios";
 
-const API_URL = "http://localhost:5000/users";
+const API_URL = "https://flood-alert-system-dkru.onrender.com/users";
 
 export const getUsers = () => axios.get(API_URL);
 export const getUser = (id) => axios.get(`${API_URL}/${id}`);

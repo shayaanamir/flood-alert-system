@@ -3,13 +3,13 @@ import React, { useEffect, useState } from "react";
 /**
  * CommunityReports (live)
  * - fetches recent damage reports from backend
- * - expects backend endpoint: GET http://localhost:5000/damage-reports/recent
- *   fallback: GET http://localhost:5000/damage-reports?limit=5&sort=desc
+ * - expects backend endpoint: GET https://flood-alert-system-dkru.onrender.com/damage-reports/recent
+ *   fallback: GET https://flood-alert-system-dkru.onrender.com/damage-reports?limit=5&sort=desc
  *
  * No CSS changes required — uses your existing classnames.
  */
 
-const API_RECENT_REPORTS = "http://localhost:5000/damage-reports/recent"; // preferred
+const API_RECENT_REPORTS = "https://flood-alert-system-dkru.onrender.com/damage-reports/recent"; // preferred
 const POLL_INTERVAL_MS = 60 * 1000; // 60s, change to 0 to disable polling
 
 // small helper to format relative times like "5 min ago"
@@ -44,7 +44,7 @@ export default function CommunityReports() {
       let res = await fetch(API_RECENT_REPORTS);
       if (!res.ok) {
         // fallback: try generic list endpoint (assumes /damage-reports returns array)
-        res = await fetch("http://localhost:5000/damage-reports?limit=5&sort=desc");
+        res = await fetch("https://flood-alert-system-dkru.onrender.com/damage-reports?limit=5&sort=desc");
       }
 
       if (!res.ok) throw new Error(`Failed to fetch recent reports (${res.status})`);

@@ -224,14 +224,14 @@ const HomePage = () => {
 
   // Alerts & recent
   useEffect(() => {
-    fetch("http://localhost:5000/alerts/stats")
+    fetch("https://flood-alert-system-dkru.onrender.com/alerts/stats")
       .then(res => res.json())
       .then(data => { if (data.success) setAlertStats(data.data); })
       .catch(err => console.error("Error fetching alert stats:", err));
   }, []);
 
   useEffect(() => {
-    fetch("http://localhost:5000/alerts/recent")
+    fetch("https://flood-alert-system-dkru.onrender.com/alerts/recent")
       .then(res => res.json())
       .then(data => { if (data.success) setRecentAlerts(data.data); })
       .catch(err => console.error("Error fetching recent alerts:", err));

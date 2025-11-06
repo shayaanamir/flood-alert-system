@@ -16,8 +16,8 @@ const ProfilePage = () => {
     location: ''
   });
   const [userId, setUserId] = useState(null);
-  const API_URL = 'http://localhost:5000/profile';
-  const LOCATION_API_URL = 'http://localhost:5000/location-conversion';
+  const API_URL = 'https://flood-alert-system-dkru.onrender.com/profile';
+  const LOCATION_API_URL = 'https://flood-alert-system-dkru.onrender.com/location-conversion';
 
   useEffect(() => {
     // Get user ID from JWT token

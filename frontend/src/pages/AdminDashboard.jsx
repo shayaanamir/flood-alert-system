@@ -61,7 +61,7 @@ export default function AdminDashboard() {
       // Optionally show loading or disable button
       console.log("Sending alerts...");
 
-      const response = await axios.post("http://localhost:5000/alerts/send", {
+      const response = await axios.post("https://flood-alert-system-dkru.onrender.com/alerts/send", {
         to: "+91 9152080687", // <-- Verified or real number
         message: "⚠️ Flood Alert! Evacuate to a nearby shelter immediately.",
       });
