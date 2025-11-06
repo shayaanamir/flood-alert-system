@@ -8,7 +8,7 @@ import RainfallForecast from "../components/RainfallForecast";
 import { useLocationConversion } from "../hooks/useLocationConversion";
 import { useWeatherData } from "../hooks/useWeatherData";
 import { locationService } from "../services/locationService";
-import "../styles/viewRisk.css";
+import "../styles/ViewRisk.css";
 
 const ViewRisk = () => {
   const [searchQuery, setSearchQuery] = useState("");
